@@ -15,13 +15,16 @@ SELECT
         SELECT 1
         FROM likes
         WHERE likes.post_id = posts.id AND likes.user_id = ?
-    ) as liked_by_user
+    ) as liked_by_user,
+    COALESCE(COUNT(replies.id), 0) as replies_count
 FROM
     posts
 INNER JOIN
     users ON posts.author_id = users.id
 LEFT JOIN
     likes on posts.id = likes.post_id
+LEFT JOIN
+    posts replies ON posts.id = replies.parent_id
 WHERE
     posts.deleted = 0
     AND posts.parent_id IS NULL
@@ -45,13 +48,16 @@ SELECT
         SELECT 1
         FROM likes
         WHERE likes.post_id = posts.id AND likes.user_id = ?
-    ) as liked_by_user
+    ) as liked_by_user,
+    COALESCE(COUNT(replies.id), 0) as replies_count
 FROM
     posts
 INNER JOIN
     users ON posts.author_id = users.id
 LEFT JOIN
     likes on posts.id = likes.post_id
+LEFT JOIN
+    posts replies ON posts.id = replies.parent_id
 WHERE
     posts.deleted = 0
     AND posts.parent_id IS NULL

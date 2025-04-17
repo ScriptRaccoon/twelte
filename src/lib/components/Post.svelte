@@ -64,6 +64,9 @@
 
 		<button onclick={() => goto(`/post/${post.id}`)} aria-label="reply">
 			<Fa icon={faReply} />
+			<span aria-label="number of replies">
+				{post.replies_count}
+			</span>
 		</button>
 		{#if is_author}
 			<button onclick={delete_post} aria-label="Delete">
