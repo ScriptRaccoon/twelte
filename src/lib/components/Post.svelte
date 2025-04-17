@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto, invalidateAll } from '$app/navigation'
+	import { goto } from '$app/navigation'
 	import type { Post as PostType } from '$lib/types'
 	import { faHeart } from '@fortawesome/free-regular-svg-icons'
 	import { faHeart as faHeartFilled, faReply, faXmark } from '@fortawesome/free-solid-svg-icons'
@@ -18,15 +18,16 @@
 	}
 
 	async function like() {
-		await fetch(`/api/post/${post.id}/like`, { method: 'POST' })
-
-		await invalidateAll() // TODO: improve that
+		const res = await fetch(`/api/post/${post.id}/like`, { method: 'POST' })
+		if (!res.ok) return
+		post.likes_count++
+		post.liked_by_user = true
 	}
 
 	async function unlike() {
 		await fetch(`/api/post/${post.id}/unlike`, { method: 'POST' })
-
-		await invalidateAll() // TODO: improve that
+		post.likes_count--
+		post.liked_by_user = false
 	}
 
 	async function delete_post() {
@@ -34,8 +35,6 @@
 		if (!confirmed) return
 
 		await fetch(`/api/post/${post.id}`, { method: 'DELETE' })
-
-		await invalidateAll() // TODO: improve that
 	}
 </script>
 
