@@ -14,6 +14,9 @@
 			<li>
 				<a href="/account/dashboard">Account Page</a>
 			</li>
+			<li>
+				@{user.handle}
+			</li>
 		{:else}
 			<li>
 				<a href="/account/create">Create Account</a>

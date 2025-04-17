@@ -39,7 +39,7 @@ export const actions: Actions = {
 		const password_is_correct = await bcrypt.compare(password, password_hash);
 		if (!password_is_correct) return fail(401, { error: 'Invalid credentials', handle });
 
-		const token = jwt.sign({ id }, JWT_SECRET);
+		const token = jwt.sign({ id, handle }, JWT_SECRET);
 
 		event.cookies.set('jwt', token, {
 			httpOnly: true,
