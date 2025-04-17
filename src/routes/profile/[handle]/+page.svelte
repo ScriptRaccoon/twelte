@@ -35,11 +35,11 @@
 </p>
 
 {#if profile.following}
-	<p>You are following {profile.handle}.</p>
+	<p>You are following @{profile.handle}.</p>
 {/if}
 
 {#if profile.followed}
-	<p>{profile.handle} is following you.</p>
+	<p>@{profile.handle} is following you.</p>
 {/if}
 
 {#if data.user && profile.user_id !== data.user.id}
