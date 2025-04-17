@@ -32,7 +32,7 @@ GROUP BY
     posts.id
 ORDER BY
     posts.created_at DESC
-LIMIT 10
+LIMIT ?
 `;
 
 const sql_posts = `
@@ -61,16 +61,17 @@ GROUP BY
     posts.id
 ORDER BY
     posts.created_at DESC
-LIMIT 10
+LIMIT ?
 `;
 
 export const GET: RequestHandler = async (event) => {
 	const me = event.locals.user;
 	const me_id = me ? me.id : 0;
 	const user_id = event.url.searchParams.get('user_id') as string | null;
+	const limit = event.url.searchParams.get('limit') as string | null;
 
 	const sql = user_id ? sql_profile_posts : sql_posts;
-	const args = user_id ? [me_id, user_id] : [me_id];
+	const args = user_id ? [me_id, user_id, limit ?? 10] : [me_id, limit ?? 10];
 
 	const { rows: posts, success } = await query<Post>(sql, args);
 
