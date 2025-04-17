@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
 	import Post from '$lib/components/Post.svelte';
 
@@ -20,6 +21,29 @@
 	<strong>Bio:</strong>
 	{profile.bio}
 </p>
+
+<p>
+	<strong>Followers:</strong>
+	{profile.followers_count}
+</p>
+
+<p>
+	<strong>Following:</strong>
+	{profile.following_count}
+</p>
+
+{#if data.user && profile.id !== data.user.id}
+	<!-- TODO: display only one option -->
+	<form action="?/follow" method="POST" use:enhance>
+		<input type="hidden" name="followed_id" value={profile.id} />
+		<button>Follow</button>
+	</form>
+
+	<form action="?/unfollow" method="POST" use:enhance>
+		<input type="hidden" name="followed_id" value={profile.id} />
+		<button>Unfollow</button>
+	</form>
+{/if}
 
 <h2>Posts</h2>
 
