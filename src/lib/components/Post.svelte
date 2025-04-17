@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import type { Post as PostType } from '$lib/types'
+	import { format_date } from '$lib/utils'
 	import { faHeart } from '@fortawesome/free-regular-svg-icons'
 	import { faHeart as faHeartFilled, faReply, faXmark } from '@fortawesome/free-solid-svg-icons'
 	import Fa from 'svelte-fa'
@@ -44,10 +45,15 @@
 </script>
 
 <div class="post">
-	<strong>
-		<a href="/profile/{post.author_handle}">@{post.author_handle}</a>
-	</strong>
-	<br />
+	<div>
+		<strong>
+			<a href="/profile/{post.author_handle}">@{post.author_handle}</a>
+		</strong>
+		&ndash;
+		<span title={post.created_at}>
+			{format_date(post.created_at)}
+		</span>
+	</div>
 	<div>{post.content}</div>
 	<div>
 		<button
