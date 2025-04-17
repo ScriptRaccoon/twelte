@@ -20,7 +20,7 @@ export function transform_post(post: Post_DB): Post {
 }
 
 export type Profile_DB = {
-	id: number;
+	user_id: number;
 	display_name: string;
 	handle: string;
 	bio: string;

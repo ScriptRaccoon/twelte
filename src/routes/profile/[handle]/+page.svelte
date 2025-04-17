@@ -44,15 +44,15 @@
 	<p>{profile.handle} is following you.</p>
 {/if}
 
-{#if data.user && profile.id !== data.user.id}
+{#if data.user && profile.user_id !== data.user.id}
 	{#if !profile.following}
 		<form action="?/follow" method="POST" use:enhance>
-			<input type="hidden" name="followed_id" value={profile.id} />
+			<input type="hidden" name="followed_id" value={profile.user_id} />
 			<button>Follow</button>
 		</form>
 	{:else}
 		<form action="?/unfollow" method="POST" use:enhance>
-			<input type="hidden" name="followed_id" value={profile.id} />
+			<input type="hidden" name="followed_id" value={profile.user_id} />
 			<button>Unfollow</button>
 		</form>
 	{/if}

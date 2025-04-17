@@ -13,7 +13,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const sql_profile = `
     SELECT
-        users.id as id,
+        users.id as user_id,
         display_name,
         handle,
         bio,
@@ -51,7 +51,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const profile: Profile = transform_profile(profiles[0]);
 
-	const res = await event.fetch(`/api/posts?user_id=${profile.id}&limit=${limit}`);
+	const res = await event.fetch(`/api/posts?user_id=${profile.user_id}&limit=${limit}`);
 	if (!res.ok) error(res.status, 'Failed to fetch posts');
 
 	const posts: Post[] = await res.json();
