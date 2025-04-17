@@ -57,13 +57,3 @@
 		Are you sure? This cannot be undone! All your data will be lost!
 	{/if}
 </form>
-
-<style>
-	label {
-		display: block;
-	}
-
-	textarea {
-		resize: vertical;
-	}
-</style>

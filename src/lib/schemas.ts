@@ -60,3 +60,12 @@ export const display_name_schema = z
 	.max(50, {
 		message: 'Display name must be at most 50 characters long'
 	});
+
+export const post_content_schema = z
+	.string({
+		required_error: 'Post content is required',
+		invalid_type_error: 'Post content must be a string'
+	})
+	.max(280, {
+		message: 'Post must be at most 280 characters long'
+	});
