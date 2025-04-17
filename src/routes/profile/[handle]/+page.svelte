@@ -45,16 +45,17 @@
 {/if}
 
 {#if data.user && profile.id !== data.user.id}
-	<!-- TODO: display only one option -->
-	<form action="?/follow" method="POST" use:enhance>
-		<input type="hidden" name="followed_id" value={profile.id} />
-		<button>Follow</button>
-	</form>
-
-	<form action="?/unfollow" method="POST" use:enhance>
-		<input type="hidden" name="followed_id" value={profile.id} />
-		<button>Unfollow</button>
-	</form>
+	{#if !profile.following}
+		<form action="?/follow" method="POST" use:enhance>
+			<input type="hidden" name="followed_id" value={profile.id} />
+			<button>Follow</button>
+		</form>
+	{:else}
+		<form action="?/unfollow" method="POST" use:enhance>
+			<input type="hidden" name="followed_id" value={profile.id} />
+			<button>Unfollow</button>
+		</form>
+	{/if}
 {/if}
 
 <h2>Posts</h2>
