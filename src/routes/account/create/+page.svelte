@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { enhance } from '$app/forms'
 
-	let { form } = $props();
+	let { form } = $props()
 </script>
 
 <h1>Create an account</h1>

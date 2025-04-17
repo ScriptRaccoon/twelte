@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Post from '$lib/components/Post.svelte';
+	import Post from '$lib/components/Post.svelte'
 
-	let { data } = $props();
-	let posts = $derived(data.posts);
-	let limit = $derived(data.limit);
+	let { data } = $props()
+	let posts = $derived(data.posts)
+	let limit = $derived(data.limit)
 </script>
 
 <h1>Twelte</h1>

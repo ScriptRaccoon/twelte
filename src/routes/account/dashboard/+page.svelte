@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { enhance } from '$app/forms'
 
-	let { data, form } = $props();
-	let account = $derived(data.account);
+	let { data, form } = $props()
+	let account = $derived(data.account)
 
-	let confirm_deletion = $state(false);
+	let confirm_deletion = $state(false)
 </script>
 
 <h1>Account Page</h1>
@@ -48,7 +48,7 @@
 			<button
 				type="button"
 				onclick={() => {
-					confirm_deletion = true;
+					confirm_deletion = true
 				}}>Delete account</button
 			>
 		{/if}

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { page } from '$app/state';
-	import Post from '$lib/components/Post.svelte';
+	import { enhance } from '$app/forms'
+	import { page } from '$app/state'
+	import Post from '$lib/components/Post.svelte'
 
-	let { data } = $props();
-	let posts = $derived(data.posts);
-	let profile = $derived(data.profile);
-	let limit = $derived(data.limit);
+	let { data } = $props()
+	let posts = $derived(data.posts)
+	let profile = $derived(data.profile)
+	let limit = $derived(data.limit)
 </script>
 
 <h1>

@@ -1,34 +1,34 @@
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
-	import type { Post as PostType } from '$lib/types';
+	import { invalidateAll } from '$app/navigation'
+	import type { Post as PostType } from '$lib/types'
 
 	type Props = {
-		post: PostType;
-		is_owner: boolean;
-		authenticated: boolean;
-	};
+		post: PostType
+		is_owner: boolean
+		authenticated: boolean
+	}
 
-	let { post, is_owner, authenticated }: Props = $props();
+	let { post, is_owner, authenticated }: Props = $props()
 
 	async function like(post_id: number) {
-		await fetch(`/api/post/${post_id}/like`, { method: 'POST' });
+		await fetch(`/api/post/${post_id}/like`, { method: 'POST' })
 
-		await invalidateAll(); // TODO: improve that
+		await invalidateAll() // TODO: improve that
 	}
 
 	async function unlike(post_id: number) {
-		await fetch(`/api/post/${post_id}/unlike`, { method: 'POST' });
+		await fetch(`/api/post/${post_id}/unlike`, { method: 'POST' })
 
-		await invalidateAll(); // TODO: improve that
+		await invalidateAll() // TODO: improve that
 	}
 
 	async function delete_post(post_id: number) {
-		const confirmed = confirm('Are you sure you want to delete this post?');
-		if (!confirmed) return;
+		const confirmed = confirm('Are you sure you want to delete this post?')
+		if (!confirmed) return
 
-		await fetch(`/api/post/${post_id}`, { method: 'DELETE' });
+		await fetch(`/api/post/${post_id}`, { method: 'DELETE' })
 
-		await invalidateAll(); // TODO: improve that
+		await invalidateAll() // TODO: improve that
 	}
 </script>
 

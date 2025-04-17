@@ -1,7 +1,7 @@
-import { query } from '$lib/db';
-import { transform_post, type Post_DB, type Post } from '$lib/types';
-import { error, json } from '@sveltejs/kit';
-import type { RequestHandler } from './$types';
+import { query } from '$lib/db'
+import { transform_post, type Post_DB, type Post } from '$lib/types'
+import { error, json } from '@sveltejs/kit'
+import type { RequestHandler } from './$types'
 
 const sql_profile_posts = `
 SELECT
@@ -31,7 +31,7 @@ GROUP BY
 ORDER BY
     posts.created_at DESC
 LIMIT ?
-`;
+`
 
 const sql_posts = `
 SELECT
@@ -60,22 +60,22 @@ GROUP BY
 ORDER BY
     posts.created_at DESC
 LIMIT ?
-`;
+`
 
 export const GET: RequestHandler = async (event) => {
-	const me = event.locals.user;
-	const me_id = me ? me.id : 0;
-	const user_id = event.url.searchParams.get('user_id') as string | null;
-	const limit = event.url.searchParams.get('limit') as string | null;
+	const me = event.locals.user
+	const me_id = me ? me.id : 0
+	const user_id = event.url.searchParams.get('user_id') as string | null
+	const limit = event.url.searchParams.get('limit') as string | null
 
-	const sql = user_id ? sql_profile_posts : sql_posts;
-	const args = user_id ? [me_id, user_id, limit ?? 10] : [me_id, limit ?? 10];
+	const sql = user_id ? sql_profile_posts : sql_posts
+	const args = user_id ? [me_id, user_id, limit ?? 10] : [me_id, limit ?? 10]
 
-	const { rows: posts, success } = await query<Post_DB>(sql, args);
+	const { rows: posts, success } = await query<Post_DB>(sql, args)
 
-	if (!success) error(500, 'Database error');
+	if (!success) error(500, 'Database error')
 
-	const transformed_posts: Post[] = posts.map(transform_post);
+	const transformed_posts: Post[] = posts.map(transform_post)
 
-	return json(transformed_posts);
-};
+	return json(transformed_posts)
+}

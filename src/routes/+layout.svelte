@@ -1,8 +1,8 @@
 <script lang="ts">
-	import './app.css';
+	import './app.css'
 
-	let { data, children } = $props();
-	let user = $derived(data.user);
+	let { data, children } = $props()
+	let user = $derived(data.user)
 </script>
 
 <nav>

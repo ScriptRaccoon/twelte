@@ -1,15 +1,15 @@
-import { query } from '$lib/db';
-import { error, redirect } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
-import { transform_profile, type Post, type Profile_DB, type Profile } from '$lib/types';
+import { query } from '$lib/db'
+import { error, redirect } from '@sveltejs/kit'
+import type { Actions, PageServerLoad } from './$types'
+import { transform_profile, type Post, type Profile_DB, type Profile } from '$lib/types'
 
 export const load: PageServerLoad = async (event) => {
-	const me = event.locals.user;
-	const me_id = me ? me.id : 0;
+	const me = event.locals.user
+	const me_id = me ? me.id : 0
 
-	const limit = Number(event.url.searchParams.get('limit') ?? '10');
+	const limit = Number(event.url.searchParams.get('limit') ?? '10')
 
-	const handle = event.params.handle;
+	const handle = event.params.handle
 
 	const sql_profile = `
     SELECT
@@ -39,58 +39,58 @@ export const load: PageServerLoad = async (event) => {
         profiles ON users.id = profiles.user_id
     WHERE
         users.handle = :handle
-    `;
+    `
 
 	const { rows: profiles, success: success_profile } = await query<Profile_DB>(sql_profile, {
 		me_id,
 		handle
-	});
+	})
 
-	if (!success_profile) error(500, 'Database error');
-	if (!profiles.length) error(404, 'User not found');
+	if (!success_profile) error(500, 'Database error')
+	if (!profiles.length) error(404, 'User not found')
 
-	const profile: Profile = transform_profile(profiles[0]);
+	const profile: Profile = transform_profile(profiles[0])
 
-	const res = await event.fetch(`/api/posts?user_id=${profile.user_id}&limit=${limit}`);
-	if (!res.ok) error(res.status, 'Failed to fetch posts');
+	const res = await event.fetch(`/api/posts?user_id=${profile.user_id}&limit=${limit}`)
+	if (!res.ok) error(res.status, 'Failed to fetch posts')
 
-	const posts: Post[] = await res.json();
+	const posts: Post[] = await res.json()
 
-	return { profile, posts, limit };
-};
+	return { profile, posts, limit }
+}
 
 export const actions: Actions = {
 	follow: async (event) => {
-		const me = event.locals.user;
-		if (!me) redirect(302, `/login?redirect=${event.url.pathname}`);
+		const me = event.locals.user
+		if (!me) redirect(302, `/login?redirect=${event.url.pathname}`)
 
-		const form_data = await event.request.formData();
+		const form_data = await event.request.formData()
 
-		const followed_id = form_data.get('followed_id') as string | null;
-		if (!followed_id) error(400, 'Invalid request');
-		const followed_id_num = Number(followed_id);
+		const followed_id = form_data.get('followed_id') as string | null
+		if (!followed_id) error(400, 'Invalid request')
+		const followed_id_num = Number(followed_id)
 
-		const sql = `INSERT INTO follows (follower_id, followed_id) VALUES (?, ?)`;
+		const sql = `INSERT INTO follows (follower_id, followed_id) VALUES (?, ?)`
 
-		const { success } = await query(sql, [me.id, followed_id_num]);
+		const { success } = await query(sql, [me.id, followed_id_num])
 
-		return { success };
+		return { success }
 	},
 
 	unfollow: async (event) => {
-		const me = event.locals.user;
-		if (!me) redirect(302, `/login?redirect=${event.url.pathname}`);
+		const me = event.locals.user
+		if (!me) redirect(302, `/login?redirect=${event.url.pathname}`)
 
-		const form_data = await event.request.formData();
+		const form_data = await event.request.formData()
 
-		const followed_id = form_data.get('followed_id') as string | null;
-		if (!followed_id) error(400, 'Invalid request');
-		const followed_id_num = Number(followed_id);
+		const followed_id = form_data.get('followed_id') as string | null
+		if (!followed_id) error(400, 'Invalid request')
+		const followed_id_num = Number(followed_id)
 
-		const sql = `DELETE FROM follows WHERE follower_id = ? AND followed_id = ?`;
+		const sql = `DELETE FROM follows WHERE follower_id = ? AND followed_id = ?`
 
-		const { success } = await query(sql, [me.id, followed_id_num]);
+		const { success } = await query(sql, [me.id, followed_id_num])
 
-		return { success };
+		return { success }
 	}
-};
+}

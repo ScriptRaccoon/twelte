@@ -1,11 +1,11 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const email_schema = z
 	.string({
 		required_error: 'Email is required',
 		invalid_type_error: 'Email must be a string'
 	})
-	.email({ message: 'Invalid email address' });
+	.email({ message: 'Invalid email address' })
 
 export const password_schema = z
 	.string({
@@ -23,7 +23,7 @@ export const password_schema = z
 	})
 	.regex(/[a-zA-Z]/, {
 		message: 'Password must contain at least one letter'
-	});
+	})
 
 export const handle_schema = z
 	.string({
@@ -38,7 +38,7 @@ export const handle_schema = z
 	})
 	.regex(/^[a-z0-9-_]+$/, {
 		message: 'Handle must only contain lowercase letters, numbers, dashes and underscores'
-	});
+	})
 
 export const bio_schema = z
 	.string({
@@ -47,7 +47,7 @@ export const bio_schema = z
 	})
 	.max(160, {
 		message: 'Bio must be at most 160 characters long'
-	});
+	})
 
 export const display_name_schema = z
 	.string({
@@ -59,7 +59,7 @@ export const display_name_schema = z
 	})
 	.max(50, {
 		message: 'Display name must be at most 50 characters long'
-	});
+	})
 
 export const post_content_schema = z
 	.string({
@@ -68,4 +68,4 @@ export const post_content_schema = z
 	})
 	.max(280, {
 		message: 'Post must be at most 280 characters long'
-	});
+	})

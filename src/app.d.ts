@@ -2,14 +2,14 @@
 // for information about these interfaces
 declare global {
 	type User = {
-		id: number;
-		handle: string;
-	};
+		id: number
+		handle: string
+	}
 
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			user?: User;
+			user?: User
 		}
 		// interface PageData {}
 		// interface PageState {}
@@ -17,4 +17,4 @@ declare global {
 	}
 }
 
-export {};
+export {}
