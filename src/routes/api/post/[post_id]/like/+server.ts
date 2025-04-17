@@ -28,14 +28,5 @@ export const POST: RequestHandler = async (event) => {
 		error(500, 'Database error')
 	}
 
-	const sql_count = 'SELECT COUNT(*) as count FROM likes WHERE post_id = ?'
-
-	const { rows, err: count_err } = await query<{ count: number }>(sql_count, [post_id])
-	if (count_err) error(500, 'Database error')
-
-	if (rows.length === 0) error(404, 'Post not found')
-
-	const count = rows[0].count
-
-	return json({ count })
+	return json({ success: true })
 }
