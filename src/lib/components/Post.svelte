@@ -9,9 +9,10 @@
 		post: PostType
 		is_author: boolean
 		authenticated: boolean
+		handle_deletion: () => void
 	}
 
-	let { post, is_author, authenticated }: Props = $props()
+	let { post, is_author, authenticated, handle_deletion }: Props = $props()
 
 	function toggle_like() {
 		post.liked_by_user ? unlike() : like()
@@ -25,7 +26,8 @@
 	}
 
 	async function unlike() {
-		await fetch(`/api/post/${post.id}/unlike`, { method: 'POST' })
+		const res = await fetch(`/api/post/${post.id}/unlike`, { method: 'POST' })
+		if (!res.ok) return
 		post.likes_count--
 		post.liked_by_user = false
 	}
@@ -34,7 +36,10 @@
 		const confirmed = confirm('Are you sure you want to delete this post?')
 		if (!confirmed) return
 
-		await fetch(`/api/post/${post.id}`, { method: 'DELETE' })
+		const res = await fetch(`/api/post/${post.id}`, { method: 'DELETE' })
+		if (!res.ok) return
+
+		handle_deletion()
 	}
 </script>
 

@@ -61,6 +61,10 @@
 
 		observer.observe(node)
 	}
+
+	function handle_deletion(post_id: number) {
+		posts = posts.filter((post) => post.id !== post_id)
+	}
 </script>
 
 <h2>Posts</h2>
@@ -68,7 +72,12 @@
 {#if posts?.length}
 	<div>
 		{#each posts as post (post.id)}
-			<Post {post} is_author={post.author_id === user_id} authenticated={!!user_id} />
+			<Post
+				{post}
+				is_author={post.author_id === user_id}
+				authenticated={!!user_id}
+				handle_deletion={() => handle_deletion(post.id)}
+			/>
 		{/each}
 
 		<div use:load_more_when_visible class="observer"></div>
