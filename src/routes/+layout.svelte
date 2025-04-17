@@ -1,5 +1,8 @@
 <script lang="ts">
 	import './app.css';
+
+	let { data, children } = $props();
+	let user = $derived(data.user);
 </script>
 
 <nav>
@@ -7,19 +10,22 @@
 		<li>
 			<a href="/">Home</a>
 		</li>
-		<li>
-			<a href="/account/create">Create Account</a>
-		</li>
-		<li>
-			<a href="/account/login">Login</a>
-		</li>
-		<li>
-			<a href="/account/dashboard">Account Page</a>
-		</li>
+		{#if user}
+			<li>
+				<a href="/account/dashboard">Account Page</a>
+			</li>
+		{:else}
+			<li>
+				<a href="/account/create">Create Account</a>
+			</li>
+			<li>
+				<a href="/account/login">Login</a>
+			</li>
+		{/if}
 	</ul>
 </nav>
 
-<slot></slot>
+{@render children?.()}
 
 <style>
 	ul {
