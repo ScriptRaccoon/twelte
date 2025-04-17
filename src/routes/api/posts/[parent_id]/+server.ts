@@ -16,7 +16,8 @@ SELECT
         FROM likes
         WHERE likes.post_id = posts.id AND likes.user_id = ?
     ) as liked_by_user,
-    COALESCE(COUNT(replies.id), 0) as replies_count
+    COALESCE(COUNT(replies.id), 0) as replies_count,
+    posts.parent_id as parent_id
 FROM
     posts
 INNER JOIN

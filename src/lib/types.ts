@@ -7,6 +7,7 @@ export type Post_DB = {
 	likes_count: number
 	liked_by_user: 0 | 1
 	replies_count: number
+	parent_id: number | null
 }
 
 export type Post = Omit<Post_DB, 'liked_by_user'> & {

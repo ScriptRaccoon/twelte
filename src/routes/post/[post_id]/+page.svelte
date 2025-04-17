@@ -10,6 +10,10 @@
 
 <h1>Post Detail Page</h1>
 
+{#if post.parent_id}
+	<a href="/post/{post.parent_id}"> Back to Parent Post </a>
+{/if}
+
 <h2>Post</h2>
 
 <Post
