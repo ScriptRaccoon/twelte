@@ -15,10 +15,13 @@
 
 	let offset = $state(0)
 
-	let loaded_all_posts = $state(false)
+	let has_loaded_all_posts = $state(false)
+
+	let is_loading = $state(false)
 
 	async function load_more() {
-		if (loaded_all_posts) return
+		if (is_loading || has_loaded_all_posts) return
+		is_loading = true
 
 		offset += limit
 
@@ -30,6 +33,7 @@
 
 		if (!res.ok) {
 			console.error('Failed to load more posts')
+			is_loading = false
 			return
 		}
 		const new_posts: PostType[] = await res.json()
@@ -37,8 +41,25 @@
 		posts = [...posts, ...new_posts]
 
 		if (!new_posts.length) {
-			loaded_all_posts = true
+			has_loaded_all_posts = true
 		}
+
+		is_loading = false
+	}
+
+	function load_more_when_visible(node: HTMLDivElement) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						load_more()
+					}
+				})
+			},
+			{ threshold: 1 }
+		)
+
+		observer.observe(node)
 	}
 </script>
 
@@ -49,16 +70,27 @@
 		{#each posts as post (post.id)}
 			<Post {post} is_owner={post.user_id === user_id} authenticated={!!user_id} />
 		{/each}
+
+		<div use:load_more_when_visible class="observer"></div>
 	</div>
 
-	{#if !loaded_all_posts}
-		<!-- TODO: load when last post comes into view, remove button -->
-		<p>
-			<button onclick={load_more}>Load More Posts</button>
-		</p>
-	{:else}
+	{#if is_loading}
+		<p>Loading more posts ...</p>
+	{/if}
+
+	{#if has_loaded_all_posts}
+		<hr />
 		<p>These are all posts.</p>
 	{/if}
 {:else}
 	<p>No posts yet.</p>
 {/if}
+
+<style>
+	.observer {
+		width: 100%;
+		height: 1px;
+		pointer-events: none;
+		translate: 0 -20px;
+	}
+</style>
