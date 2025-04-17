@@ -1,5 +1,7 @@
 <script lang="ts">
+	import Fa from 'svelte-fa'
 	import './app.css'
+	import { faHome, faSliders, faTools, faUserAlt } from '@fortawesome/free-solid-svg-icons'
 
 	let { data, children } = $props()
 	let user = $derived(data.user)
@@ -8,14 +10,20 @@
 <nav>
 	<ul>
 		<li>
-			<a href="/">Home</a>
+			<a href="/">
+				<Fa icon={faHome} /> Home
+			</a>
 		</li>
 		{#if user}
 			<li>
-				<a href="/profile/{user.handle}"> Profile </a>
+				<a href="/profile/{user.handle}">
+					<Fa icon={faUserAlt} /> Profile
+				</a>
 			</li>
 			<li>
-				<a href="/account/dashboard">Account</a>
+				<a href="/account/dashboard">
+					<Fa icon={faSliders} /> Account
+				</a>
 			</li>
 		{:else}
 			<li>
