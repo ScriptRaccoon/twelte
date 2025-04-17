@@ -4,7 +4,7 @@
 
 	type Props = {
 		initial_posts: PostType[]
-		limit: number
+		limit?: number
 		author_id?: number // defined when on profile page
 		user_id?: number // defined when authenticated
 	}
@@ -20,6 +20,7 @@
 	let is_loading = $state(false)
 
 	async function load_more() {
+		if (!limit) return
 		if (is_loading || has_loaded_all_posts) return
 		is_loading = true
 
@@ -80,14 +81,16 @@
 			/>
 		{/each}
 
-		<div use:load_more_when_visible class="observer"></div>
+		{#if limit}
+			<div use:load_more_when_visible class="observer"></div>
+		{/if}
 	</div>
 
-	{#if is_loading}
+	{#if is_loading && limit}
 		<p>Loading more posts ...</p>
 	{/if}
 
-	{#if has_loaded_all_posts}
+	{#if has_loaded_all_posts && limit}
 		<hr />
 		<p>These are all posts.</p>
 	{/if}

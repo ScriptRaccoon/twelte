@@ -1,24 +1,25 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
+	import Post from '$lib/components/Post.svelte'
+	import PostList from '$lib/components/PostList.svelte'
 
 	let { data, form } = $props()
 	let post = $derived(data.post)
 	let replies = $derived(data.replies)
 </script>
 
-<h1>Post</h1>
+<h1>Post Detail Page</h1>
 
-<!-- TODO: reuse Post component, make it more adjustable . . . -->
+<h2>Post</h2>
 
-<p>
-	<strong>
-		<a href="/profile/{post.author_handle}">@{post.author_handle}</a>
-	</strong>
-	&ndash;
-	{new Date(post.created_at).toLocaleString()}
-</p>
-
-<p>{post.content}</p>
+<Post
+	{post}
+	is_author={data.user?.id === post.author_id}
+	authenticated={!!data.user}
+	handle_deletion={() => {
+		window.history.back()
+	}}
+/>
 
 <h2>Your Reply</h2>
 
@@ -43,15 +44,6 @@
 
 {#if replies.length}
 	<h2>Replies</h2>
-	{#each replies as reply}
-		<p>
-			<strong>
-				<a href="/profile/{reply.author_handle}">@{reply.author_handle}</a>
-			</strong>
-			&ndash;
-			{new Date(reply.created_at).toLocaleString()}
-		</p>
 
-		<p>{reply.content}</p>
-	{/each}
+	<PostList initial_posts={replies} user_id={data.user?.id} />
 {/if}

@@ -1,6 +1,7 @@
 import { query } from '$lib/db'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './delete/$types'
+import { transform_post, type Post, type Post_DB } from '$lib/types'
 
 export const DELETE: RequestHandler = async (event) => {
 	const user = event.locals.user
@@ -15,4 +16,52 @@ export const DELETE: RequestHandler = async (event) => {
 	if (err) error(500, 'Database error')
 
 	return json({ success: true })
+}
+
+export const GET: RequestHandler = async (event) => {
+	const user = event.locals.user
+	const user_id = user ? user.id : 0
+	const post_id = event.params.post_id
+
+	const sql = `
+	SELECT
+		posts.id as id,
+		users.id as author_id,
+		users.handle as author_handle,
+		posts.content,
+		posts.created_at,
+		COALESCE(COUNT(likes.id), 0) as likes_count,
+		EXISTS (
+			SELECT 1
+			FROM likes
+			WHERE likes.post_id = posts.id AND likes.user_id = :user_id
+		) as liked_by_user,
+		COALESCE(COUNT(replies.id), 0) as replies_count
+	FROM
+		posts
+	INNER JOIN
+		users ON posts.author_id = users.id
+	LEFT JOIN
+		likes on posts.id = likes.post_id
+	LEFT JOIN
+    	posts replies ON posts.id = replies.parent_id
+	WHERE
+		posts.id = :post_id
+		AND posts.deleted = 0
+	GROUP BY
+		posts.id
+	`
+
+	const { rows: posts, success: success_post } = await query<Post_DB>(sql, {
+		user_id,
+		post_id
+	})
+
+	if (!success_post) error(500, 'Database error')
+
+	if (!posts.length) error(404, 'Post not found')
+
+	const post: Post = transform_post(posts[0])
+
+	return json(post)
 }

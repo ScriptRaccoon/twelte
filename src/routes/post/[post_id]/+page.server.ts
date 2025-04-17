@@ -3,93 +3,21 @@ import type { Actions, PageServerLoad } from './$types'
 import { post_content_schema } from '$lib/schemas'
 import { get_error_msg } from '$lib/utils'
 import { query } from '$lib/db'
-
-type PostDetail = {
-	id: number
-	author_id: number
-	author_handle: string
-	content: string
-	created_at: string
-	likes_count: number
-	liked_by_user: boolean
-}
+import type { Post } from '$lib/types'
 
 export const load: PageServerLoad = async (event) => {
-	const user = event.locals.user
 	const post_id = event.params.post_id
 
-	const sql_post = `
-	SELECT
-		posts.id as id,
-		users.id as author_id,
-		users.handle as author_handle,
-		posts.content,
-		posts.created_at,
-		COALESCE(COUNT(likes.id), 0) as likes_count,
-		EXISTS (
-			SELECT 1
-			FROM likes
-			WHERE likes.post_id = posts.id AND likes.user_id = :user_id
-		) as liked_by_user
-	FROM
-		posts
-	INNER JOIN
-		users ON posts.author_id = users.id
-	LEFT JOIN
-		likes on posts.id = likes.post_id
-	WHERE
-		posts.id = :post_id
-		AND posts.parent_id IS NULL
-		AND posts.deleted = 0
-	GROUP BY
-		posts.id
-	`
+	const [res_post, res_replies] = await Promise.all([
+		event.fetch(`/api/post/${post_id}`),
+		event.fetch(`/api/posts/${post_id}`)
+	])
 
-	const { rows: posts, success: success_post } = await query<PostDetail>(sql_post, {
-		user_id: user ? user.id : 0,
-		post_id
-	})
+	if (!res_post.ok) error(res_post.status, 'Failed to fetch post')
+	if (!res_replies.ok) error(res_replies.status, 'Failed to fetch replies')
 
-	if (!success_post) error(500, 'Database error')
-
-	if (!posts.length) error(404, 'Post not found')
-
-	const post = posts[0]
-
-	const sql_replies = `
-	SELECT
-		posts.id as id,
-		users.id as author_id,
-		users.handle as author_handle,
-		posts.content,
-		posts.created_at,
-		COALESCE(COUNT(likes.id), 0) as likes_count,
-		EXISTS (
-			SELECT 1
-			FROM likes
-			WHERE likes.post_id = posts.id AND likes.user_id = :user_id
-		) as liked_by_user
-	FROM
-		posts
-	INNER JOIN
-		users ON posts.author_id = users.id
-	LEFT JOIN
-		likes on posts.id = likes.post_id
-	WHERE
-		posts.parent_id = :parent_id
-		AND posts.deleted = 0
-	GROUP BY
-		posts.id
-	ORDER BY
-		posts.created_at DESC
-	`
-
-	const { rows: replies, success: success_replies } = await query<PostDetail>(sql_replies, {
-		user_id: user ? user.id : 0,
-		parent_id: post.id
-	})
-
-	if (!success_replies) error(500, 'Database error')
+	const post: Post = await res_post.json()
+	const replies: Post[] = await res_replies.json()
 
 	return { post, replies }
 }
