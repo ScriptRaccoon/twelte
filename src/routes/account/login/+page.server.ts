@@ -9,14 +9,14 @@ import type { PageServerLoad } from '../$types';
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user;
 	if (user) {
-		// redirect(302, '/account/dashboard');
+		redirect(302, '/account/dashboard');
 	}
 
 	return {};
 };
 
 export const actions: Actions = {
-	login: async (event) => {
+	default: async (event) => {
 		const form_data = await event.request.formData();
 		const handle = form_data.get('handle') as string | null;
 		const password = form_data.get('password') as string | null;

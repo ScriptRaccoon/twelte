@@ -6,7 +6,7 @@
 
 <h1>Login</h1>
 
-<form method="POST" action="?/login" use:enhance>
+<form method="POST" use:enhance>
 	<label for="handle">Handle</label>
 	<input type="text" id="handle" name="handle" required value={form?.handle} />
 
