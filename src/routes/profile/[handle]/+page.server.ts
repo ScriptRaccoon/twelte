@@ -1,21 +1,7 @@
 import { query } from '$lib/db';
 import { error, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import type { Post } from '$lib/types';
-
-type Profile = {
-	id: number;
-	display_name: string;
-	handle: string;
-	bio: string;
-	followers_count: number;
-	following_count: number;
-	following: number; // 0 or 1
-	followed: number; // 0 or 1
-	posts_count: number;
-};
-
-// TODO: fetch post count
+import { transform_profile, type Post, type Profile_DB, type Profile } from '$lib/types';
 
 export const load: PageServerLoad = async (event) => {
 	const me = event.locals.user;
@@ -55,7 +41,7 @@ export const load: PageServerLoad = async (event) => {
         users.handle = :handle
     `;
 
-	const { rows: profiles, success: success_profile } = await query<Profile>(sql_profile, {
+	const { rows: profiles, success: success_profile } = await query<Profile_DB>(sql_profile, {
 		me_id,
 		handle
 	});
@@ -63,7 +49,7 @@ export const load: PageServerLoad = async (event) => {
 	if (!success_profile) error(500, 'Database error');
 	if (!profiles.length) error(404, 'User not found');
 
-	const profile = profiles[0];
+	const profile: Profile = transform_profile(profiles[0]);
 
 	const res = await event.fetch(`/api/posts?user_id=${profile.id}&limit=${limit}`);
 	if (!res.ok) error(res.status, 'Failed to fetch posts');

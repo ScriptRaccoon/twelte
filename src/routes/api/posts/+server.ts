@@ -1,9 +1,7 @@
 import { query } from '$lib/db';
-import type { Post } from '$lib/types';
+import { transform_post, type Post_DB, type Post } from '$lib/types';
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-
-// TODO: add pagination
 
 const sql_profile_posts = `
 SELECT
@@ -73,9 +71,11 @@ export const GET: RequestHandler = async (event) => {
 	const sql = user_id ? sql_profile_posts : sql_posts;
 	const args = user_id ? [me_id, user_id, limit ?? 10] : [me_id, limit ?? 10];
 
-	const { rows: posts, success } = await query<Post>(sql, args);
+	const { rows: posts, success } = await query<Post_DB>(sql, args);
 
 	if (!success) error(500, 'Database error');
 
-	return json(posts);
+	const transformed_posts: Post[] = posts.map(transform_post);
+
+	return json(transformed_posts);
 };
