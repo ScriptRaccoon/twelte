@@ -12,6 +12,7 @@ type Profile = {
 	following_count: number;
 	following: number; // 0 or 1
 	followed: number; // 0 or 1
+	posts_count: number;
 };
 
 // TODO: fetch post count
@@ -41,9 +42,11 @@ export const load: PageServerLoad = async (event) => {
 		) as following,
 		EXISTS (
 			SELECT 1
-			FROM follows g
-			WHERE g.follower_id = users.id AND g.followed_id = :me_id
-		) as followed
+			FROM follows f
+			WHERE f.follower_id = users.id AND f.followed_id = :me_id
+		) as followed,
+		(SELECT COUNT(*) FROM posts p WHERE p.user_id = users.id AND p.deleted = 0)
+			as posts_count
     FROM
         users
     INNER JOIN

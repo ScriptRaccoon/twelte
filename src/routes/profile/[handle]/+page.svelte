@@ -23,6 +23,10 @@
 </p>
 
 <p>
+	Number of Posts: {profile.posts_count}
+</p>
+
+<p>
 	<strong>Followers:</strong>
 	{profile.followers_count}
 </p>
