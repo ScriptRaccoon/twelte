@@ -59,11 +59,3 @@ CREATE TABLE IF NOT EXISTS follows (
     FOREIGN KEY (follower_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (followed_id) REFERENCES users (id) ON DELETE CASCADE
 );
-
-CREATE TABLE IF NOT EXISTS post_hashtags (
-    id INTEGER PRIMARY KEY,
-    post_id INTEGER NOT NULL,
-    hashtag TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE
-);
