@@ -1,5 +1,5 @@
 import { query } from '$lib/db';
-import { error, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcryptjs';
 import type { Actions } from './$types';
 import jwt from 'jsonwebtoken';
@@ -18,13 +18,11 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
 	login: async (event) => {
 		const form_data = await event.request.formData();
-		const password = form_data.get('password') as string | null;
 		const handle = form_data.get('handle') as string | null;
+		const password = form_data.get('password') as string | null;
 
-		if (!password) error(400, 'Password is required');
-		if (!handle) error(400, 'Handle is required');
-
-		// TODO: add proper validation
+		if (!password) return fail(400, { error: 'Password is required', handle });
+		if (!handle) return fail(400, { error: 'Handle is required', handle });
 
 		type Credentials = { id: number; password_hash: string };
 
@@ -33,25 +31,15 @@ export const actions: Actions = {
 			[handle]
 		);
 
-		// TODO: improve error display
+		if (err) return fail(500, { error: 'Database error' });
+		if (rows.length === 0) return fail(401, { error: 'Invalid credentials', handle });
 
-		if (err) {
-			error(500, 'Database error');
-		}
+		const { id, password_hash } = rows[0];
 
-		if (rows.length === 0) {
-			error(401, 'Invalid credentials');
-		}
+		const password_is_correct = await bcrypt.compare(password, password_hash);
+		if (!password_is_correct) return fail(401, { error: 'Invalid credentials', handle });
 
-		const user = rows[0];
-
-		const password_is_correct = await bcrypt.compare(password, user.password_hash);
-
-		if (!password_is_correct) {
-			error(401, 'Invalid credentials');
-		}
-
-		const token = jwt.sign({ id: user.id }, JWT_SECRET);
+		const token = jwt.sign({ id }, JWT_SECRET);
 
 		event.cookies.set('jwt', token, {
 			httpOnly: true,
