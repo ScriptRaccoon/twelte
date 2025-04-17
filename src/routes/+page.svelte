@@ -17,7 +17,12 @@
 	}
 
 	async function delete_post(post_id: number) {
-		// TODO
+		const confirmed = confirm('Are you sure you want to delete this post?');
+		if (!confirmed) return;
+
+		await fetch(`/api/post/${post_id}`, { method: 'DELETE' });
+
+		await invalidateAll(); // TODO: improve that
 	}
 </script>
 
