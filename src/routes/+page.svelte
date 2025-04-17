@@ -5,21 +5,13 @@
 	let posts = $derived(data.posts);
 
 	async function like(post_id: number) {
-		await fetch(`/api/post/${post_id}/like`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ post_id })
-		});
+		await fetch(`/api/post/${post_id}/like`, { method: 'POST' });
 
 		await invalidateAll(); // TODO: improve that
 	}
 
 	async function unlike(post_id: number) {
-		await fetch(`/api/post/${post_id}/unlike`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ post_id })
-		});
+		await fetch(`/api/post/${post_id}/unlike`, { method: 'POST' });
 
 		await invalidateAll(); // TODO: improve that
 	}
