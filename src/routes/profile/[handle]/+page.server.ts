@@ -10,7 +10,7 @@ type Profile = {
 	bio: string;
 	followers_count: number;
 	following_count: number;
-	followed: number; // 0 or 1
+	following: number; // 0 or 1
 };
 
 // TODO: check if current user follows that account
@@ -37,7 +37,7 @@ export const load: PageServerLoad = async (event) => {
 			SELECT 1
 			FROM follows f
 			WHERE f.follower_id = ? AND f.followed_id = users.id
-		) as followed
+		) as following
     FROM
         users
     INNER JOIN

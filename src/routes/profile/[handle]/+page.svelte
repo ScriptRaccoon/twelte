@@ -32,7 +32,7 @@
 	{profile.following_count}
 </p>
 
-{#if profile.followed}
+{#if profile.following}
 	<p>You are following {profile.handle}.</p>
 {/if}
 
