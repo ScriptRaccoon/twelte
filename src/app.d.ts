@@ -2,7 +2,7 @@
 // for information about these interfaces
 declare global {
 	type User = {
-		id: string;
+		id: number;
 		handle: string;
 	};
 
