@@ -39,3 +39,24 @@ export const handle_schema = z
 	.regex(/^[a-z0-9-_]+$/, {
 		message: 'Handle must only contain lowercase letters, numbers, dashes and underscores'
 	});
+
+export const bio_schema = z
+	.string({
+		invalid_type_error: 'Bio must be a string',
+		required_error: 'Bio is required'
+	})
+	.max(160, {
+		message: 'Bio must be at most 160 characters long'
+	});
+
+export const display_name_schema = z
+	.string({
+		invalid_type_error: 'Display name must be a string',
+		required_error: 'Display name is required'
+	})
+	.min(1, {
+		message: 'Display name must be at least 1 character long'
+	})
+	.max(50, {
+		message: 'Display name must be at most 50 characters long'
+	});

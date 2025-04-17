@@ -1,5 +1,5 @@
 import { query } from '$lib/db';
-import { error, fail, redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcryptjs';
 import type { Actions } from './$types';
 import jwt from 'jsonwebtoken';

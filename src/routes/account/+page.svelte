@@ -1,15 +1,20 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 
-	let { data } = $props();
+	let { data, form } = $props();
+	let account = $derived(data.account);
 
 	let confirm_deletion = $state(false);
 </script>
 
 <h1>Account Page</h1>
 
+{#if !form && data.message}
+	<p>{data.message}</p>
+{/if}
+
 <label for="handle">Handle</label>
-<input type="text" readonly id="handle" name="handle" value={data.handle} />
+<input type="text" readonly id="handle" name="handle" value={account.handle} />
 
 <p>
 	<strong>Editable Fields:</strong>
@@ -17,18 +22,22 @@
 
 <form action="?/edit" method="POST" use:enhance>
 	<label for="email">Email</label>
-	<input type="email" id="email" name="email" value={data.email} />
+	<input type="email" id="email" name="email" value={account.email} />
 
 	<label for="display_name">Display Name</label>
-	<input type="text" id="display_name" name="display_name" value={data.display_name} />
+	<input type="text" id="display_name" name="display_name" value={account.display_name} />
 
 	<label for="bio">Bio</label>
-	<textarea id="bio" name="bio" rows="4" cols="50">{data.bio}</textarea>
+	<textarea id="bio" name="bio" rows="4" cols="50">{account.bio}</textarea>
 
 	<p>
 		<button type="submit">Update Profile</button>
 	</p>
 </form>
+
+{#if form?.error}
+	<p class="error">{form.error}</p>
+{/if}
 
 <form action="?/logout" method="POST" use:enhance>
 	<p>
@@ -57,5 +66,9 @@
 <style>
 	label {
 		display: block;
+	}
+
+	textarea {
+		resize: vertical;
 	}
 </style>

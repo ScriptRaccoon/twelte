@@ -2,7 +2,7 @@ import { query } from '$lib/db';
 import { fail } from '@sveltejs/kit';
 import bcrypt from 'bcryptjs';
 import type { Actions } from './$types';
-import { email_schema, handle_schema, password_schema } from './schemas';
+import { email_schema, handle_schema, password_schema } from '$lib/schemas';
 import { get_error_msg } from '$lib/utils';
 
 export const actions: Actions = {

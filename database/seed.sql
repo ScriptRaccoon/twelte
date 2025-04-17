@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS profiles (
     id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     display_name TEXT NOT NULL,
-    bio TEXT DEFAULT "" CHECK (LENGTH (bio) <= 160),
+    bio TEXT NOT NULL DEFAULT "",
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
