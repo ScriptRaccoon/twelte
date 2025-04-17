@@ -42,6 +42,7 @@
 		<span>❤️</span>
 	{/if}
 	<div>Likes: {post.likes_count}</div>
+	<a href="/post/{post.id}">Replies</a>
 
 	{#if authenticated}
 		<menu>
