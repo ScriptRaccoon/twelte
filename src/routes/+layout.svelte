@@ -15,7 +15,9 @@
 				<a href="/account/dashboard">Account Page</a>
 			</li>
 			<li>
-				@{user.handle}
+				<a href="/profile/{user.handle}">
+					@{user.handle}
+				</a>
 			</li>
 		{:else}
 			<li>

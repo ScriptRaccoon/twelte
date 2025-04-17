@@ -39,7 +39,9 @@
 		{#each posts as post (post.id)}
 			{@const is_owner = post.user_id === data.user?.id}
 			<div class="post">
-				<strong>@{post.user_handle}</strong>
+				<strong>
+					<a href="/profile/{post.user_handle}">@{post.user_handle}</a>
+				</strong>
 				<br />
 				<div>{post.content}</div>
 				{#if post.liked_by_user}
