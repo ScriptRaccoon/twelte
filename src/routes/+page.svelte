@@ -1,29 +1,9 @@
 <script lang="ts">
-	import { invalidateAll } from '$app/navigation';
+	import Post from '$lib/components/Post.svelte';
 
 	let { data } = $props();
 	let posts = $derived(data.posts);
-
-	async function like(post_id: number) {
-		await fetch(`/api/post/${post_id}/like`, { method: 'POST' });
-
-		await invalidateAll(); // TODO: improve that
-	}
-
-	async function unlike(post_id: number) {
-		await fetch(`/api/post/${post_id}/unlike`, { method: 'POST' });
-
-		await invalidateAll(); // TODO: improve that
-	}
-
-	async function delete_post(post_id: number) {
-		const confirmed = confirm('Are you sure you want to delete this post?');
-		if (!confirmed) return;
-
-		await fetch(`/api/post/${post_id}`, { method: 'DELETE' });
-
-		await invalidateAll(); // TODO: improve that
-	}
+	let limit = $derived(data.limit);
 </script>
 
 <h1>Twelte</h1>
@@ -37,39 +17,14 @@
 {#if posts?.length}
 	<div>
 		{#each posts as post (post.id)}
-			{@const is_owner = post.user_id === data.user?.id}
-			<div class="post">
-				<strong>
-					<a href="/profile/{post.user_handle}">@{post.user_handle}</a>
-				</strong>
-				<br />
-				<div>{post.content}</div>
-				{#if post.liked_by_user}
-					<span>❤️</span>
-				{/if}
-				<div>Likes: {post.likes_count}</div>
-				{#if data.user}
-					<menu>
-						{#if post.liked_by_user}
-							<button onclick={() => unlike(post.id)}>Unlike</button>
-						{:else}
-							<button onclick={() => like(post.id)}>Like</button>
-						{/if}
-						{#if is_owner}
-							<button onclick={() => delete_post(post.id)}>Delete</button>
-						{/if}
-					</menu>
-				{/if}
-			</div>
+			<Post {post} is_owner={post.user_id === data.user?.id} authenticated={!!data.user} />
 		{/each}
 	</div>
+
+	<a href="?limit={limit + 10}">Load More</a>
+	<!-- TODO: keep scroll position -->
+	<!-- TODO: add more posts instead of reloading whole page -->
+	<!-- TODO: hide link when all posts are shown -->
 {:else}
 	<p>No posts yet.</p>
 {/if}
-
-<style>
-	.post {
-		margin-bottom: 1rem;
-		width: 280px;
-	}
-</style>

@@ -3,13 +3,15 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { Post } from '$lib/types';
 
+type Profile = {
+	id: number;
+	display_name: string;
+	handle: string;
+	bio: string;
+};
+
 export const load: PageServerLoad = async (event) => {
-	type Profile = {
-		id: number;
-		display_name: string;
-		handle: string;
-		bio: string;
-	};
+	const limit = Number(event.url.searchParams.get('limit') ?? '10');
 
 	const handle = event.params.handle;
 
@@ -34,10 +36,10 @@ export const load: PageServerLoad = async (event) => {
 
 	const profile = profiles[0];
 
-	const res = await event.fetch(`/api/posts?user_id=${profile.id}`);
+	const res = await event.fetch(`/api/posts?user_id=${profile.id}&limit=${limit}`);
 	if (!res.ok) error(res.status, 'Failed to fetch posts');
 
 	const posts: Post[] = await res.json();
 
-	return { profile, posts };
+	return { profile, posts, limit };
 };
