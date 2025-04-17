@@ -7,8 +7,6 @@ export const load: PageServerLoad = async (event) => {
 	const me = event.locals.user
 	const me_id = me ? me.id : 0
 
-	const limit = Number(event.url.searchParams.get('limit') ?? '10')
-
 	const handle = event.params.handle
 
 	const sql_profile = `
@@ -50,6 +48,8 @@ export const load: PageServerLoad = async (event) => {
 	if (!profiles.length) error(404, 'User not found')
 
 	const profile: Profile = transform_profile(profiles[0])
+
+	const limit = 20
 
 	const res = await event.fetch(`/api/posts?user_id=${profile.user_id}&limit=${limit}`)
 	if (!res.ok) error(res.status, 'Failed to fetch posts')

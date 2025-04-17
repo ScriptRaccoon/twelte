@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
-	import { page } from '$app/state'
-	import Post from '$lib/components/Post.svelte'
+	import PostList from '$lib/components/PostList.svelte'
 
 	let { data } = $props()
-	let posts = $derived(data.posts)
+
 	let profile = $derived(data.profile)
-	let limit = $derived(data.limit)
 </script>
 
 <h1>
@@ -58,19 +56,9 @@
 	{/if}
 {/if}
 
-<h2>Posts</h2>
-
-{#if posts?.length}
-	<div>
-		{#each posts as post (post.id)}
-			<Post {post} is_owner={post.user_id === data.user?.id} authenticated={!!data.user} />
-		{/each}
-	</div>
-
-	<a href="{page.url.pathname}?limit={limit + 10}">Load More</a>
-	<!-- TODO: keep scroll position -->
-	<!-- TODO: add more posts instead of reloading whole page -->
-	<!-- TODO: hide link when all posts are shown -->
-{:else}
-	<p>No posts yet.</p>
-{/if}
+<PostList
+	initial_posts={data.posts}
+	limit={data.limit}
+	user_id={data.user?.id}
+	profile_id={profile.user_id}
+/>

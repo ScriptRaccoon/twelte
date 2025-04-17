@@ -30,7 +30,7 @@ GROUP BY
     posts.id
 ORDER BY
     posts.created_at DESC
-LIMIT ?
+LIMIT ? OFFSET ?
 `
 
 const sql_posts = `
@@ -59,17 +59,18 @@ GROUP BY
     posts.id
 ORDER BY
     posts.created_at DESC
-LIMIT ?
+LIMIT ? OFFSET ?
 `
 
 export const GET: RequestHandler = async (event) => {
 	const me = event.locals.user
 	const me_id = me ? me.id : 0
 	const user_id = event.url.searchParams.get('user_id') as string | null
-	const limit = event.url.searchParams.get('limit') as string | null
+	const limit = (event.url.searchParams.get('limit') as string | null) ?? '10'
+	const offset = (event.url.searchParams.get('offset') as string | null) ?? '0'
 
 	const sql = user_id ? sql_profile_posts : sql_posts
-	const args = user_id ? [me_id, user_id, limit ?? 10] : [me_id, limit ?? 10]
+	const args = user_id ? [me_id, user_id, limit, offset] : [me_id, limit, offset]
 
 	const { rows: posts, success } = await query<Post_DB>(sql, args)
 
