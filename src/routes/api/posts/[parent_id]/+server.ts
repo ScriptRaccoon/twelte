@@ -24,7 +24,7 @@ INNER JOIN
 LEFT JOIN
     likes on posts.id = likes.post_id
 LEFT JOIN
-    posts replies ON posts.id = replies.parent_id
+    posts replies ON posts.id = replies.parent_id AND replies.deleted = 0
 WHERE
     posts.deleted = 0
     AND posts.parent_id = ?

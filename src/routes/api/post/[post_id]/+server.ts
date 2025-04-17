@@ -44,7 +44,7 @@ export const GET: RequestHandler = async (event) => {
 	LEFT JOIN
 		likes on posts.id = likes.post_id
 	LEFT JOIN
-    	posts replies ON posts.id = replies.parent_id
+    	posts replies ON posts.id = replies.parent_id AND replies.deleted = 0
 	WHERE
 		posts.id = :post_id
 		AND posts.deleted = 0
