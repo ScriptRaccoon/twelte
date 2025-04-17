@@ -13,12 +13,7 @@
 	<p>{data.message}</p>
 {/if}
 
-<label for="handle">Handle</label>
-<input type="text" readonly id="handle" name="handle" value={account.handle} />
-
-<p>
-	<strong>Editable Fields:</strong>
-</p>
+<p>Handle: @{account.handle}</p>
 
 <form action="?/edit" method="POST" use:enhance>
 	<label for="email">Email</label>
