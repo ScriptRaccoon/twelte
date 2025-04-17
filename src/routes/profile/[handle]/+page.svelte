@@ -36,6 +36,10 @@
 	<p>You are following {profile.handle}.</p>
 {/if}
 
+{#if profile.followed}
+	<p>{profile.handle} is following you.</p>
+{/if}
+
 {#if data.user && profile.id !== data.user.id}
 	<!-- TODO: display only one option -->
 	<form action="?/follow" method="POST" use:enhance>

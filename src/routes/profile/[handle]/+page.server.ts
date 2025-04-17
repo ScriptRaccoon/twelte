@@ -11,9 +11,10 @@ type Profile = {
 	followers_count: number;
 	following_count: number;
 	following: number; // 0 or 1
+	followed: number; // 0 or 1
 };
 
-// TODO: check if current user follows that account
+// TODO: fetch post count
 
 export const load: PageServerLoad = async (event) => {
 	const me = event.locals.user;
@@ -36,22 +37,25 @@ export const load: PageServerLoad = async (event) => {
 		EXISTS (
 			SELECT 1
 			FROM follows f
-			WHERE f.follower_id = ? AND f.followed_id = users.id
-		) as following
+			WHERE f.follower_id = :me_id AND f.followed_id = users.id
+		) as following,
+		EXISTS (
+			SELECT 1
+			FROM follows g
+			WHERE g.follower_id = users.id AND g.followed_id = :me_id
+		) as followed
     FROM
         users
     INNER JOIN
         profiles ON users.id = profiles.user_id
     WHERE
-        users.handle = ?
+        users.handle = :handle
     `;
 
-	const { rows: profiles, success: success_profile } = await query<Profile>(sql_profile, [
+	const { rows: profiles, success: success_profile } = await query<Profile>(sql_profile, {
 		me_id,
 		handle
-	]);
-
-	console.info(profiles);
+	});
 
 	if (!success_profile) error(500, 'Database error');
 	if (!profiles.length) error(404, 'User not found');
