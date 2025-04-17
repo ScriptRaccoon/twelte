@@ -32,6 +32,10 @@
 	{profile.following_count}
 </p>
 
+{#if profile.followed}
+	<p>You are following {profile.handle}.</p>
+{/if}
+
 {#if data.user && profile.id !== data.user.id}
 	<!-- TODO: display only one option -->
 	<form action="?/follow" method="POST" use:enhance>
