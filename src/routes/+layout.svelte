@@ -12,12 +12,10 @@
 		</li>
 		{#if user}
 			<li>
-				<a href="/account/dashboard">Account Page</a>
+				<a href="/profile/{user.handle}"> Profile </a>
 			</li>
 			<li>
-				<a href="/profile/{user.handle}">
-					@{user.handle}
-				</a>
+				<a href="/account/dashboard">Account</a>
 			</li>
 		{:else}
 			<li>
