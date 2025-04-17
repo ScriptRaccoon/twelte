@@ -20,7 +20,7 @@ export const actions: Actions = {
 		const form_data = await event.request.formData()
 		const handle = form_data.get('handle') as string | null
 		const password = form_data.get('password') as string | null
-		const redirect_path = event.url.searchParams.get('redirect') ?? '/account/dashboard'
+		const redirect_path = event.url.searchParams.get('redirect') ?? '/'
 
 		if (!password) return fail(400, { error: 'Password is required', handle })
 		if (!handle) return fail(400, { error: 'Handle is required', handle })
