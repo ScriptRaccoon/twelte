@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS profiles (
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE idx_profiles_user_id ON profiles (user_id);
+CREATE INDEX idx_profiles_user_id ON profiles (user_id);
 
 CREATE TRIGGER IF NOT EXISTS update_profile_timestamp AFTER
 UPDATE ON profiles FOR EACH ROW BEGIN

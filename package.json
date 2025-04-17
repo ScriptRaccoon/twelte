@@ -13,7 +13,8 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check .",
 		"db:seed": "cd database && sqlite3 twelte.db < seed.sql",
-		"db:shell": "cd database && sqlite3 twelte.db"
+		"db:shell": "cd database && sqlite3 twelte.db",
+		"db:kill": "cd database && rm twelte.db"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-netlify": "^5.0.0",
@@ -35,6 +36,7 @@
 	"dependencies": {
 		"@libsql/client": "^0.15.4",
 		"bcryptjs": "^3.0.2",
-		"jsonwebtoken": "^9.0.2"
+		"jsonwebtoken": "^9.0.2",
+		"zod": "^3.24.3"
 	}
 }

@@ -17,6 +17,9 @@ importers:
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
+      zod:
+        specifier: ^3.24.3
+        version: 3.24.3
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.0.0
@@ -911,6 +914,9 @@ packages:
   zimmerframe@1.1.2:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
 
+  zod@3.24.3:
+    resolution: {integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==}
+
 snapshots:
 
   '@ampproject/remapping@2.3.0':
@@ -1597,3 +1603,5 @@ snapshots:
   ws@8.18.1: {}
 
   zimmerframe@1.1.2: {}
+
+  zod@3.24.3: {}

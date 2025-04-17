@@ -1,31 +1,40 @@
 import { query } from '$lib/db';
-import { error } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import bcrypt from 'bcryptjs';
 import type { Actions } from './$types';
+import { email_schema, handle_schema, password_schema } from './schemas';
+import { get_error_msg } from '$lib/utils';
 
 export const actions: Actions = {
 	register: async (event) => {
 		const form_data = await event.request.formData();
+
 		const email = form_data.get('email') as string | null;
 		const password = form_data.get('password') as string | null;
 		const handle = form_data.get('handle') as string | null;
 
-		if (!email) error(400, 'Email is required');
-		if (!password) error(400, 'Password is required');
-		if (!handle) error(400, 'Handle is required');
+		const { error: email_error } = email_schema.safeParse(email);
+		if (email_error) return fail(400, { error: get_error_msg(email_error), email, handle });
 
-		// TODO: add proper validation
+		const { error: password_error } = password_schema.safeParse(password);
+		if (password_error) return fail(400, { error: get_error_msg(password_error), email, handle });
 
-		const password_hash = await bcrypt.hash(password, 10);
+		const { error: handle_error } = handle_schema.safeParse(handle);
+		if (handle_error) return fail(400, { error: get_error_msg(handle_error), email, handle });
 
-		const { rows, err } = await query<{ id: number }>(
-			`INSERT INTO USERS (email, password_hash, handle) VALUES (?, ?, ?) RETURNING id`,
+		const password_hash = await bcrypt.hash(password!, 10);
+
+		const { rows, err: err_insert } = await query<{ id: number }>(
+			'INSERT INTO USERS (email, password_hash, handle) VALUES (?, ?, ?) RETURNING id',
 			[email, password_hash, handle]
 		);
 
-		if (err) {
-			// TODO: display error for user in better way
-			error(500, 'Database error');
+		if (err_insert) {
+			if (err_insert.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+				return fail(400, { error: 'Email or handle already exists', email, handle });
+			}
+
+			return fail(500, { error: 'Database error', email, handle });
 		}
 
 		const id = rows[0].id;
@@ -35,10 +44,8 @@ export const actions: Actions = {
 			[id, handle]
 		);
 
-		if (err_profile) {
-			error(500, 'Database error');
-		}
+		if (err_profile) return fail(500, { error: 'Database error', email, handle });
 
-		return { success: true };
+		return { success: true, email, handle };
 	}
 };
