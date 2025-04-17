@@ -1,10 +1,9 @@
 import { error, redirect } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from '../$types'
-import { db, query } from '$lib/db'
+import { query_batched, query } from '$lib/db'
 import { bio_schema, display_name_schema, email_schema } from '$lib/schemas'
 import { fail } from '@sveltejs/kit'
 import { get_error_msg } from '$lib/utils'
-import { LibsqlError } from '@libsql/client'
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user
@@ -61,13 +60,13 @@ export const actions: Actions = {
 		const sql_email = 'UPDATE users SET email = ? WHERE id = ?'
 		const sql_profile = 'UPDATE profiles SET display_name = ?, bio = ? WHERE user_id = ?'
 
-		try {
-			await db.batch([
-				{ sql: sql_email, args: [email, user.id] },
-				{ sql: sql_profile, args: [display_name, bio, user.id] }
-			])
-		} catch (err) {
-			if (err instanceof LibsqlError && err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+		const { err } = await query_batched([
+			{ sql: sql_email, args: [email, user.id] },
+			{ sql: sql_profile, args: [display_name, bio, user.id] }
+		])
+
+		if (err) {
+			if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
 				return fail(400, { error: 'Email already exists' })
 			}
 

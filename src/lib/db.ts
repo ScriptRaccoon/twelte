@@ -1,6 +1,6 @@
 import { createClient, type LibsqlError } from '@libsql/client'
 
-export const db = createClient({
+const db = createClient({
 	url: 'file:database/twelte.db'
 })
 
@@ -33,4 +33,22 @@ export async function query<T = any>(
 	}
 }
 
-// TODO: write util for batch
+/**
+ * Small wrapper around the `db.batch` function from `@libsql/client` to handle errors.
+ */
+export async function query_batched(
+	queries: {
+		sql: string
+		args?: Record<string, any>
+	}[]
+) {
+	try {
+		await db.batch(queries)
+		return { success: true, err: null }
+	} catch (err) {
+		// This will always be a LibsqlError
+		const libsql_error = err as LibsqlError
+		console.error(libsql_error.message)
+		return { success: false, err: libsql_error }
+	}
+}
