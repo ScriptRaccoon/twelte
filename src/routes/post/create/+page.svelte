@@ -12,14 +12,10 @@
 	>
 
 	<p>
-		<button type="submit" disabled={form?.success}>Create Post</button>
+		<button type="submit">Create Post</button>
 	</p>
 </form>
 
 {#if form?.error}
 	<p class="error">{form.error}</p>
-{/if}
-
-{#if form?.success}
-	<p>Post has been created successfully.</p>
 {/if}

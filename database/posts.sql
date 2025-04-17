@@ -1,5 +1,5 @@
 INSERT INTO
-    posts (user_id, content)
+    posts (author_id, content)
 VALUES
     (1, 'Life is what happens when you’re busy making other plans.'),
     (2, 'The only limit to our realization of tomorrow is our doubts of today.'),

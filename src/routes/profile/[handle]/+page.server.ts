@@ -4,8 +4,7 @@ import type { Actions, PageServerLoad } from './$types'
 import { transform_profile, type Post, type Profile_DB, type Profile } from '$lib/types'
 
 export const load: PageServerLoad = async (event) => {
-	const me = event.locals.user
-	const me_id = me ? me.id : 0
+	const user = event.locals.user
 
 	const handle = event.params.handle
 
@@ -29,7 +28,7 @@ export const load: PageServerLoad = async (event) => {
 			FROM follows f
 			WHERE f.follower_id = users.id AND f.followed_id = :me_id
 		) as followed,
-		(SELECT COUNT(*) FROM posts p WHERE p.user_id = users.id AND p.deleted = 0)
+		(SELECT COUNT(*) FROM posts p WHERE p.author_id = users.id AND p.deleted = 0)
 			as posts_count
     FROM
         users
@@ -40,7 +39,7 @@ export const load: PageServerLoad = async (event) => {
     `
 
 	const { rows: profiles, success: success_profile } = await query<Profile_DB>(sql_profile, {
-		me_id,
+		user_id: user ? user.id : 0,
 		handle
 	})
 
@@ -51,7 +50,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const limit = 20
 
-	const res = await event.fetch(`/api/posts?user_id=${profile.user_id}&limit=${limit}`)
+	const res = await event.fetch(`/api/posts?author_id=${profile.user_id}&limit=${limit}`)
 	if (!res.ok) error(res.status, 'Failed to fetch posts')
 
 	const posts: Post[] = await res.json()
@@ -61,8 +60,8 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	follow: async (event) => {
-		const me = event.locals.user
-		if (!me) redirect(302, `/login?redirect=${event.url.pathname}`)
+		const user = event.locals.user
+		if (!user) redirect(302, `/login?redirect=${event.url.pathname}`)
 
 		const form_data = await event.request.formData()
 
@@ -72,14 +71,14 @@ export const actions: Actions = {
 
 		const sql = `INSERT INTO follows (follower_id, followed_id) VALUES (?, ?)`
 
-		const { success } = await query(sql, [me.id, followed_id_num])
+		const { success } = await query(sql, [user.id, followed_id_num])
 
 		return { success }
 	},
 
 	unfollow: async (event) => {
-		const me = event.locals.user
-		if (!me) redirect(302, `/login?redirect=${event.url.pathname}`)
+		const user = event.locals.user
+		if (!user) redirect(302, `/login?redirect=${event.url.pathname}`)
 
 		const form_data = await event.request.formData()
 
@@ -89,7 +88,7 @@ export const actions: Actions = {
 
 		const sql = `DELETE FROM follows WHERE follower_id = ? AND followed_id = ?`
 
-		const { success } = await query(sql, [me.id, followed_id_num])
+		const { success } = await query(sql, [user.id, followed_id_num])
 
 		return { success }
 	}

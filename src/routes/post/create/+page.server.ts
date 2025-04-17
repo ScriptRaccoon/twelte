@@ -25,11 +25,12 @@ export const actions: Actions = {
 			return fail(400, { error: get_error_msg(content_error), content })
 		}
 
-		const sql = 'INSERT INTO posts (user_id, content) VALUES (?, ?)'
-		const { err } = await query(sql, [user.id, content])
+		const sql = 'INSERT INTO posts (author_id, content) VALUES (?, ?) RETURNING id'
+		const { rows, err } = await query<{ id: number }>(sql, [user.id, content])
 
 		if (err) return fail(500, { error: 'Database error', content })
+		const post_id = rows[0]?.id
 
-		return { success: true, content }
+		redirect(302, `/post/${post_id}`)
 	}
 }

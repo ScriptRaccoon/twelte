@@ -1,7 +1,7 @@
 export type Post_DB = {
 	id: number
-	user_id: number
-	user_handle: string
+	author_id: number
+	author_handle: string
 	content: string
 	created_at: string
 	likes_count: number

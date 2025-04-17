@@ -7,11 +7,11 @@
 
 	type Props = {
 		post: PostType
-		is_owner: boolean
+		is_author: boolean
 		authenticated: boolean
 	}
 
-	let { post, is_owner, authenticated }: Props = $props()
+	let { post, is_author, authenticated }: Props = $props()
 
 	function toggle_like() {
 		post.liked_by_user ? unlike() : like()
@@ -40,13 +40,13 @@
 
 <div class="post">
 	<strong>
-		<a href="/profile/{post.user_handle}">@{post.user_handle}</a>
+		<a href="/profile/{post.author_handle}">@{post.author_handle}</a>
 	</strong>
 	<br />
 	<div>{post.content}</div>
 	<div>
 		<button
-			disabled={!authenticated || is_owner}
+			disabled={!authenticated || is_author}
 			onclick={toggle_like}
 			aria-label={post.liked_by_user ? 'Unlike' : 'Like'}
 		>
@@ -60,7 +60,7 @@
 		<button onclick={() => goto(`/post/${post.id}`)} aria-label="reply">
 			<Fa icon={faReply} />
 		</button>
-		{#if is_owner}
+		{#if is_author}
 			<button onclick={delete_post} aria-label="Delete">
 				<Fa icon={faXmark} />
 			</button>

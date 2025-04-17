@@ -60,5 +60,5 @@
 	initial_posts={data.posts}
 	limit={data.limit}
 	user_id={data.user?.id}
-	profile_id={profile.user_id}
+	author_id={profile.user_id}
 />

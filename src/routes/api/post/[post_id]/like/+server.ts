@@ -8,14 +8,14 @@ export const POST: RequestHandler = async (event) => {
 
 	const post_id = event.params.post_id
 
-	const { rows: posts } = await query<{ owner_id: number }>(
-		'SELECT user_id as owner_id FROM posts WHERE id = ?',
+	const { rows: posts } = await query<{ author_id: number }>(
+		'SELECT author_id FROM posts WHERE id = ?',
 		[post_id]
 	)
 
 	if (!posts?.length) error(404, 'Post not found')
 
-	if (posts[0].owner_id === user.id) error(403, 'Not allowed to like your own post')
+	if (posts[0].author_id === user.id) error(403, 'Not allowed to like your own post')
 
 	const sql = 'INSERT INTO likes (user_id, post_id) VALUES (?, ?)'
 

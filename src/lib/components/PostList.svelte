@@ -5,11 +5,11 @@
 	type Props = {
 		initial_posts: PostType[]
 		limit: number
-		profile_id?: number // defined when on profile page
+		author_id?: number // defined when on profile page
 		user_id?: number // defined when authenticated
 	}
 
-	let { initial_posts, limit, profile_id, user_id }: Props = $props()
+	let { initial_posts, limit, author_id, user_id }: Props = $props()
 
 	let posts = $state(initial_posts)
 
@@ -25,8 +25,8 @@
 
 		offset += limit
 
-		const url = profile_id
-			? `/api/posts?user_id=${profile_id}&limit=${limit}&offset=${offset}`
+		const url = author_id
+			? `/api/posts?author_id=${author_id}&limit=${limit}&offset=${offset}`
 			: `/api/posts?limit=${limit}&offset=${offset}`
 
 		const res = await fetch(url)
@@ -68,7 +68,7 @@
 {#if posts?.length}
 	<div>
 		{#each posts as post (post.id)}
-			<Post {post} is_owner={post.user_id === user_id} authenticated={!!user_id} />
+			<Post {post} is_author={post.author_id === user_id} authenticated={!!user_id} />
 		{/each}
 
 		<div use:load_more_when_visible class="observer"></div>
