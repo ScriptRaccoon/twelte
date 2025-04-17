@@ -45,12 +45,13 @@
 
 	{#if authenticated}
 		<menu>
-			{#if post.liked_by_user}
-				<button onclick={() => unlike(post.id)}>Unlike</button>
+			{#if !is_owner}
+				{#if post.liked_by_user}
+					<button onclick={() => unlike(post.id)}>Unlike</button>
+				{:else}
+					<button onclick={() => like(post.id)}>Like</button>
+				{/if}
 			{:else}
-				<button onclick={() => like(post.id)}>Like</button>
-			{/if}
-			{#if is_owner}
 				<button onclick={() => delete_post(post.id)}>Delete</button>
 			{/if}
 		</menu>
