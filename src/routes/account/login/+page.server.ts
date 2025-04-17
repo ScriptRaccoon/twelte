@@ -9,7 +9,7 @@ import type { PageServerLoad } from '../$types';
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user;
 	if (user) {
-		redirect(302, '/account');
+		// redirect(302, '/account/dashboard');
 	}
 
 	return {};
@@ -49,6 +49,6 @@ export const actions: Actions = {
 			secure: true
 		});
 
-		redirect(302, '/account');
+		redirect(302, '/account/dashboard');
 	}
 };

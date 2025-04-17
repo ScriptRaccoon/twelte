@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from '../$types';
 import { db, query } from '$lib/db';
 import { bio_schema, display_name_schema, email_schema } from '$lib/schemas';
 import { fail } from '@sveltejs/kit';
@@ -74,7 +74,7 @@ export const actions: Actions = {
 			return fail(500, { error: 'Database error' });
 		}
 
-		redirect(302, '/account?code=updated');
+		redirect(302, '/account/dashboard?code=updated');
 	},
 
 	delete: async (event) => {

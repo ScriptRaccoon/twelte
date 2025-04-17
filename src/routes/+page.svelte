@@ -8,6 +8,6 @@
 		<a href="/account/login">Login</a>
 	</li>
 	<li>
-		<a href="/account">Account Page</a>
+		<a href="/account/dashboard">Account Page</a>
 	</li>
 </ul>
