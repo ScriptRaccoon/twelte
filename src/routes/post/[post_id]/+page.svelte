@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms'
 	import Message from '$lib/components/Message.svelte'
 	import Post from '$lib/components/Post.svelte'
 	import PostList from '$lib/components/PostList.svelte'
@@ -36,7 +35,7 @@
 	<section>
 		<h3 id="reply-title">Your Reply</h3>
 
-		<form action="?/reply" method="POST" use:enhance>
+		<form action="?/reply" method="POST">
 			<div class="input-group">
 				<textarea
 					name="content"
