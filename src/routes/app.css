@@ -32,13 +32,6 @@ body {
 	line-height: 1.4;
 }
 
-.wrapper {
-	max-width: 42rem;
-	margin: 0 auto;
-	padding-inline: 0.75rem;
-	padding-bottom: 2rem;
-}
-
 textarea {
 	resize: vertical;
 }
