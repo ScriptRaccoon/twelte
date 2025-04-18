@@ -4,7 +4,7 @@
 	import { format_date } from '$lib/utils'
 	import { faHeart } from '@fortawesome/free-regular-svg-icons'
 	import { faHeart as faHeartFilled, faReply, faXmark } from '@fortawesome/free-solid-svg-icons'
-	import Fa from 'svelte-fa'
+	import IconButton from './IconButton.svelte'
 
 	type Props = {
 		post: PostType
@@ -44,47 +44,59 @@
 	}
 </script>
 
-<div class="post">
+<div>
 	<div>
-		<strong>
-			<a href="/profile/{post.author_handle}">@{post.author_handle}</a>
-		</strong>
+		<a class="profile-link" href="/profile/{post.author_handle}">@{post.author_handle}</a>
 		&ndash;
-		<span title={post.created_at}>
+		<span title={post.created_at} class="time">
 			{format_date(post.created_at)}
 		</span>
 	</div>
-	<div>{post.content}</div>
-	<div>
-		<button
-			disabled={!authenticated || is_author}
-			onclick={toggle_like}
-			aria-label={post.liked_by_user ? 'Unlike' : 'Like'}
-		>
-			<Fa icon={post.liked_by_user ? faHeartFilled : faHeart} />
 
+	<div class="content">{post.content}</div>
+
+	<menu>
+		<IconButton
+			icon={post.liked_by_user ? faHeartFilled : faHeart}
+			onclick={toggle_like}
+			aria_label={post.liked_by_user ? 'Unlike' : 'Like'}
+			disabled={!authenticated || is_author}
+			color={post.liked_by_user ? 'var(--primary-color)' : 'currentColor'}
+		>
 			<span aria-label="number of likes">
 				{post.likes_count}
 			</span>
-		</button>
+		</IconButton>
 
-		<button onclick={() => goto(`/post/${post.id}`)} aria-label="reply">
-			<Fa icon={faReply} />
+		<IconButton icon={faReply} onclick={() => goto(`/post/${post.id}`)} aria_label="Reply">
 			<span aria-label="number of replies">
 				{post.replies_count}
 			</span>
-		</button>
+		</IconButton>
+
 		{#if is_author}
-			<button onclick={delete_post} aria-label="Delete">
-				<Fa icon={faXmark} />
-			</button>
+			<IconButton icon={faXmark} onclick={delete_post} aria_label="Delete" />
 		{/if}
-	</div>
+	</menu>
 </div>
 
 <style>
-	.post {
-		margin-bottom: 1rem;
-		width: 280px;
+	.profile-link {
+		text-decoration: none;
+		font-weight: 500;
+	}
+
+	.time {
+		color: var(--secondary-font-color);
+	}
+
+	.content {
+		margin-block: 0.5rem;
+		font-size: 1.125rem;
+	}
+
+	menu {
+		display: flex;
+		gap: 0.5rem;
 	}
 </style>

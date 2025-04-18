@@ -68,34 +68,31 @@
 	}
 </script>
 
-<h3>Posts</h3>
-
 {#if posts?.length}
-	<div>
-		{#each posts as post (post.id)}
+	{#each posts as post, index (post.id)}
+		<div class="post-wrapper" class:first={index === 0}>
 			<Post
 				{post}
 				is_author={post.author_id === user_id}
 				authenticated={!!user_id}
 				handle_deletion={() => handle_deletion(post.id)}
 			/>
-		{/each}
+		</div>
+	{/each}
 
-		{#if limit}
-			<div use:load_more_when_visible class="observer"></div>
-		{/if}
-	</div>
+	{#if limit}
+		<div use:load_more_when_visible class="observer"></div>
+	{/if}
 
 	{#if is_loading && limit}
-		<p>Loading more posts ...</p>
+		<p class="secondary">Loading more posts ...</p>
 	{/if}
 
 	{#if has_loaded_all_posts && limit}
-		<hr />
-		<p>These are all posts.</p>
+		<p class="secondary">These are all posts.</p>
 	{/if}
 {:else}
-	<p>No posts yet.</p>
+	<p class="secondary">No posts yet.</p>
 {/if}
 
 <style>
@@ -104,5 +101,14 @@
 		height: 1px;
 		pointer-events: none;
 		translate: 0 -20px;
+	}
+
+	.post-wrapper {
+		padding-block: 1rem;
+		border-bottom: 1px solid #333;
+	}
+
+	.post-wrapper.first {
+		border-top: 1px solid #333;
 	}
 </style>

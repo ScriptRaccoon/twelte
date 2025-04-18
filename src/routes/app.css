@@ -136,3 +136,7 @@ textarea:focus-visible {
 	color: var(--secondary-font-color);
 	font-size: 0.85rem;
 }
+
+.secondary {
+	color: var(--secondary-font-color);
+}

@@ -56,6 +56,8 @@
 	{/if}
 {/if}
 
+<h3>Posts</h3>
+
 <PostList
 	initial_posts={data.posts}
 	limit={data.limit}
