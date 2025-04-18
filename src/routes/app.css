@@ -56,7 +56,8 @@ a {
 }
 
 h1,
-h2 {
+h2,
+h3 {
 	font-weight: 500;
 }
 
@@ -65,8 +66,14 @@ h2 {
 	padding-block: 0.5rem 1rem;
 }
 
+h3 {
+	font-size: 1.25rem;
+	padding-block: 0.5rem 0.75rem;
+}
+
 input,
-button {
+button,
+textarea {
 	font: inherit;
 	color: inherit;
 	background: none;
@@ -74,9 +81,14 @@ button {
 	outline: none;
 }
 
+textarea {
+	resize: vertical;
+}
+
 a:focus-visible,
 input:focus-visible,
-button:focus-visible {
+button:focus-visible,
+textarea:focus-visible {
 	outline: 1px solid var(--secondary-font-color);
 }
 
@@ -89,7 +101,8 @@ button:focus-visible {
 		color: var(--secondary-font-color);
 	}
 
-	input {
+	input,
+	textarea {
 		width: 100%;
 		background-color: var(--secondary-bg-color);
 		padding: 0.25rem 0.5rem;
