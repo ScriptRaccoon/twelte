@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
     handle TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_login TIMESTAMP,
+    last_login TIMESTAMP
 );
 
 CREATE INDEX idx_users_handle ON users (handle);
