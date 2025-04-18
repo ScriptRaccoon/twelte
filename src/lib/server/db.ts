@@ -23,7 +23,7 @@ adjust_database()
  */
 export async function query<T = any>(
 	sql: string,
-	params?: Record<string, any>
+	args?: Record<string, any> | any[]
 ): Promise<
 	| {
 			rows: T[]
@@ -37,7 +37,7 @@ export async function query<T = any>(
 	  }
 > {
 	try {
-		const { rows } = params ? await db.execute(sql, params) : await db.execute(sql)
+		const { rows } = args ? await db.execute(sql, args) : await db.execute(sql)
 		return { rows: rows as T[], success: true, err: null }
 	} catch (err) {
 		const libsql_error = err as LibsqlError
@@ -52,7 +52,7 @@ export async function query<T = any>(
 export async function query_batched(
 	queries: {
 		sql: string
-		args?: Record<string, any>
+		args?: Record<string, any> | any[]
 	}[]
 ) {
 	try {
