@@ -1,5 +1,5 @@
 [build]
     command = "pnpm build"
     publish = "build"
-    functions = "functions"
+    functions = "netlify/functions"
     ignore = "git diff --quiet HEAD^ HEAD -- ':!*.md'"
