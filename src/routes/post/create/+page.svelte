@@ -3,7 +3,7 @@
 	let { form } = $props()
 </script>
 
-<h1>Create New Post</h1>
+<h2>Create New Post</h2>
 
 <form method="POST" use:enhance>
 	<label for="content">Content</label>

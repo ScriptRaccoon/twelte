@@ -68,7 +68,7 @@
 	}
 </script>
 
-<h2>Posts</h2>
+<h3>Posts</h3>
 
 {#if posts?.length}
 	<div>

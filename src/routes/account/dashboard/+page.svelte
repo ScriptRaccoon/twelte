@@ -7,7 +7,7 @@
 	let confirm_deletion = $state(false)
 </script>
 
-<h1>Account Page</h1>
+<h2>Account Page</h2>
 
 {#if !form && data.message}
 	<p>{data.message}</p>

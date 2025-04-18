@@ -7,9 +7,9 @@
 	let profile = $derived(data.profile)
 </script>
 
-<h1>
+<h2>
 	{profile.display_name}
-</h1>
+</h2>
 
 <p>
 	@{profile.handle}

@@ -4,7 +4,7 @@
 	let { form } = $props()
 </script>
 
-<h1>Login</h1>
+<h2>Login</h2>
 
 <form method="POST" use:enhance>
 	<label for="handle">Handle</label>

@@ -6,7 +6,7 @@
 	let { data } = $props()
 </script>
 
-<h1>Twelte</h1>
+<h2>Home</h2>
 
 <menu>
 	<a href="/post/create">

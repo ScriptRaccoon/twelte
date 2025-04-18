@@ -8,13 +8,13 @@
 	let replies = $derived(data.replies)
 </script>
 
-<h1>Post Detail Page</h1>
+<h2>Post Detail Page</h2>
 
 {#if post.parent_id}
 	<a href="/post/{post.parent_id}"> Back to Parent Post </a>
 {/if}
 
-<h2>Post</h2>
+<h3>Post</h3>
 
 <Post
 	{post}
@@ -25,7 +25,7 @@
 	}}
 />
 
-<h2>Your Reply</h2>
+<h3>Your Reply</h3>
 
 {#if data.user}
 	<form action="?/reply" method="POST" use:enhance>
@@ -47,7 +47,7 @@
 {/if}
 
 {#if replies.length}
-	<h2>Replies</h2>
+	<h3>Replies</h3>
 
 	<PostList initial_posts={replies} user_id={data.user?.id} />
 {/if}

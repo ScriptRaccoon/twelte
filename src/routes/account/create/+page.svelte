@@ -4,7 +4,7 @@
 	let { form } = $props()
 </script>
 
-<h1>Create an account</h1>
+<h2>Create an account</h2>
 
 <form method="POST" action="?/register" use:enhance>
 	<label for="email">Email</label>

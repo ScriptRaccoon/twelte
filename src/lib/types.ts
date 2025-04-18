@@ -1,3 +1,8 @@
+export type UserLocals = {
+	id: number
+	handle: string
+}
+
 export type Post_DB = {
 	id: number
 	author_id: number
