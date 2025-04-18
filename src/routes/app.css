@@ -131,3 +131,8 @@ textarea:focus-visible {
 	opacity: 0.5;
 	cursor: initial;
 }
+
+.description {
+	color: var(--secondary-font-color);
+	font-size: 0.85rem;
+}

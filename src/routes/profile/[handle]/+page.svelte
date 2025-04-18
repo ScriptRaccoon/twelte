@@ -7,51 +7,51 @@
 	let profile = $derived(data.profile)
 </script>
 
-<h2>
-	{profile.display_name}
-</h2>
+<header>
+	<h2>
+		{profile.display_name}
+	</h2>
+	<span class="handle">@{profile.handle}</span>
+</header>
 
-<p>
-	@{profile.handle}
-</p>
-
-<p>
-	<strong>Bio:</strong>
-	{profile.bio}
-</p>
-
-<p>
-	Number of Posts: {profile.posts_count}
-</p>
-
-<p>
-	<strong>Followers:</strong>
-	{profile.followers_count}
-</p>
-
-<p>
-	<strong>Following:</strong>
-	{profile.following_count}
-</p>
-
-{#if profile.following}
-	<p>You are following @{profile.handle}.</p>
+{#if profile.bio}
+	<span class="description">Bio</span>
+	<div class="bio">
+		{profile.bio}
+	</div>
 {/if}
 
-{#if profile.followed}
-	<p>@{profile.handle} is following you.</p>
+<p>
+	{profile.posts_count} posts &bullet;
+	{profile.followers_count} followers &bullet;
+	{profile.following_count} following
+</p>
+
+{#if profile.following || profile.followed}
+	<p>
+		{#if profile.followed}
+			<span>
+				@{profile.handle} is following you.
+			</span>
+		{/if}
+		{#if profile.following}
+			<span>
+				You are following @{profile.handle}.
+			</span>
+		{/if}
+	</p>
 {/if}
 
 {#if data.user && profile.user_id !== data.user.id}
 	{#if !profile.following}
-		<form action="?/follow" method="POST" use:enhance>
+		<form action="?/follow" method="POST" use:enhance class="form">
 			<input type="hidden" name="followed_id" value={profile.user_id} />
-			<button>Follow</button>
+			<button class="button">Follow</button>
 		</form>
 	{:else}
-		<form action="?/unfollow" method="POST" use:enhance>
+		<form action="?/unfollow" method="POST" use:enhance class="form">
 			<input type="hidden" name="followed_id" value={profile.user_id} />
-			<button>Unfollow</button>
+			<button class="button">Unfollow</button>
 		</form>
 	{/if}
 {/if}
@@ -62,3 +62,22 @@
 	user_id={data.user?.id}
 	author_id={profile.user_id}
 />
+
+<style>
+	header {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+	}
+
+	.handle {
+		color: var(--primary-color);
+	}
+
+	.bio {
+		background-color: var(--secondary-bg-color);
+		margin-block: 0.1rem 1rem;
+		padding: 0.4rem 0.8rem;
+		border-radius: 0.25rem;
+	}
+</style>

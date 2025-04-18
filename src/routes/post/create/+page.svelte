@@ -31,7 +31,5 @@
 <style>
 	.description {
 		float: right;
-		color: var(--secondary-font-color);
-		font-size: 0.85rem;
 	}
 </style>
