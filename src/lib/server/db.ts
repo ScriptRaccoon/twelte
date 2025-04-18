@@ -40,9 +40,8 @@ export async function query<T = any>(
 		const { rows } = params ? await db.execute(sql, params) : await db.execute(sql)
 		return { rows: rows as T[], success: true, err: null }
 	} catch (err) {
-		// This will always be a LibsqlError
 		const libsql_error = err as LibsqlError
-		console.error(libsql_error.message)
+		console.error(libsql_error)
 		return { rows: null, err: libsql_error, success: false }
 	}
 }
@@ -60,9 +59,8 @@ export async function query_batched(
 		await db.batch(queries)
 		return { success: true, err: null }
 	} catch (err) {
-		// This will always be a LibsqlError
 		const libsql_error = err as LibsqlError
-		console.error(libsql_error.message)
+		console.error(libsql_error)
 		return { success: false, err: libsql_error }
 	}
 }
