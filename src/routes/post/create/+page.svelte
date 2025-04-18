@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
+	import Message from '$lib/components/Message.svelte'
 	let { form } = $props()
 
 	let content = $state('')
@@ -29,7 +30,9 @@
 </form>
 
 {#if form?.error}
-	<p class="error">{form.error}</p>
+	<Message type="error">
+		{form.error}
+	</Message>
 {/if}
 
 <style>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
-	import InfoMessage from '$lib/components/InfoMessage.svelte'
+	import Message from '$lib/components/Message.svelte'
 
 	let { data, form } = $props()
 	let account = $derived(data.account)
@@ -43,13 +43,15 @@
 	</form>
 
 	{#if form?.error && form.action == 'edit'}
-		<p class="error">{form.error}</p>
+		<Message type="error">
+			{form.error}
+		</Message>
 	{/if}
 
 	{#if form?.message && form.action === 'edit'}
-		<InfoMessage>
+		<Message type="success">
 			{form.message}
-		</InfoMessage>
+		</Message>
 	{/if}
 </section>
 
@@ -71,13 +73,15 @@
 	</form>
 
 	{#if form?.error && form.action == 'password'}
-		<p class="error">{form.error}</p>
+		<Message type="error">
+			{form.error}
+		</Message>
 	{/if}
 
 	{#if form?.message && form.action === 'password'}
-		<InfoMessage>
+		<Message type="success">
 			{form.message}
-		</InfoMessage>
+		</Message>
 	{/if}
 </section>
 
@@ -108,7 +112,7 @@
 	</form>
 
 	{#if confirm_deletion}
-		<p class="error">Are you sure? This cannot be undone!</p>
+		<Message type="warning">Are you sure? This cannot be undone!</Message>
 	{/if}
 </section>
 

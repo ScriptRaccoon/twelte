@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
+	import Message from '$lib/components/Message.svelte'
 	import Post from '$lib/components/Post.svelte'
 	import PostList from '$lib/components/PostList.svelte'
 
@@ -30,6 +31,7 @@
 <h3>Your Reply</h3>
 
 {#if data.user}
+	<!-- TODO: add styles -->
 	<form action="?/reply" method="POST" use:enhance>
 		<textarea name="content" rows="4" cols="50" placeholder="Write your reply here..." required
 		></textarea>
@@ -40,11 +42,13 @@
 	</form>
 
 	{#if form?.error}
-		<p class="error">{form.error}</p>
+		<Message type="error">
+			{form.error}
+		</Message>
 	{/if}
 
 	{#if form?.success}
-		<p>Reply has been sent!</p>
+		<Message type="success">Reply has been sent.</Message>
 	{/if}
 {/if}
 

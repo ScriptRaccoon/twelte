@@ -39,10 +39,6 @@ body {
 	padding-bottom: 2rem;
 }
 
-.error {
-	color: var(--error-color);
-}
-
 textarea {
 	resize: vertical;
 }

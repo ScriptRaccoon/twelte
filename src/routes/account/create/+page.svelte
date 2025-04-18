@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
-	import InfoMessage from '$lib/components/InfoMessage.svelte'
+	import Message from '$lib/components/Message.svelte'
 
 	let { form } = $props()
 </script>
@@ -45,12 +45,13 @@
 <p>*Notice that the handle cannot be changed anymore after registration.</p>
 
 {#if form?.error}
-	<p class="error">{form.error}</p>
+	<Message type="error">
+		{form.error}
+	</Message>
 {/if}
 
 {#if form?.success}
-	<InfoMessage>
-		Account has been created. You can now
-		<a href="/account/login">login</a>.
-	</InfoMessage>
+	<Message type="success">
+		Account has been created. You can now <a href="/account/login">login</a>.
+	</Message>
 {/if}
