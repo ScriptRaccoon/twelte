@@ -21,12 +21,12 @@ export const load: PageServerLoad = async (event) => {
 		EXISTS (
 			SELECT 1
 			FROM follows f
-			WHERE f.follower_id = :me_id AND f.followed_id = users.id
+			WHERE f.follower_id = :user_id AND f.followed_id = users.id
 		) as following,
 		EXISTS (
 			SELECT 1
 			FROM follows f
-			WHERE f.follower_id = users.id AND f.followed_id = :me_id
+			WHERE f.follower_id = users.id AND f.followed_id = :user_id
 		) as followed,
 		(SELECT COUNT(*) FROM posts p WHERE p.author_id = users.id AND p.deleted = 0)
 			as posts_count
