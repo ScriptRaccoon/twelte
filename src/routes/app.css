@@ -108,6 +108,10 @@ textarea:focus-visible {
 		padding: 0.25rem 0.5rem;
 		border-radius: 0.25rem;
 	}
+
+	textarea[aria-invalid='true'] {
+		outline: 1px solid var(--error-color);
+	}
 }
 
 .form {

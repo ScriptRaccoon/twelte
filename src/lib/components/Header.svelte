@@ -2,13 +2,12 @@
 	import type { UserLocals } from '$lib/types'
 	import {
 		faHome,
+		faPencil,
 		faRightToBracket,
 		faSliders,
 		faUserAlt
 	} from '@fortawesome/free-solid-svg-icons'
-	import Fa from 'svelte-fa'
 	import IconLink from './IconLink.svelte'
-	import { page } from '$app/state'
 
 	type Props = {
 		user: UserLocals | undefined
@@ -20,7 +19,7 @@
 	<nav>
 		<ul>
 			<li>
-				<IconLink href="/" icon={faHome} label="Home" />
+				<IconLink href="/" icon={faHome} label="Feed" />
 			</li>
 			{#if user}
 				<li>
@@ -28,6 +27,9 @@
 				</li>
 				<li>
 					<IconLink href="/account/dashboard" icon={faSliders} label="Account" />
+				</li>
+				<li>
+					<IconLink href="/post/create" icon={faPencil} label="Post" />
 				</li>
 			{:else}
 				<li>
