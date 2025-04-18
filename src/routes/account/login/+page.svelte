@@ -6,14 +6,18 @@
 
 <h2>Login</h2>
 
-<form method="POST" use:enhance>
-	<label for="handle">Handle</label>
-	<input type="text" id="handle" name="handle" required value={form?.handle} />
+<form method="POST" use:enhance class="form">
+	<div class="input-group">
+		<label for="handle">Handle</label>
+		<input type="text" id="handle" name="handle" required value={form?.handle} />
+	</div>
 
-	<label for="password">Password</label>
-	<input type="password" id="password" name="password" required />
+	<div class="input-group">
+		<label for="password">Password</label>
+		<input type="password" id="password" name="password" required />
+	</div>
 
-	<button type="submit">Login</button>
+	<button class="button" type="submit">Login</button>
 </form>
 
 {#if form?.error}

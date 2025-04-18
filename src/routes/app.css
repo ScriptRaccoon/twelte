@@ -7,9 +7,9 @@
 :root {
 	--bg-color: #111;
 	--font-color: #fff;
-	--secondary-font-color: #aaa;
+	--secondary-font-color: #bbb;
 	--secondary-bg-color: #282828;
-	--error-color: #f00;
+	--error-color: orangered;
 	--primary-color: rgb(255, 217, 0);
 }
 
@@ -43,20 +43,12 @@ body {
 	color: var(--error-color);
 }
 
-label {
-	display: block;
-}
-
 textarea {
 	resize: vertical;
 }
 
-button {
-	cursor: pointer;
-}
-
 p {
-	margin-block: 0.5rem;
+	margin-bottom: 1rem;
 }
 
 a {
@@ -71,4 +63,48 @@ h2 {
 h2 {
 	font-size: 1.825rem;
 	padding-block: 0.5rem 1rem;
+}
+
+input,
+button {
+	font: inherit;
+	color: inherit;
+	background: none;
+	border: none;
+	outline: none;
+}
+
+a:focus-visible,
+input:focus-visible,
+button:focus-visible {
+	outline: 1px solid var(--secondary-font-color);
+}
+
+.input-group {
+	margin-bottom: 1.5rem;
+
+	label {
+		display: block;
+		margin-bottom: 2px;
+		color: var(--secondary-font-color);
+	}
+
+	input {
+		width: 100%;
+		background-color: var(--secondary-bg-color);
+		padding: 0.25rem 0.5rem;
+		border-radius: 0.25rem;
+	}
+}
+
+.form {
+	margin-bottom: 1rem;
+}
+
+.button {
+	background-color: var(--secondary-bg-color);
+	color: var(--primary-color);
+	cursor: pointer;
+	padding: 0.4rem 0.8rem;
+	border-radius: 0.25rem;
 }
