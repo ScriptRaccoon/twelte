@@ -7,6 +7,10 @@
 	let profile = $derived(data.profile)
 </script>
 
+<svelte:head>
+	<title>Twelte - Profile @{profile.handle}</title>
+</svelte:head>
+
 <header>
 	<h2>
 		{profile.display_name}

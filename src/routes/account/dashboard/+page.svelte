@@ -8,6 +8,10 @@
 	let confirm_deletion = $state(false)
 </script>
 
+<svelte:head>
+	<title>Twelte - Account @{account.handle}</title>
+</svelte:head>
+
 <header>
 	<h2>Account</h2>
 	<form action="?/logout" method="POST" use:enhance class="form">

@@ -5,6 +5,10 @@
 	let content = $state('')
 </script>
 
+<svelte:head>
+	<title>Twelte - Create Post</title>
+</svelte:head>
+
 <h2>Share your thoughts</h2>
 
 <form method="POST" use:enhance class="form">

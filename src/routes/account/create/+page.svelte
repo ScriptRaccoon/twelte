@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
 	import InfoMessage from '$lib/components/InfoMessage.svelte'
-	import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
-	import Fa from 'svelte-fa'
 
 	let { form } = $props()
 </script>
+
+<svelte:head>
+	<title>Twelte - Create Account</title>
+</svelte:head>
 
 <h2>Create an account</h2>
 

@@ -8,13 +8,15 @@
 	let replies = $derived(data.replies)
 </script>
 
-<h2>Post Detail Page</h2>
+<svelte:head>
+	<title>Twelte - Post by @{post.author_handle}</title>
+</svelte:head>
 
 {#if post.parent_id}
 	<a href="/post/{post.parent_id}"> Back to Parent Post </a>
 {/if}
 
-<h3>Post</h3>
+<h2>Post by @{post.author_handle}</h2>
 
 <Post
 	{post}
