@@ -14,10 +14,16 @@ export const load: PageServerLoad = async (event) => {
         display_name,
         handle,
         bio,
-		(SELECT COUNT(*) FROM follows f WHERE f.followed_id = users.id)
-			as followers_count,
-    	(SELECT COUNT(*) FROM follows f WHERE f.follower_id = users.id)
-			as following_count,
+		(
+			SELECT COUNT(*)
+			FROM follows f
+			WHERE f.followed_id = users.id
+		) as followers_count,
+    	(
+			SELECT COUNT(*)
+			FROM follows f
+			WHERE f.follower_id = users.id
+		) as following_count,
 		EXISTS (
 			SELECT 1
 			FROM follows f
@@ -28,8 +34,11 @@ export const load: PageServerLoad = async (event) => {
 			FROM follows f
 			WHERE f.follower_id = users.id AND f.followed_id = :user_id
 		) as followed,
-		(SELECT COUNT(*) FROM posts p WHERE p.author_id = users.id AND p.deleted = 0)
-			as posts_count
+		(
+			SELECT COUNT(*)
+			FROM posts p
+			WHERE p.author_id = users.id AND p.deleted = 0
+		) as posts_count
     FROM
         users
     INNER JOIN
