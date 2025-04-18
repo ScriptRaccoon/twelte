@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
+	import { page } from '$app/state'
 	import Message from '$lib/components/Message.svelte'
 
 	let { form } = $props()
+
+	const code = page.url.searchParams.get('code')
 </script>
 
 <svelte:head>
@@ -10,6 +13,10 @@
 </svelte:head>
 
 <h2>Login</h2>
+
+{#if code === 'email_verified'}
+	<Message type="success">Your email has been verified. You can now login.</Message>
+{/if}
 
 <form method="POST" use:enhance class="form">
 	<div class="input-group">

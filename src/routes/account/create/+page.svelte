@@ -52,6 +52,7 @@
 
 {#if form?.success}
 	<Message type="success">
-		Account has been created. You can now <a href="/account/login">login</a>.
+		Account has been created. We have sent you a verification email. Please click on the link in
+		the email to verify your account. After that, you can <a href="/account/login">login</a>.
 	</Message>
 {/if}

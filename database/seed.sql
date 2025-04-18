@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS users (
     handle TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_login TIMESTAMP
+    last_login TIMESTAMP,
+    email_verified_at TIMESTAMP
 );
 
 CREATE INDEX idx_users_handle ON users (handle);
@@ -27,6 +28,16 @@ WHERE
     id = OLD.id;
 
 END;
+
+CREATE TABLE IF NOT EXISTS tokens (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    token TEXT NOT NULL,
+    purpose TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP DEFAULT (datetime ('now', '+1 hour')),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS posts (
     id INTEGER PRIMARY KEY,

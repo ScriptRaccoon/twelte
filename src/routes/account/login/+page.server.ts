@@ -15,6 +15,12 @@ export const load: PageServerLoad = async (event) => {
 	return {}
 }
 
+type Credentials = {
+	id: number
+	password_hash: string
+	email_verified_at: string | null
+}
+
 export const actions: Actions = {
 	default: async (event) => {
 		const form_data = await event.request.formData()
@@ -25,20 +31,22 @@ export const actions: Actions = {
 		if (!password) return fail(400, { error: 'Password is required', handle })
 		if (!handle) return fail(400, { error: 'Handle is required', handle })
 
-		type Credentials = { id: number; password_hash: string }
-
 		const { rows, err } = await query<Credentials>(
-			'SELECT id, password_hash FROM users WHERE handle = ?',
+			'SELECT id, password_hash, email_verified_at FROM users WHERE handle = ?',
 			[handle]
 		)
 
 		if (err) return fail(500, { error: 'Database error', handle })
 		if (rows.length === 0) return fail(401, { error: 'Invalid credentials', handle })
 
-		const { id, password_hash } = rows[0]
+		const { id, password_hash, email_verified_at } = rows[0]
 
 		const password_is_correct = await bcrypt.compare(password, password_hash)
 		if (!password_is_correct) return fail(401, { error: 'Invalid credentials', handle })
+
+		if (!email_verified_at) {
+			return fail(401, { error: 'Email not verified. Please check your inbox.', handle })
+		}
 
 		const token = jwt.sign({ id, handle }, JWT_SECRET)
 
