@@ -86,6 +86,13 @@
 	<form action="?/delete" method="POST" use:enhance class="form">
 		{#if confirm_deletion}
 			<button class="button" type="submit">Yes! Delete account</button>
+			<button
+				class="button"
+				type="button"
+				onclick={() => {
+					confirm_deletion = false
+				}}>Cancel</button
+			>
 		{:else}
 			<button
 				class="button"
