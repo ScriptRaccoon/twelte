@@ -50,6 +50,8 @@ export const actions: Actions = {
 			secure: true
 		})
 
+		query("UPDATE users SET last_login = datetime('now') WHERE id = ?", [id])
+
 		redirect(302, redirect_path)
 	}
 }

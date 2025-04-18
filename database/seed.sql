@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT NOT NULL UNIQUE,
     handle TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP,
 );
 
 CREATE INDEX idx_users_handle ON users (handle);
