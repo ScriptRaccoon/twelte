@@ -1,10 +1,10 @@
-import { db, query } from '$lib/db'
+import { db, query } from '$lib/server/db'
 import { fail } from '@sveltejs/kit'
 import bcrypt from 'bcryptjs'
 import type { Actions } from './$types'
-import { email_schema, handle_schema, password_schema } from '$lib/schemas'
+import { email_schema, handle_schema, password_schema } from '$lib/server/schemas'
 import { get_error_msg } from '$lib/utils'
-import { send_verification_email } from '$lib/mail'
+import { send_verification_email } from '$lib/server/mail'
 import { LibsqlError } from '@libsql/client'
 
 export const actions: Actions = {

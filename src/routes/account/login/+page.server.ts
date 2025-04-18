@@ -1,4 +1,4 @@
-import { query } from '$lib/db'
+import { query } from '$lib/server/db'
 import { fail, redirect } from '@sveltejs/kit'
 import bcrypt from 'bcryptjs'
 import type { Actions } from './$types'

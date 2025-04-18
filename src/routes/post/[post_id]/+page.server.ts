@@ -1,8 +1,8 @@
 import { error, fail } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from './$types'
-import { post_content_schema } from '$lib/schemas'
+import { post_content_schema } from '$lib/server/schemas'
 import { get_error_msg } from '$lib/utils'
-import { query } from '$lib/db'
+import { query } from '$lib/server/db'
 import type { Post } from '$lib/types'
 
 export const load: PageServerLoad = async (event) => {

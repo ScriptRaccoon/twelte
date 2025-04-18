@@ -1,8 +1,8 @@
 import { error, fail, redirect } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from './$types'
-import { post_content_schema } from '$lib/schemas'
+import { post_content_schema } from '$lib/server/schemas'
 import { get_error_msg } from '$lib/utils'
-import { query } from '$lib/db'
+import { query } from '$lib/server/db'
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user

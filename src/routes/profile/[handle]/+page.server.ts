@@ -1,4 +1,4 @@
-import { query } from '$lib/db'
+import { query } from '$lib/server/db'
 import { error, redirect } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from './$types'
 import { transform_profile, type Post, type Profile_DB, type Profile } from '$lib/types'

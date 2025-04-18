@@ -1,6 +1,6 @@
 import { error, redirect } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
-import { query } from '$lib/db'
+import { query } from '$lib/server/db'
 
 export const GET: RequestHandler = async (event) => {
 	const token = event.url.searchParams.get('token')

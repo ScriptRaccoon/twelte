@@ -1,4 +1,4 @@
-import { query } from '$lib/db'
+import { query } from '$lib/server/db'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './delete/$types'
 import { transform_post, type Post, type Post_DB } from '$lib/types'
