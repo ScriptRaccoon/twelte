@@ -7,53 +7,80 @@
 	let { data, form } = $props()
 	let post = $derived(data.post)
 	let replies = $derived(data.replies)
+
+	let reply_content = $state('')
 </script>
 
 <svelte:head>
 	<title>Twelte - Post by @{post.author_handle}</title>
 </svelte:head>
 
-{#if post.parent_id}
-	<a href="/post/{post.parent_id}"> Back to Parent Post </a>
-{/if}
+<section>
+	{#if post.parent_id}
+		<a href="/post/{post.parent_id}"> Back to Parent Post </a>
+	{/if}
 
-<h2>Post by @{post.author_handle}</h2>
+	<h2>Post by @{post.author_handle}</h2>
 
-<Post
-	{post}
-	is_author={data.user?.id === post.author_id}
-	authenticated={!!data.user}
-	handle_deletion={() => {
-		window.history.back()
-	}}
-/>
-
-<h3>Your Reply</h3>
+	<Post
+		{post}
+		is_author={data.user?.id === post.author_id}
+		authenticated={!!data.user}
+		handle_deletion={() => {
+			window.history.back()
+		}}
+	/>
+</section>
 
 {#if data.user}
-	<!-- TODO: add styles -->
-	<form action="?/reply" method="POST" use:enhance>
-		<textarea name="content" rows="4" cols="50" placeholder="Write your reply here..." required
-		></textarea>
+	<section>
+		<h3 id="reply-title">Your Reply</h3>
 
-		<p>
-			<button type="submit">Reply</button>
-		</p>
-	</form>
+		<form action="?/reply" method="POST" use:enhance>
+			<div class="input-group">
+				<textarea
+					name="content"
+					rows="4"
+					placeholder="Write your reply here..."
+					aria-labelledby="reply-title"
+					aria-invalid={reply_content.length > 280}
+					bind:value={reply_content}
+					required
+				></textarea>
+				<div class="small">
+					{reply_content.length}/280 characters
+				</div>
+			</div>
 
-	{#if form?.error}
-		<Message type="error">
-			{form.error}
-		</Message>
-	{/if}
+			<button class="button" type="submit">Reply</button>
+		</form>
 
-	{#if form?.success}
-		<Message type="success">Reply has been sent.</Message>
-	{/if}
+		{#if form?.error}
+			<Message type="error">
+				{form.error}
+			</Message>
+		{/if}
+
+		{#if form?.success}
+			<Message type="success">Reply has been sent.</Message>
+		{/if}
+	</section>
 {/if}
 
 {#if replies.length}
-	<h3>Replies</h3>
+	<section>
+		<h3>Replies</h3>
 
-	<PostList initial_posts={replies} user_id={data.user?.id} />
+		<PostList initial_posts={replies} user_id={data.user?.id} />
+	</section>
 {/if}
+
+<style>
+	section {
+		margin-bottom: 2rem;
+	}
+
+	.small {
+		float: right;
+	}
+</style>

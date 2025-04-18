@@ -6,6 +6,9 @@
 	let account = $derived(data.account)
 
 	let confirm_deletion = $state(false)
+
+	// svelte-ignore state_referenced_locally
+	let bio_content = $state(account.bio)
 </script>
 
 <svelte:head>
@@ -36,7 +39,14 @@
 
 		<div class="input-group">
 			<label for="bio">Bio</label>
-			<textarea id="bio" name="bio" rows="3">{account.bio}</textarea>
+			<textarea
+				id="bio"
+				name="bio"
+				rows="3"
+				bind:value={bio_content}
+				aria-invalid={bio_content.length > 160}>{account.bio}</textarea
+			>
+			<div class="small">{bio_content.length}/160 characters</div>
 		</div>
 
 		<button class="button" type="submit">Update Profile</button>
@@ -128,5 +138,9 @@
 
 	section {
 		margin-bottom: 2rem;
+	}
+
+	.small {
+		float: right;
 	}
 </style>
