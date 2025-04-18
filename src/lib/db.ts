@@ -4,6 +4,17 @@ const db = createClient({
 	url: 'file:database/twelte.db'
 })
 
+async function adjust_database() {
+	try {
+		await db.batch(['PRAGMA journal_mode = WAL;', 'PRAGMA foreign_keys = ON;'])
+	} catch (err) {
+		const libsql_error = err as LibsqlError
+		console.error(libsql_error.message)
+	}
+}
+
+adjust_database()
+
 /**
  * Small wrapper around the `db.execute` function from `@libsql/client` to handle errors.
  */
