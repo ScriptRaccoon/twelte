@@ -32,7 +32,7 @@ export const actions: Actions = {
 			[handle]
 		)
 
-		if (err) return fail(500, { error: 'Database error' })
+		if (err) return fail(500, { error: 'Database error', handle })
 		if (rows.length === 0) return fail(401, { error: 'Invalid credentials', handle })
 
 		const { id, password_hash } = rows[0]

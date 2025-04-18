@@ -1,4 +1,5 @@
 import { JWT_SECRET } from '$env/static/private'
+import type { UserLocals } from '$lib/types'
 import type { Handle } from '@sveltejs/kit'
 import jwt from 'jsonwebtoken'
 
@@ -7,7 +8,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (token) {
 		try {
-			const user = jwt.verify(token, JWT_SECRET) as User
+			const user = jwt.verify(token, JWT_SECRET) as UserLocals
 			event.locals.user = user
 		} catch (err) {
 			console.error(err)
