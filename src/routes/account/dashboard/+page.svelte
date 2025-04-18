@@ -22,10 +22,11 @@
 <section aria-label="basic information">
 	<p class="handle" aria-label="handle">@{account.handle}</p>
 
-	<form action="?/edit" method="POST" use:enhance class="form">
+	<!-- We do not use use:enhance HERE since it is buggy for some reason -->
+	<form action="?/edit" method="POST" class="form">
 		<div class="input-group">
 			<label for="email">Email</label>
-			<input type="email" id="email" name="email" value={account.email} />
+			<input type="email" id="email" name="email" value={data.account.email} />
 		</div>
 
 		<div class="input-group">
@@ -45,9 +46,9 @@
 		<p class="error">{form.error}</p>
 	{/if}
 
-	{#if !form && data.message}
+	{#if form?.message && form.action === 'edit'}
 		<InfoMessage>
-			{data.message}
+			{form.message}
 		</InfoMessage>
 	{/if}
 </section>

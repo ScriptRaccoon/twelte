@@ -27,10 +27,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const account = rows[0]
 
-	const code = event.url.searchParams.get('code')
-	const message = code === 'updated' ? 'Profile updated' : null
-
-	return { account, message }
+	return { account }
 }
 
 export const actions: Actions = {
@@ -75,7 +72,7 @@ export const actions: Actions = {
 			return fail(500, { action: 'edit', error: 'Database error' })
 		}
 
-		redirect(302, '/account/dashboard?code=updated')
+		return { action: 'edit', message: 'Profile updated' }
 	},
 
 	delete: async (event) => {
