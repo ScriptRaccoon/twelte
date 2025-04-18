@@ -2,9 +2,15 @@
 	import { goto } from '$app/navigation'
 	import type { Post as PostType } from '$lib/types'
 	import { format_date } from '$lib/utils'
-	import { faHeart } from '@fortawesome/free-regular-svg-icons'
-	import { faHeart as faHeartFilled, faReply, faXmark } from '@fortawesome/free-solid-svg-icons'
+	import { faComment, faHeart } from '@fortawesome/free-regular-svg-icons'
+	import {
+		faHeart as faHeartFilled,
+		faShare,
+		faXmark,
+		faComment as faCommentFilled
+	} from '@fortawesome/free-solid-svg-icons'
 	import IconButton from './IconButton.svelte'
+	import { page } from '$app/state'
 
 	type Props = {
 		post: PostType
@@ -14,6 +20,8 @@
 	}
 
 	let { post, is_author, authenticated, handle_deletion }: Props = $props()
+
+	let copied = $state(false)
 
 	function toggle_like() {
 		post.liked_by_user ? unlike() : like()
@@ -41,6 +49,15 @@
 		if (!res.ok) return
 
 		handle_deletion()
+	}
+
+	async function copy_url() {
+		const url = `${page.url.origin}/post/${post.id}`
+		await navigator.clipboard.writeText(url)
+		copied = true
+		setTimeout(() => {
+			copied = false
+		}, 2000)
 	}
 </script>
 
@@ -74,11 +91,21 @@
 			</span>
 		</IconButton>
 
-		<IconButton icon={faReply} onclick={() => goto(`/post/${post.id}`)} aria_label="Reply">
+		<IconButton
+			icon={post.replies_count ? faCommentFilled : faComment}
+			onclick={() => goto(`/post/${post.id}`)}
+			aria_label="Reply"
+		>
 			<span aria-label="number of replies">
 				{post.replies_count}
 			</span>
 		</IconButton>
+
+		<IconButton icon={faShare} onclick={copy_url} aria_label="Copy post URL" />
+
+		{#if copied}
+			<span class="small">Copied URL</span>
+		{/if}
 	</menu>
 </article>
 
@@ -105,6 +132,7 @@
 
 	menu {
 		display: flex;
+		align-items: center;
 		gap: 0.5rem;
 	}
 </style>

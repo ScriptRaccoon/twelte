@@ -132,7 +132,7 @@ textarea:focus-visible {
 	cursor: initial;
 }
 
-.description {
+.small {
 	color: var(--secondary-font-color);
 	font-size: 0.85rem;
 }

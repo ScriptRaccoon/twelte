@@ -15,7 +15,7 @@
 </header>
 
 {#if profile.bio}
-	<span class="description">Bio</span>
+	<span class="small">Bio</span>
 	<div class="bio">
 		{profile.bio}
 	</div>

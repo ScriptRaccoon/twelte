@@ -17,7 +17,7 @@
 			bind:value={content}
 			aria-invalid={content.length > 280}
 		></textarea>
-		<div class="description">
+		<div class="small">
 			{content.length}/280 characters
 		</div>
 	</div>
@@ -29,7 +29,7 @@
 {/if}
 
 <style>
-	.description {
+	.small {
 		float: right;
 	}
 </style>
