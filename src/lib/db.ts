@@ -1,7 +1,9 @@
+import { DB_AUTH_TOKEN, DB_URL } from '$env/static/private'
 import { createClient, type LibsqlError } from '@libsql/client'
 
 const db = createClient({
-	url: 'file:database/twelte.db'
+	url: DB_URL,
+	authToken: DB_AUTH_TOKEN
 })
 
 async function adjust_database() {
