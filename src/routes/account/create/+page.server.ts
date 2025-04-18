@@ -1,10 +1,11 @@
-import { query } from '$lib/db'
+import { db, query } from '$lib/db'
 import { fail } from '@sveltejs/kit'
 import bcrypt from 'bcryptjs'
 import type { Actions } from './$types'
 import { email_schema, handle_schema, password_schema } from '$lib/schemas'
 import { get_error_msg } from '$lib/utils'
 import { send_verification_email } from '$lib/mail'
+import { LibsqlError } from '@libsql/client'
 
 export const actions: Actions = {
 	register: async (event) => {
@@ -26,28 +27,33 @@ export const actions: Actions = {
 
 		const password_hash = await bcrypt.hash(password!, 10)
 
-		const { rows, err: err_insert } = await query<{ id: number }>(
-			'INSERT INTO USERS (email, password_hash, handle) VALUES (?, ?, ?) RETURNING id',
-			[email, password_hash, handle]
-		)
+		const tx = await db.transaction('write')
 
-		if (err_insert) {
-			if (err_insert.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+		let user_id = -1
+
+		try {
+			const { rows } = await tx.execute({
+				sql: 'INSERT INTO USERS (email, password_hash, handle) VALUES (?, ?, ?) RETURNING id',
+				args: [email, password_hash, handle]
+			})
+
+			user_id = rows[0].id as number
+
+			await tx.execute({
+				sql: 'INSERT INTO profiles (user_id, display_name) VALUES (?, ?)',
+				args: [user_id, handle]
+			})
+
+			await tx.commit()
+		} catch (err) {
+			await tx.rollback()
+
+			console.error('Failed to create user or profile\n', err)
+
+			if (err instanceof LibsqlError && err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
 				return fail(400, { error: 'Email or handle already exists', email, handle })
 			}
 
-			return fail(500, { error: 'Database error', email, handle })
-		}
-
-		const user_id = rows[0].id
-
-		const { err: err_profile } = await query(
-			'INSERT INTO profiles (user_id, display_name) VALUES (?, ?)',
-			[user_id, handle]
-		)
-
-		if (err_profile) {
-			// TODO: delete user if profile creation fails
 			return fail(500, { error: 'Database error', email, handle })
 		}
 
