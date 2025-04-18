@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/state'
 	import type { IconDefinition as IconDefinitionRegular } from '@fortawesome/free-regular-svg-icons'
 	import type { IconDefinition as IconDefinitionSolid } from '@fortawesome/free-solid-svg-icons'
 	import Fa from 'svelte-fa'
@@ -11,11 +10,9 @@
 	}
 
 	let { href, icon, label }: Props = $props()
-
-	let current = $derived(page.url.pathname === href)
 </script>
 
-<a {href} aria-current={current}>
+<a {href}>
 	<Fa {icon} /> <span>{label}</span>
 </a>
 
@@ -26,10 +23,6 @@
 		border-radius: 0.25rem;
 		background-color: var(--secondary-bg-color);
 		text-decoration: none;
-	}
-
-	a[aria-current='true'] {
-		color: var(--primary-color);
 	}
 
 	span {
