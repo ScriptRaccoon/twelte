@@ -30,27 +30,29 @@ export const GET: RequestHandler = async (event) => {
 		users.handle as author_handle,
 		posts.content,
 		posts.created_at,
-		COALESCE(COUNT(likes.id), 0) as likes_count,
+		(
+        	SELECT COUNT(*)
+      		FROM likes
+      		WHERE likes.post_id = posts.id
+    	) as likes_count,
 		EXISTS (
 			SELECT 1
 			FROM likes
 			WHERE likes.post_id = posts.id AND likes.user_id = :user_id
 		) as liked_by_user,
-		COALESCE(COUNT(replies.id), 0) as replies_count,
+		(
+    		SELECT COUNT(*)
+        	FROM posts replies
+       		WHERE replies.parent_id = posts.id AND replies.deleted = 0
+    	) as replies_count,
 		posts.parent_id as parent_id
 	FROM
 		posts
 	INNER JOIN
 		users ON posts.author_id = users.id
-	LEFT JOIN
-		likes on posts.id = likes.post_id
-	LEFT JOIN
-    	posts replies ON posts.id = replies.parent_id AND replies.deleted = 0
 	WHERE
 		posts.id = :post_id
 		AND posts.deleted = 0
-	GROUP BY
-		posts.id
 	`
 
 	const { rows: posts, success: success_post } = await query<Post_DB>(sql, {
