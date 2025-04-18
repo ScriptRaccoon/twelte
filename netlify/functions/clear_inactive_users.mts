@@ -13,7 +13,20 @@ const db = createClient({
 	authToken: DB_AUTH_TOKEN
 })
 
+async function enableForeignKeys() {
+	try {
+		await db.execute('PRAGMA foreign_keys = ON;')
+		return { success: true }
+	} catch (err) {
+		console.error('Error enabling foreign keys:', err)
+		return { success: false }
+	}
+}
+
 export default async () => {
+	const { success } = await enableForeignKeys()
+	if (!success) return
+
 	const sql = `
 	DELETE FROM users
 	WHERE last_login IS NULL
