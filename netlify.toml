@@ -1,0 +1,5 @@
+[build]
+    command = "pnpm build"
+    publish = "build"
+    functions = "functions"
+    ignore = "git diff --quiet HEAD^ HEAD -- ':!*.md'"
