@@ -51,21 +51,19 @@ CREATE TABLE IF NOT EXISTS posts (
 );
 
 CREATE TABLE IF NOT EXISTS likes (
-    id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     post_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (user_id, post_id),
+    PRIMARY KEY (user_id, post_id),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS follows (
-    id INTEGER PRIMARY KEY,
     follower_id INTEGER NOT NULL,
     followed_id INTEGER NOT NULL CHECK (follower_id != followed_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (follower_id, followed_id),
+    PRIMARY KEY (follower_id, followed_id),
     FOREIGN KEY (follower_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (followed_id) REFERENCES users (id) ON DELETE CASCADE
 );
