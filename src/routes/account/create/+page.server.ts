@@ -61,15 +61,12 @@ export const actions: Actions = {
 
 		const token_sql = `
 		INSERT INTO
-			tokens (user_id, token, purpose)
+			tokens (id, user_id, purpose)
 		VALUES
-			(:user_id, :token, 'email_verification')
+			(:email_token, :user_id, 'email_verification')
 		`
 
-		const { err: err_token } = await query(token_sql, {
-			user_id,
-			token: email_token
-		})
+		const { err: err_token } = await query(token_sql, { user_id, email_token })
 
 		if (err_token) {
 			return fail(500, {

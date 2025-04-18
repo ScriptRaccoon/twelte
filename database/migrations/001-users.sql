@@ -30,9 +30,8 @@ WHERE
 END;
 
 CREATE TABLE IF NOT EXISTS tokens (
-    id INTEGER PRIMARY KEY,
+    id TEXT NOT NULL PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    token TEXT NOT NULL,
     purpose TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     expires_at TIMESTAMP DEFAULT (datetime ('now', '+1 hour')),
