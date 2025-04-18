@@ -11,6 +11,7 @@
 		aria_label?: string
 		disabled?: boolean
 		color?: string
+		small?: boolean
 	}
 
 	let {
@@ -19,11 +20,12 @@
 		onclick,
 		aria_label = '',
 		disabled = false,
-		color = 'currentColor'
+		color = 'currentColor',
+		small = false
 	}: Props = $props()
 </script>
 
-<button {onclick} aria-label={aria_label} {disabled}>
+<button {onclick} aria-label={aria_label} {disabled} class:small>
 	<Fa {icon} {color} />
 	{@render children?.()}
 </button>
@@ -38,5 +40,10 @@
 
 	button:disabled {
 		cursor: initial;
+	}
+
+	button.small {
+		padding: 0rem 0.4rem;
+		font-size: 0.825rem;
 	}
 </style>

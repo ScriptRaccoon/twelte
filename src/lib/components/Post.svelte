@@ -44,13 +44,19 @@
 	}
 </script>
 
-<div>
-	<div>
-		<a class="profile-link" href="/profile/{post.author_handle}">@{post.author_handle}</a>
-		&ndash;
-		<span title={post.created_at} class="time">
-			{format_date(post.created_at)}
-		</span>
+<article>
+	<div class="header">
+		<div>
+			<a class="profile-link" href="/profile/{post.author_handle}">@{post.author_handle}</a>
+			&ndash;
+			<span title={post.created_at} class="time">
+				{format_date(post.created_at)}
+			</span>
+		</div>
+
+		{#if is_author}
+			<IconButton icon={faXmark} onclick={delete_post} aria_label="Delete" small={true} />
+		{/if}
 	</div>
 
 	<div class="content">{post.content}</div>
@@ -73,14 +79,16 @@
 				{post.replies_count}
 			</span>
 		</IconButton>
-
-		{#if is_author}
-			<IconButton icon={faXmark} onclick={delete_post} aria_label="Delete" />
-		{/if}
 	</menu>
-</div>
+</article>
 
 <style>
+	.header {
+		display: flex;
+		justify-content: space-between;
+		padding-right: 0.25rem;
+	}
+
 	.profile-link {
 		text-decoration: none;
 		font-weight: 500;
