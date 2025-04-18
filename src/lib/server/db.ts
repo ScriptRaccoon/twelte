@@ -8,7 +8,8 @@ export const db = createClient({
 
 async function adjust_database() {
 	try {
-		await db.batch(['PRAGMA journal_mode = WAL;', 'PRAGMA foreign_keys = ON;'])
+		await db.execute('PRAGMA journal_mode = WAL')
+		await db.execute('PRAGMA foreign_keys = ON')
 	} catch (err) {
 		const libsql_error = err as LibsqlError
 		console.error(libsql_error.message)
