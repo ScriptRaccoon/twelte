@@ -108,3 +108,9 @@ button:focus-visible {
 	padding: 0.4rem 0.8rem;
 	border-radius: 0.25rem;
 }
+
+.button:disabled {
+	color: var(--font-color);
+	opacity: 0.5;
+	cursor: initial;
+}
