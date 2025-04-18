@@ -1,5 +1,5 @@
-import type { Context } from '@netlify/functions'
 import { createClient } from '@libsql/client'
+import { Config } from '@netlify/functions'
 
 const DB_URL = Netlify.env.get('DB_URL')
 const DB_AUTH_TOKEN = Netlify.env.get('DB_AUTH_TOKEN')
@@ -27,4 +27,8 @@ export default async () => {
 		console.error('Error cleaning up inactive users:', err)
 		return new Response('Error cleaning up inactive users', { status: 500 })
 	}
+}
+
+export const config: Config = {
+	schedule: '@daily'
 }
