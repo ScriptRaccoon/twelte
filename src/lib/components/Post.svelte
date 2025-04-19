@@ -64,7 +64,7 @@
 <article>
 	<div class="header">
 		<div>
-			<a class="profile-link" href="/profile/{post.author_handle}">@{post.author_handle}</a>
+			<a class="profile-link" href="/profile/{post.author_handle}">{post.author_name}</a>
 			&ndash;
 			<span title={post.created_at} class="time">
 				{format_date(post.created_at)}

@@ -36,12 +36,12 @@
 	<p>
 		{#if profile.followed}
 			<span>
-				@{profile.handle} is following you.
+				{profile.name} is following you.
 			</span>
 		{/if}
 		{#if profile.following}
 			<span>
-				You are following @{profile.handle}.
+				You are following {profile.name}.
 			</span>
 		{/if}
 	</p>
