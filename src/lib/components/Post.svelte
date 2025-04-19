@@ -28,14 +28,14 @@
 	}
 
 	async function like() {
-		const res = await fetch(`/api/post/${post.id}/like`, { method: 'POST' })
+		const res = await fetch(`/api/posts/${post.id}/like`, { method: 'POST' })
 		if (!res.ok) return
 		post.likes_count++
 		post.liked_by_user = true
 	}
 
 	async function unlike() {
-		const res = await fetch(`/api/post/${post.id}/unlike`, { method: 'POST' })
+		const res = await fetch(`/api/posts/${post.id}/unlike`, { method: 'POST' })
 		if (!res.ok) return
 		post.likes_count--
 		post.liked_by_user = false
@@ -45,7 +45,7 @@
 		const confirmed = confirm('Are you sure you want to delete this post?')
 		if (!confirmed) return
 
-		const res = await fetch(`/api/post/${post.id}`, { method: 'DELETE' })
+		const res = await fetch(`/api/posts/${post.id}`, { method: 'DELETE' })
 		if (!res.ok) return
 
 		handle_deletion()

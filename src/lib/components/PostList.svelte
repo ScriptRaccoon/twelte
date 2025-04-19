@@ -27,7 +27,7 @@
 		offset += limit
 
 		const url = author_id
-			? `/api/posts?author_id=${author_id}&limit=${limit}&offset=${offset}`
+			? `/api/posts/profile/${author_id}?limit=${limit}&offset=${offset}`
 			: `/api/posts?limit=${limit}&offset=${offset}`
 
 		const res = await fetch(url)

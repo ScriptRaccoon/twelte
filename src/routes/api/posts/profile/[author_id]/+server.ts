@@ -4,7 +4,7 @@ import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 
 /**
- * Queries all posts
+ * Queries all posts by a specific author.
  */
 const sql = `
 SELECT
@@ -37,24 +37,23 @@ INNER JOIN
 WHERE
     posts.deleted = 0
     AND posts.parent_id IS NULL
+    AND posts.author_id = ?
 ORDER BY
     posts.created_at DESC
 LIMIT ? OFFSET ?
 `
 
-/**
- * Retrieves all posts
- */
 export const GET: RequestHandler = async (event) => {
 	const user = event.locals.user
 	const user_id = user ? user.id : 0
+	const author_id = Number(event.params.author_id)
 	const limit = (event.url.searchParams.get('limit') as string | null) ?? '10'
 	const offset = (event.url.searchParams.get('offset') as string | null) ?? '0'
 
-	const args = [user_id, limit, offset]
-	const { rows: posts, success } = await query<Post_DB>(sql, args)
+	const args = [user_id, author_id, limit, offset]
+	const { rows: posts, err } = await query<Post_DB>(sql, args)
 
-	if (!success) error(500, 'Database error')
+	if (err) error(500, 'Database error')
 
 	const transformed_posts: Post[] = posts.map(transform_post)
 

@@ -9,8 +9,8 @@ export const load: PageServerLoad = async (event) => {
 	const post_id = event.params.post_id
 
 	const [res_post, res_replies] = await Promise.all([
-		event.fetch(`/api/post/${post_id}`),
-		event.fetch(`/api/posts/${post_id}`)
+		event.fetch(`/api/posts/${post_id}`),
+		event.fetch(`/api/posts/${post_id}/replies`)
 	])
 
 	if (!res_post.ok) error(res_post.status, 'Failed to fetch post')

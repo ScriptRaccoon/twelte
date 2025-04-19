@@ -57,7 +57,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const limit = 20
 
-	const res = await event.fetch(`/api/posts?author_id=${profile.id}&limit=${limit}`)
+	const res = await event.fetch(`/api/posts/profile/${profile.id}?limit=${limit}`)
 	if (!res.ok) error(res.status, 'Failed to fetch posts')
 
 	const posts: Post[] = await res.json()

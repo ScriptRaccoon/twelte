@@ -2,6 +2,9 @@ import { query } from '$lib/server/db'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 
+/**
+ * Handles the unliking of a post.
+ */
 export const POST: RequestHandler = async (event) => {
 	const user = event.locals.user
 	if (!user) error(401, 'Unauthorized')

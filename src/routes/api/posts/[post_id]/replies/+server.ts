@@ -3,6 +3,9 @@ import { transform_post, type Post_DB, type Post } from '$lib/types'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 
+/**
+ * Queries all replies to a specific post.
+ */
 const sql_replies = `
 SELECT
     posts.id,
@@ -39,13 +42,16 @@ ORDER BY
     posts.created_at DESC
 `
 
+/**
+ * Retrieves all replies to a specific post.
+ */
 export const GET: RequestHandler = async (event) => {
 	const user = event.locals.user
 	const user_id = user ? user.id : 0
+	const parent_id = event.params.post_id
 
-	const parent_id = event.params.parent_id
-
-	const { rows: posts, success } = await query<Post_DB>(sql_replies, [user_id, parent_id])
+	const args = [user_id, parent_id]
+	const { rows: posts, success } = await query<Post_DB>(sql_replies, args)
 
 	if (!success) error(500, 'Database error')
 
