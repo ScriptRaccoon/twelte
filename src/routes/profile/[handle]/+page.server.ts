@@ -1,5 +1,5 @@
 import { query } from '$lib/server/db'
-import { error, redirect } from '@sveltejs/kit'
+import { error, fail, redirect } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from './$types'
 import { transform_profile, type Post, type Profile_DB, type Profile } from '$lib/types'
 
@@ -78,9 +78,23 @@ export const actions: Actions = {
 		if (!followed_id) error(400, 'Invalid request')
 		const followed_id_num = Number(followed_id)
 
-		const sql = `INSERT INTO follows (follower_id, followed_id) VALUES (?, ?)`
+		const sql = `
+		INSERT INTO
+			follows (follower_id, followed_id)
+		VALUES (?, ?)
+		RETURNING id`
 
-		const { success } = await query(sql, [user.id, followed_id_num])
+		const { rows } = await query<{ id: number }>(sql, [user.id, followed_id_num])
+
+		if (!rows?.length) return fail(500, { error: 'Database error' })
+		// TODO: display error in UI
+
+		const { id } = rows[0]
+
+		const { success } = await query(`INSERT INTO follow_notifications (id) VALUES (?)`, [id])
+
+		if (!success) return fail(500, { error: 'Database error' })
+		// TODO: display error in UI
 
 		return { success }
 	},
@@ -98,6 +112,7 @@ export const actions: Actions = {
 		const sql = `DELETE FROM follows WHERE follower_id = ? AND followed_id = ?`
 
 		const { success } = await query(sql, [user.id, followed_id_num])
+		// TODO: display error in UI
 
 		return { success }
 	}

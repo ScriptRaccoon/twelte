@@ -7,7 +7,7 @@
 	type Props = {
 		icon: IconDefinitionRegular | IconDefinitionSolid
 		children?: Snippet
-		onclick: () => void
+		onclick?: () => void
 		aria_label?: string
 		disabled?: boolean
 		color?: string

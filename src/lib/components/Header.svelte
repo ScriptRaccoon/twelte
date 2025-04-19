@@ -2,6 +2,7 @@
 	import type { UserLocals } from '$lib/types'
 	import {
 		faHome,
+		faInbox,
 		faPencil,
 		faRightToBracket,
 		faSliders,
@@ -30,6 +31,9 @@
 				</li>
 				<li>
 					<IconLink href="/post/create" icon={faPencil} label="Post" />
+				</li>
+				<li>
+					<IconLink href="/account/notifications" icon={faInbox} label="Notifications" />
 				</li>
 			{:else}
 				<li>
