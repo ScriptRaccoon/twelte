@@ -49,16 +49,16 @@ export const bio_schema = z
 		message: 'Bio must be at most 160 characters long'
 	})
 
-export const display_name_schema = z
+export const name_schema = z
 	.string({
-		invalid_type_error: 'Display name must be a string',
-		required_error: 'Display name is required'
+		invalid_type_error: 'Name must be a string',
+		required_error: 'Name is required'
 	})
 	.min(1, {
-		message: 'Display name must be at least 1 character long'
+		message: 'Name must be at least 1 character long'
 	})
 	.max(50, {
-		message: 'Display name must be at most 50 characters long'
+		message: 'Name must be at most 50 characters long'
 	})
 
 export const post_content_schema = z

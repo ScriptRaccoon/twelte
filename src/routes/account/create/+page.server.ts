@@ -5,7 +5,6 @@ import type { Actions } from './$types'
 import { email_schema, handle_schema, password_schema } from '$lib/server/schemas'
 import { get_error_msg } from '$lib/utils'
 import { send_verification_email } from '$lib/server/mail'
-import { LibsqlError } from '@libsql/client'
 
 export const actions: Actions = {
 	register: async (event) => {
@@ -27,35 +26,23 @@ export const actions: Actions = {
 
 		const password_hash = await bcrypt.hash(password!, 10)
 
-		const tx = await db.transaction('write')
+		const { rows, err } = await query<{ id: number }>(
+			'INSERT INTO USERS (email, password_hash, handle, name) VALUES (?, ?, ?, ?) RETURNING id',
+			[email, password_hash, handle, handle]
+		)
 
-		let user_id = -1
-
-		try {
-			const { rows } = await tx.execute({
-				sql: 'INSERT INTO USERS (email, password_hash, handle) VALUES (?, ?, ?) RETURNING id',
-				args: [email, password_hash, handle]
-			})
-
-			user_id = rows[0].id as number
-
-			await tx.execute({
-				sql: 'INSERT INTO profiles (user_id, display_name) VALUES (?, ?)',
-				args: [user_id, handle]
-			})
-
-			await tx.commit()
-		} catch (err) {
-			await tx.rollback()
-
-			console.error('Failed to create user or profile\n', err)
-
-			if (err instanceof LibsqlError && err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-				return fail(400, { error: 'Email or handle already exists', email, handle })
+		if (err) {
+			if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+				if (err.message.includes('users.email')) {
+					return fail(400, { error: 'Email already exists', email, handle })
+				} else if (err.message.includes('users.handle')) {
+					return fail(400, { error: 'Handle already exists', email, handle })
+				}
 			}
-
 			return fail(500, { error: 'Database error', email, handle })
 		}
+
+		const { id: user_id } = rows[0]
 
 		const email_token = crypto.randomUUID()
 

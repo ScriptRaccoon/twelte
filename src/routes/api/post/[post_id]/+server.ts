@@ -27,6 +27,7 @@ export const GET: RequestHandler = async (event) => {
 	SELECT
 		posts.id as id,
 		users.id as author_id,
+		users.name as author_name,
 		users.handle as author_handle,
 		posts.content,
 		posts.created_at,

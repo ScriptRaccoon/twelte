@@ -33,8 +33,8 @@
 		</div>
 
 		<div class="input-group">
-			<label for="display_name">Display Name</label>
-			<input type="text" id="display_name" name="display_name" value={account.display_name} />
+			<label for="name">Name</label>
+			<input type="text" id="name" name="name" value={account.name} />
 		</div>
 
 		<div class="input-group">

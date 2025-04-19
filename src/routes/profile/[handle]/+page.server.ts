@@ -10,8 +10,8 @@ export const load: PageServerLoad = async (event) => {
 
 	const sql_profile = `
     SELECT
-        users.id as user_id,
-        display_name,
+        users.id,
+        name,
         handle,
         bio,
 		(
@@ -41,8 +41,6 @@ export const load: PageServerLoad = async (event) => {
 		) as posts_count
     FROM
         users
-    INNER JOIN
-        profiles ON users.id = profiles.user_id
     WHERE
         users.handle = :handle
     `
@@ -59,7 +57,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const limit = 20
 
-	const res = await event.fetch(`/api/posts?author_id=${profile.user_id}&limit=${limit}`)
+	const res = await event.fetch(`/api/posts?author_id=${profile.id}&limit=${limit}`)
 	if (!res.ok) error(res.status, 'Failed to fetch posts')
 
 	const posts: Post[] = await res.json()

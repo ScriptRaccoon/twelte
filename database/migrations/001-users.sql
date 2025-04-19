@@ -1,7 +1,9 @@
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY,
-    email TEXT NOT NULL UNIQUE,
     handle TEXT NOT NULL UNIQUE,
+    email TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    bio TEXT NOT NULL DEFAULT "",
     password_hash TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP,
@@ -9,25 +11,6 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE INDEX idx_users_handle ON users (handle);
-
-CREATE TABLE IF NOT EXISTS profiles (
-    user_id INTEGER PRIMARY KEY,
-    display_name TEXT NOT NULL,
-    bio TEXT NOT NULL DEFAULT "",
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-);
-
-CREATE TRIGGER IF NOT EXISTS update_profile_timestamp AFTER
-UPDATE ON profiles FOR EACH ROW BEGIN
-UPDATE profiles
-SET
-    updated_at = CURRENT_TIMESTAMP
-WHERE
-    user_id = OLD.user_id;
-
-END;
 
 CREATE TABLE IF NOT EXISTS tokens (
     id TEXT NOT NULL PRIMARY KEY,

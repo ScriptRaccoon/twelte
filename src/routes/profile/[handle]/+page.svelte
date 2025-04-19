@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
 	import PostList from '$lib/components/PostList.svelte'
+	import type { Profile } from '$lib/types'
 
 	let { data } = $props()
 
-	let profile = $derived(data.profile)
+	let profile: Profile = $derived(data.profile)
 </script>
 
 <svelte:head>
@@ -13,7 +14,7 @@
 
 <header>
 	<h2>
-		{profile.display_name}
+		{profile.name}
 	</h2>
 	<span class="handle">@{profile.handle}</span>
 </header>
@@ -46,15 +47,15 @@
 	</p>
 {/if}
 
-{#if data.user && profile.user_id !== data.user.id}
+{#if data.user && profile.id !== data.user.id}
 	{#if !profile.following}
 		<form action="?/follow" method="POST" use:enhance class="form">
-			<input type="hidden" name="followed_id" value={profile.user_id} />
+			<input type="hidden" name="followed_id" value={profile.id} />
 			<button class="button">Follow</button>
 		</form>
 	{:else}
 		<form action="?/unfollow" method="POST" use:enhance class="form">
-			<input type="hidden" name="followed_id" value={profile.user_id} />
+			<input type="hidden" name="followed_id" value={profile.id} />
 			<button class="button">Unfollow</button>
 		</form>
 	{/if}
@@ -66,7 +67,7 @@
 	initial_posts={data.posts}
 	limit={data.limit}
 	user_id={data.user?.id}
-	author_id={profile.user_id}
+	author_id={profile.id}
 />
 
 <style>

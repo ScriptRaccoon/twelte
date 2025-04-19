@@ -1,7 +1,7 @@
 import { error, redirect } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from '../$types'
 import { query_batched, query } from '$lib/server/db'
-import { bio_schema, display_name_schema, email_schema, password_schema } from '$lib/server/schemas'
+import { bio_schema, name_schema, email_schema, password_schema } from '$lib/server/schemas'
 import { fail } from '@sveltejs/kit'
 import { get_error_msg } from '$lib/utils'
 import bcrypt from 'bcryptjs'
@@ -10,14 +10,9 @@ export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user
 	if (!user) redirect(302, '/account/login')
 
-	type AccountData = { email: string; handle: string; display_name: string; bio: string }
+	type AccountData = { email: string; handle: string; name: string; bio: string }
 
-	const sql = `
-	SELECT email, handle, display_name, bio
-	FROM users
-	INNER JOIN profiles ON users.id = profiles.user_id
-	WHERE users.id = ?
-	`
+	const sql = `SELECT email, handle, name, bio FROM users WHERE users.id = ?`
 
 	const { rows, err } = await query<AccountData>(sql, [user.id])
 
@@ -43,26 +38,21 @@ export const actions: Actions = {
 		const form_data = await event.request.formData()
 
 		const email = form_data.get('email') as string | null
-		const display_name = form_data.get('display_name') as string | null
+		const name = form_data.get('name') as string | null
 		const bio = (form_data.get('bio') ?? '') as string
 
 		const { error: email_error } = email_schema.safeParse(email)
 		if (email_error) return fail(400, { action: 'edit', error: get_error_msg(email_error) })
 
-		const { error: display_name_error } = display_name_schema.safeParse(display_name)
-		if (display_name_error)
-			return fail(400, { action: 'edit', error: get_error_msg(display_name_error) })
+		const { error: name_error } = name_schema.safeParse(name)
+		if (name_error) return fail(400, { action: 'edit', error: get_error_msg(name_error) })
 
 		const { error: bio_error } = bio_schema.safeParse(bio)
 		if (bio_error) return fail(400, { action: 'edit', error: get_error_msg(bio_error) })
 
-		const sql_email = 'UPDATE users SET email = ? WHERE id = ?'
-		const sql_profile = 'UPDATE profiles SET display_name = ?, bio = ? WHERE user_id = ?'
+		const sql = 'UPDATE users SET email = ?, name = ?, bio = ? WHERE id = ?'
 
-		const { err } = await query_batched([
-			{ sql: sql_email, args: [email, user.id] },
-			{ sql: sql_profile, args: [display_name, bio, user.id] }
-		])
+		const { err } = await query(sql, [email, name, bio, user.id])
 
 		if (err) {
 			if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {

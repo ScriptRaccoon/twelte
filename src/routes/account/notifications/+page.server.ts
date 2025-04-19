@@ -9,17 +9,15 @@ export const load: PageServerLoad = async (event) => {
 	const sql = `
     SELECT
         n.id,
-        p.display_name,
-        u.handle,
-        n.read
+        n.read,
+        u.name,
+        u.handle
     FROM
         follow_notifications n
     INNER JOIN
         follows f on f.id = n.id
     INNER JOIN
-        profiles p on p.user_id = f.follower_id
-    INNER JOIN
-        users u on u.id = p.user_id
+        users u on u.id = f.follower_id
     WHERE
         f.followed_id = ?
     ORDER BY
@@ -28,7 +26,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const { rows, success } = await query<{
 		id: number
-		display_name: string
+		name: string
 		handle: string
 		read: number
 	}>(sql, [user.id])
@@ -37,7 +35,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const follow_notifications = rows.map((row) => ({
 		id: row.id,
-		display_name: row.display_name,
+		name: row.name,
 		handle: row.handle,
 		read: Boolean(row.read)
 	}))

@@ -8,6 +8,7 @@ SELECT
     posts.id,
     users.id as author_id,
     users.handle as author_handle,
+    users.name as author_name,
     posts.content,
     posts.created_at,
     (
@@ -44,6 +45,7 @@ SELECT
     posts.id,
     users.id as author_id,
     users.handle as author_handle,
+    users.name as author_name,
     posts.content,
     posts.created_at,
     (

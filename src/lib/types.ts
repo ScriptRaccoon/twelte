@@ -6,6 +6,7 @@ export type UserLocals = {
 export type Post_DB = {
 	id: number
 	author_id: number
+	author_name: string
 	author_handle: string
 	content: string
 	created_at: string
@@ -27,8 +28,8 @@ export function transform_post(post: Post_DB): Post {
 }
 
 export type Profile_DB = {
-	user_id: number
-	display_name: string
+	id: number
+	name: string
 	handle: string
 	bio: string
 	followers_count: number

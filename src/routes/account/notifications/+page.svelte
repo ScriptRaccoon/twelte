@@ -42,11 +42,11 @@
 	{/if}
 </menu>
 
-{#each follow_notifications as { id, display_name, handle, read } (id)}
+{#each follow_notifications as { id, name, handle, read } (id)}
 	<div class="notification" class:read>
 		<div>
 			<Fa icon={faUserGroup} /> &nbsp;
-			<a href="/profile/{handle}">{display_name}</a> has started following you.
+			<a href="/profile/{handle}">{name}</a> has started following you.
 		</div>
 		<IconButton icon={faTrash} onclick={() => delete_follow_notification(id)} />
 	</div>
