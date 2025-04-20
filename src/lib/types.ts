@@ -51,3 +51,25 @@ export function transform_profile(profile: Profile_DB): Profile {
 		followed: Boolean(profile.followed)
 	}
 }
+
+export type AccountData = { email: string; handle: string; name: string; bio: string }
+
+export type FollowNotification_DB = {
+	id: number
+	name: string
+	handle: string
+	read: number
+}
+
+export type FollowNotification = Omit<FollowNotification_DB, 'read'> & {
+	read: boolean
+}
+
+export function transform_follow_notification(
+	notification: FollowNotification_DB
+): FollowNotification {
+	return {
+		...notification,
+		read: Boolean(notification.read)
+	}
+}

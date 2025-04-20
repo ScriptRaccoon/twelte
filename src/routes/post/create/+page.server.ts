@@ -6,9 +6,7 @@ import { query } from '$lib/server/db'
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user
-	if (!user) {
-		redirect(302, '/account/login?redirect=/post/create')
-	}
+	if (!user) redirect(302, `/account/login?redirect=${event.url.pathname}`)
 }
 
 export const actions: Actions = {

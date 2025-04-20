@@ -34,9 +34,7 @@ export const actions: Actions = {
 
 		const { error: content_error } = post_content_schema.safeParse(content)
 
-		if (content_error) {
-			return fail(400, { error: get_error_msg(content_error), content })
-		}
+		if (content_error) return fail(400, { error: get_error_msg(content_error), content })
 
 		const sql = 'INSERT INTO posts (author_id, content, parent_id) VALUES (?, ?, ?)'
 		const { err } = await query(sql, [user.id, content, post_id])

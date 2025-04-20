@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
 	import Message from '$lib/components/Message.svelte'
+	import type { AccountData } from '$lib/types'
 
 	let { data, form } = $props()
-	let account = $derived(data.account)
+	let account: AccountData = $derived(data.account)
 
 	let confirm_deletion = $state(false)
 

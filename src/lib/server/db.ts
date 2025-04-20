@@ -45,22 +45,3 @@ export async function query<T = any>(
 		return { rows: null, err: libsql_error, success: false }
 	}
 }
-
-/**
- * Small wrapper around the `db.batch` function from `@libsql/client` to handle errors.
- */
-export async function query_batched(
-	queries: {
-		sql: string
-		args?: Record<string, any> | any[]
-	}[]
-) {
-	try {
-		await db.batch(queries)
-		return { success: true, err: null }
-	} catch (err) {
-		const libsql_error = err as LibsqlError
-		console.error(libsql_error)
-		return { success: false, err: libsql_error }
-	}
-}

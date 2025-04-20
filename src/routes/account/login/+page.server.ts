@@ -8,17 +8,7 @@ import type { PageServerLoad } from '../$types'
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user
-	if (user) {
-		redirect(302, '/account/dashboard')
-	}
-
-	return {}
-}
-
-type Credentials = {
-	id: number
-	password_hash: string
-	email_verified_at: string | null
+	if (user) redirect(302, '/account/dashboard')
 }
 
 export const actions: Actions = {
@@ -31,22 +21,23 @@ export const actions: Actions = {
 		if (!password) return fail(400, { error: 'Password is required', handle })
 		if (!handle) return fail(400, { error: 'Handle is required', handle })
 
-		const { rows, err } = await query<Credentials>(
-			'SELECT id, password_hash, email_verified_at FROM users WHERE handle = ?',
-			[handle]
-		)
+		const sql = 'SELECT id, password_hash, email_verified_at FROM users WHERE handle = ?'
+		const { rows, err } = await query<{
+			id: number
+			password_hash: string
+			email_verified_at: string | null
+		}>(sql, [handle])
 
 		if (err) return fail(500, { error: 'Database error', handle })
-		if (rows.length === 0) return fail(401, { error: 'Invalid credentials', handle })
+		if (!rows.length) return fail(401, { error: 'Invalid credentials', handle })
 
 		const { id, password_hash, email_verified_at } = rows[0]
 
 		const password_is_correct = await bcrypt.compare(password, password_hash)
 		if (!password_is_correct) return fail(401, { error: 'Invalid credentials', handle })
 
-		if (!email_verified_at) {
+		if (!email_verified_at)
 			return fail(401, { error: 'Email not verified. Please check your inbox.', handle })
-		}
 
 		const token = jwt.sign({ id, handle }, JWT_SECRET)
 
@@ -58,6 +49,7 @@ export const actions: Actions = {
 			secure: true
 		})
 
+		// don't await on purpose
 		query("UPDATE users SET last_login = datetime('now') WHERE id = ?", [id])
 
 		redirect(302, redirect_path)

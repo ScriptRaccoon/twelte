@@ -1,26 +1,23 @@
 import { error, redirect } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from '../$types'
-import { query_batched, query } from '$lib/server/db'
+import { query } from '$lib/server/db'
 import { bio_schema, name_schema, email_schema, password_schema } from '$lib/server/schemas'
 import { fail } from '@sveltejs/kit'
 import { get_error_msg } from '$lib/utils'
 import bcrypt from 'bcryptjs'
+import type { AccountData } from '$lib/types'
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user
 	if (!user) redirect(302, '/account/login')
 
-	type AccountData = { email: string; handle: string; name: string; bio: string }
-
-	const sql = `SELECT email, handle, name, bio FROM users WHERE users.id = ?`
-
+	const sql = 'SELECT email, handle, name, bio FROM users WHERE users.id = ?'
 	const { rows, err } = await query<AccountData>(sql, [user.id])
 
 	if (err) error(500, 'Database error')
-
 	if (!rows.length) error(404, 'Account not found')
 
-	const account = rows[0]
+	const account: AccountData = rows[0]
 
 	return { account }
 }
@@ -28,12 +25,12 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
 	logout: async (event) => {
 		event.cookies.delete('jwt', { path: '/' })
-		throw redirect(302, '/account/login')
+		redirect(302, '/account/login')
 	},
 
 	edit: async (event) => {
 		const user = event.locals.user
-		if (!user) redirect(302, '/account/login')
+		if (!user) error(401, 'Unauthorized')
 
 		const form_data = await event.request.formData()
 
@@ -51,37 +48,21 @@ export const actions: Actions = {
 		if (bio_error) return fail(400, { action: 'edit', error: get_error_msg(bio_error) })
 
 		const sql = 'UPDATE users SET email = ?, name = ?, bio = ? WHERE id = ?'
-
 		const { err } = await query(sql, [email, name, bio, user.id])
 
 		if (err) {
 			if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
 				return fail(400, { action: 'edit', error: 'Email already exists' })
 			}
-
 			return fail(500, { action: 'edit', error: 'Database error' })
 		}
 
 		return { action: 'edit', message: 'Profile updated' }
 	},
 
-	delete: async (event) => {
-		const user = event.locals.user
-		if (!user) redirect(302, '/account/login')
-
-		const sql = 'DELETE FROM users WHERE id = ?'
-		const { err } = await query(sql, [user.id])
-
-		if (err) return fail(500, { action: 'delete', error: 'Database error' })
-
-		event.cookies.delete('jwt', { path: '/' })
-
-		throw redirect(302, '/')
-	},
-
 	password: async (event) => {
 		const user = event.locals.user
-		if (!user) redirect(302, '/account/login')
+		if (!user) error(401, 'Unauthorized')
 
 		const form_data = await event.request.formData()
 		const old_password = form_data.get('old_password') as string | null
@@ -122,5 +103,17 @@ export const actions: Actions = {
 		if (!success) return fail(500, { action: 'password', error: 'Database error' })
 
 		return { action: 'password', message: 'Password updated' }
+	},
+
+	delete: async (event) => {
+		const user = event.locals.user
+		if (!user) error(401, 'Unauthorized')
+
+		const { err } = await query('DELETE FROM users WHERE id = ?', [user.id])
+		if (err) return fail(500, { action: 'delete', error: 'Database error' })
+
+		event.cookies.delete('jwt', { path: '/' })
+
+		redirect(302, '/')
 	}
 }
