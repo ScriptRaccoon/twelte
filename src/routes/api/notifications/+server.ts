@@ -11,11 +11,13 @@ export const DELETE: RequestHandler = async (event) => {
 
 	const sql_follow = `DELETE FROM follow_notifications WHERE follow_notifications.user_id = ?`
 	const sql_like = `DELETE FROM like_notifications WHERE like_notifications.user_id = ?`
+	const sql_reply = `DELETE FROM reply_notifications WHERE reply_notifications.user_id = ?`
 
 	try {
 		await db.batch([
 			{ sql: sql_follow, args: [user.id] },
-			{ sql: sql_like, args: [user.id] }
+			{ sql: sql_like, args: [user.id] },
+			{ sql: sql_reply, args: [user.id] }
 		])
 
 		return json({ success: true })
@@ -42,10 +44,16 @@ export const PATCH: RequestHandler = async (event) => {
     SET read = 1
     WHERE like_notifications.user_id = ?`
 
+	const sql_reply = `
+    UPDATE reply_notifications
+    SET read = 1
+    WHERE reply_notifications.user_id = ?`
+
 	try {
 		await db.batch([
 			{ sql: sql_follow, args: [user.id] },
-			{ sql: sql_like, args: [user.id] }
+			{ sql: sql_like, args: [user.id] },
+			{ sql: sql_reply, args: [user.id] }
 		])
 
 		return json({ success: true })

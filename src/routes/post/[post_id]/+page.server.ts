@@ -31,15 +31,30 @@ export const actions: Actions = {
 
 		const form_data = await event.request.formData()
 		const content = form_data.get('content') as string | null
+		const post_author_id = form_data.get('post_author_id') as string | null
 
 		const { error: content_error } = post_content_schema.safeParse(content)
 
 		if (content_error) return fail(400, { error: get_error_msg(content_error), content })
 
-		const sql = 'INSERT INTO posts (author_id, content, parent_id) VALUES (?, ?, ?)'
-		const { err } = await query(sql, [user.id, content, post_id])
+		const sql = `
+		INSERT INTO posts (author_id, content, parent_id)
+		VALUES (?, ?, ?)
+		RETURNING id as reply_id`
 
-		if (err) return fail(500, { error: 'Database error' })
+		const { rows } = await query<{ reply_id: number }>(sql, [user.id, content, post_id])
+
+		if (!rows?.length) return fail(500, { error: 'Database error' })
+
+		const { reply_id } = rows[0]
+
+		const { success } = await query(
+			`INSERT INTO reply_notifications (id, user_id)
+			VALUES (?, ?)`,
+			[reply_id, post_author_id]
+		)
+
+		if (!success) return fail(500, { error: 'Database error' })
 
 		return { success: true }
 	}

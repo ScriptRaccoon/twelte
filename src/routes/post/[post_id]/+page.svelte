@@ -51,6 +51,8 @@
 				</div>
 			</div>
 
+			<input type="hidden" name="post_author_id" value={post.author_id} />
+
 			<button class="button" type="submit">Reply</button>
 		</form>
 

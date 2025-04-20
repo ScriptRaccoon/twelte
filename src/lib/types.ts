@@ -92,3 +92,25 @@ export function transform_like_notification(notification: LikeNotification_DB): 
 		read: Boolean(notification.read)
 	}
 }
+
+export type ReplyNotification_DB = {
+	id: number
+	read: number
+	name: string
+	handle: string
+	content: string
+	parent_id: number
+}
+
+export type ReplyNotification = Omit<ReplyNotification_DB, 'read'> & {
+	read: boolean
+}
+
+export function transform_reply_notification(
+	notification: ReplyNotification_DB
+): ReplyNotification {
+	return {
+		...notification,
+		read: Boolean(notification.read)
+	}
+}
