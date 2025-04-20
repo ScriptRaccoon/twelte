@@ -69,16 +69,18 @@
 </script>
 
 {#if posts?.length}
-	{#each posts as post, index (post.id)}
-		<div class="post-wrapper" class:first={index === 0}>
-			<Post
-				{post}
-				is_author={post.author_id === user_id}
-				authenticated={!!user_id}
-				handle_deletion={() => handle_deletion(post.id)}
-			/>
-		</div>
-	{/each}
+	<div class="posts">
+		{#each posts as post, index (post.id)}
+			<div class="post-wrapper" class:first={index === 0}>
+				<Post
+					{post}
+					is_author={post.author_id === user_id}
+					authenticated={!!user_id}
+					handle_deletion={() => handle_deletion(post.id)}
+				/>
+			</div>
+		{/each}
+	</div>
 
 	{#if limit}
 		<div use:load_more_when_visible class="observer"></div>
@@ -96,6 +98,10 @@
 {/if}
 
 <style>
+	.posts {
+		margin-bottom: 1rem;
+	}
+
 	.observer {
 		width: 100%;
 		height: 1px;
