@@ -9,13 +9,11 @@
 </script>
 
 <svelte:head>
-	<title>Twelte - Profile @{profile.handle}</title>
+	<title>Twelte - Profile by {profile.name}</title>
 </svelte:head>
 
 <header>
-	<h2>
-		{profile.name}
-	</h2>
+	<h2>{profile.name}</h2>
 	<span class="handle">@{profile.handle}</span>
 </header>
 
