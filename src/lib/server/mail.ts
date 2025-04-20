@@ -1,4 +1,4 @@
-import { EMAIL_ADDRESS, EMAIL_PASSWORD } from '$env/static/private'
+import { EMAIL_ADDRESS, EMAIL_PASSWORD, SIMULATE_EMAILS } from '$env/static/private'
 import nodemailer from 'nodemailer'
 
 const transporter = nodemailer.createTransport({
@@ -16,6 +16,11 @@ type MailOptions = {
 }
 
 async function send_mail(options: MailOptions): Promise<{ success: boolean }> {
+	if (SIMULATE_EMAILS === 'true') {
+		console.debug('Email sent (simulated):', options)
+		return { success: true }
+	}
+
 	try {
 		const info = await transporter.sendMail(options)
 		console.debug('Email sent:', info.response)
@@ -35,7 +40,8 @@ export async function send_verification_email(
 
 	const text =
 		'Visit the following link to verify your email address:\n\n' +
-		`${verification_url}\n\n` +
+		verification_url +
+		`\n\n` +
 		'This link will expire in 1 hour.\n\n' +
 		'If you did not request this email, please ignore it.\n\n' +
 		'Thank you for using Twelte!'
