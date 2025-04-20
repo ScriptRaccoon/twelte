@@ -73,3 +73,22 @@ export function transform_follow_notification(
 		read: Boolean(notification.read)
 	}
 }
+
+export type LikeNotification_DB = {
+	id: number
+	read: number
+	name: string
+	handle: string
+	post_id: number
+	content: string
+}
+
+export type LikeNotification = Omit<LikeNotification_DB, 'read'> & {
+	read: boolean
+}
+export function transform_like_notification(notification: LikeNotification_DB): LikeNotification {
+	return {
+		...notification,
+		read: Boolean(notification.read)
+	}
+}

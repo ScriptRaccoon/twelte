@@ -18,11 +18,13 @@ export const POST: RequestHandler = async (event) => {
 
 	if (!posts?.length) error(404, 'Post not found')
 
-	if (posts[0].author_id === user.id) error(403, 'Not allowed to like your own post')
+	const author_id = posts[0].author_id
 
-	const sql = 'INSERT INTO likes (user_id, post_id) VALUES (?, ?)'
+	if (author_id === user.id) error(403, 'Not allowed to like your own post')
 
-	const { err } = await query(sql, [user.id, post_id])
+	const sql = 'INSERT INTO likes (user_id, post_id) VALUES (?, ?) RETURNING id'
+
+	const { err, rows } = await query<{ id: string }>(sql, [user.id, post_id])
 	if (err) {
 		if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
 			error(403, 'Not allowed to like the same post twice')
@@ -30,6 +32,14 @@ export const POST: RequestHandler = async (event) => {
 
 		error(500, 'Database error')
 	}
+
+	const { id } = rows[0]
+
+	const { success } = await query('INSERT INTO like_notifications (id, user_id) VALUES (?, ?)', [
+		id,
+		author_id
+	])
+	if (!success) error(500, 'Database error')
 
 	return json({ success: true })
 }

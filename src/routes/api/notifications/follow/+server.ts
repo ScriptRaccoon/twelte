@@ -24,7 +24,7 @@ export const GET: RequestHandler = async (event) => {
     INNER JOIN
         users u on u.id = f.follower_id
     WHERE
-        f.followed_id = ?
+        n.user_id = ?
     ORDER BY
         n.created_at DESC
     `
@@ -40,6 +40,7 @@ export const GET: RequestHandler = async (event) => {
 
 /**
  * Deletes all follow notifications for the authenticated user.
+ * @deprecated
  */
 export const DELETE: RequestHandler = async (event) => {
 	const user = event.locals.user
@@ -69,6 +70,7 @@ export const DELETE: RequestHandler = async (event) => {
 
 /**
  * Marks all follow notifications as read for the authenticated user.
+ * @deprecated
  */
 export const PATCH: RequestHandler = async (event) => {
 	const user = event.locals.user
