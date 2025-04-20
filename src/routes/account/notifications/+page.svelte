@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation'
 	import IconButton from '$lib/components/IconButton.svelte'
-	import { faTrash, faUserGroup } from '@fortawesome/free-solid-svg-icons'
+	import { faUserGroup, faXmark } from '@fortawesome/free-solid-svg-icons'
 	import Fa from 'svelte-fa'
 
 	let { data } = $props()
@@ -38,7 +38,7 @@
 	<p>You have {data.number_unread} unread notifications.</p>
 
 	{#if follow_notifications.length > 0}
-		<IconButton icon={faTrash} onclick={delete_all_follow_notifications}></IconButton>
+		<IconButton icon={faXmark} onclick={delete_all_follow_notifications}></IconButton>
 	{/if}
 </menu>
 
@@ -48,7 +48,7 @@
 			<Fa icon={faUserGroup} /> &nbsp;
 			<a href="/profile/{handle}">{name}</a> has started following you.
 		</div>
-		<IconButton icon={faTrash} onclick={() => delete_follow_notification(id)} />
+		<IconButton small={true} icon={faXmark} onclick={() => delete_follow_notification(id)} />
 	</div>
 {/each}
 
