@@ -9,6 +9,7 @@
 	--font-color: #fff;
 	--secondary-font-color: #bbb;
 	--secondary-bg-color: #282828;
+	--tertiary-bg-color: #444;
 	--error-color: orangered;
 	--primary-color: rgb(255, 217, 0);
 }
@@ -119,6 +120,23 @@ textarea:focus-visible {
 	color: var(--font-color);
 	opacity: 0.5;
 	cursor: initial;
+}
+
+.button:disabled:not(.loading) {
+	opacity: 0.5;
+}
+
+.button.loading {
+	animation: pulse 0.75s infinite alternate ease-in-out;
+}
+
+@keyframes pulse {
+	0% {
+		background-color: var(--secondary-bg-color);
+	}
+	100% {
+		background-color: var(--tertiary-bg-color);
+	}
 }
 
 .small {
