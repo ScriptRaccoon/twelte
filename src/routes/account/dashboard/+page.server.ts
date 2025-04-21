@@ -92,11 +92,11 @@ export const actions: Actions = {
 		const { error: name_error } = name_schema.safeParse(name)
 		if (name_error) return fail(400, { action: 'edit', error: get_error_msg(name_error) })
 
-		const { error: bio_error } = bio_schema.safeParse(bio)
+		const { error: bio_error, data: parsed_bio } = bio_schema.safeParse(bio)
 		if (bio_error) return fail(400, { action: 'edit', error: get_error_msg(bio_error) })
 
 		const sql = 'UPDATE users SET email = ?, name = ?, bio = ? WHERE id = ?'
-		const { err } = await query(sql, [email, name, bio, user.id])
+		const { err } = await query(sql, [email, name, parsed_bio, user.id])
 
 		if (err) {
 			if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {

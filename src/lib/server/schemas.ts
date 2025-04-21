@@ -50,6 +50,7 @@ export const bio_schema = z
 	.max(MAX_BIO_LENGTH, {
 		message: `Bio must be at most ${MAX_BIO_LENGTH} characters long`
 	})
+	.transform((value) => value.trim())
 
 export const name_schema = z
 	.string({
@@ -71,6 +72,7 @@ const post_content_schema = z
 	.max(MAX_POST_LENGTH, {
 		message: `Post must be at most ${MAX_POST_LENGTH} characters long`
 	})
+	.transform((value) => value.trim())
 
 export const post_request_schema = z.object({
 	content: post_content_schema,
