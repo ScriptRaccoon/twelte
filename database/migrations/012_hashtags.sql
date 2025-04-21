@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS hashtags (tag TEXT PRIMARY KEY);
 CREATE TABLE IF NOT EXISTS post_hashtags (
     post_id INTEGER NOT NULL,
     hashtag TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (post_id, hashtag),
     FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE,
     FOREIGN KEY (hashtag) REFERENCES hashtags (tag) ON DELETE CASCADE

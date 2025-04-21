@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { UserLocals } from '$lib/types'
 	import {
+		faHashtag,
 		faHome,
 		faInbox,
 		faPencil,
@@ -35,6 +36,9 @@
 				<li>
 					<IconLink href="/account/notifications" icon={faInbox} label="Notifications" />
 				</li>
+				<li>
+					<IconLink href="/hashtags" icon={faHashtag} label="Hashtags" />
+				</li>
 			{:else}
 				<li>
 					<IconLink href="/account/create" icon={faUserAlt} label="Create Account" />
@@ -53,7 +57,7 @@
 	header {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
+		align-items: start;
 		padding-block: 1rem;
 		gap: 0.25rem;
 	}
@@ -62,7 +66,7 @@
 		list-style: none;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 1rem;
+		gap: 0.5rem 0.75rem;
 	}
 
 	h1 {
