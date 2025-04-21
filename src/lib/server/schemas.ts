@@ -63,6 +63,19 @@ export const name_schema = z
 	.max(50, {
 		message: 'Name must be at most 50 characters long'
 	})
+	.regex(/^[a-zA-Z0-9 _.-]*$/, {
+		message:
+			'Display name can only contain letters, numbers, spaces, underscores, dashes, and periods'
+	})
+	.refine((val) => !val.startsWith(' '), {
+		message: 'Name cannot start with a space'
+	})
+	.refine((val) => !val.endsWith(' '), {
+		message: 'Name cannot end with a space'
+	})
+	.refine((val) => !val.includes('  '), {
+		message: 'Name cannot contain consecutive spaces'
+	})
 
 const post_content_schema = z
 	.string({
