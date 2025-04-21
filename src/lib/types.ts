@@ -52,7 +52,33 @@ export function transform_profile(profile: Profile_DB): Profile {
 	}
 }
 
-export type AccountData = { email: string; handle: string; name: string; bio: string }
+export type AccountData_DB = {
+	email: string
+	handle: string
+	name: string
+	bio: string
+	like_notifications_enabled: number
+	follow_notifications_enabled: number
+	reply_notifications_enabled: number
+}
+
+export type AccountData = Omit<
+	AccountData_DB,
+	'like_notifications_enabled' | 'follow_notifications_enabled' | 'reply_notifications_enabled'
+> & {
+	like_notifications_enabled: boolean
+	follow_notifications_enabled: boolean
+	reply_notifications_enabled: boolean
+}
+
+export function transform_account_data(account: AccountData_DB): AccountData {
+	return {
+		...account,
+		like_notifications_enabled: Boolean(account.like_notifications_enabled),
+		follow_notifications_enabled: Boolean(account.follow_notifications_enabled),
+		reply_notifications_enabled: Boolean(account.reply_notifications_enabled)
+	}
+}
 
 export type FollowNotification_DB = {
 	id: number

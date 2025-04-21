@@ -104,6 +104,16 @@ textarea:focus-visible {
 	}
 }
 
+.check-group {
+	margin-bottom: 1.5rem;
+	display: flex;
+	gap: 0.5rem;
+
+	input[type='checkbox'] {
+		accent-color: var(--primary-color);
+	}
+}
+
 .form {
 	margin-bottom: 1rem;
 }

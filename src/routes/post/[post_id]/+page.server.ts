@@ -32,6 +32,7 @@ export const actions: Actions = {
 		const form_data = await event.request.formData()
 		const content = form_data.get('content') as string | null
 		const post_author_id = form_data.get('post_author_id') as string | null
+		if (!post_author_id) return fail(400, { error: 'Missing post author id' })
 
 		const { error: content_error } = post_content_schema.safeParse(content)
 
@@ -48,11 +49,15 @@ export const actions: Actions = {
 
 		const { reply_id } = rows[0]
 
-		const { success } = await query(
-			`INSERT INTO reply_notifications (id, user_id)
-			VALUES (?, ?)`,
-			[reply_id, post_author_id]
-		)
+		const sql_notify = `
+		INSERT INTO reply_notifications (id, user_id)
+		SELECT ?, ?
+		FROM settings
+		WHERE user_id = ? AND reply_notifications_enabled = 1`
+
+		const args = [reply_id, Number(post_author_id), Number(post_author_id)]
+
+		const { success } = await query(sql_notify, args, true)
 
 		if (!success) return fail(500, { error: 'Database error' })
 

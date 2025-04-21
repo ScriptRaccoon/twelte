@@ -44,6 +44,15 @@ export const actions: Actions = {
 
 		const { id: user_id } = rows[0]
 
+		const settings_sql = 'INSERT INTO settings (user_id) values (?)'
+		const { err: err_settings } = await query(settings_sql, [user_id])
+
+		if (err_settings) {
+			console.error('Settings could not be created')
+			// TODO: in this case, remove user again from users table
+			return fail(500, { error: 'Database error', email, handle })
+		}
+
 		const email_token = crypto.randomUUID()
 
 		const token_sql = `

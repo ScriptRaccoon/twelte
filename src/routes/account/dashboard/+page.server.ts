@@ -5,19 +5,30 @@ import { bio_schema, name_schema, email_schema, password_schema } from '$lib/ser
 import { fail } from '@sveltejs/kit'
 import { get_error_msg } from '$lib/utils'
 import bcrypt from 'bcryptjs'
-import type { AccountData } from '$lib/types'
+import { transform_account_data, type AccountData, type AccountData_DB } from '$lib/types'
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user
 	if (!user) redirect(302, '/account/login')
 
-	const sql = 'SELECT email, handle, name, bio FROM users WHERE users.id = ?'
-	const { rows, err } = await query<AccountData>(sql, [user.id])
+	const sql = `
+	SELECT
+		email, handle, name, bio,
+		like_notifications_enabled,
+		follow_notifications_enabled,
+		reply_notifications_enabled
+	FROM
+		users
+	INNER JOIN
+		settings ON users.id = settings.user_id
+	WHERE
+		users.id = ?`
+	const { rows, err } = await query<AccountData_DB>(sql, [user.id])
 
 	if (err) error(500, 'Database error')
 	if (!rows.length) error(404, 'Account not found')
 
-	const account: AccountData = rows[0]
+	const account: AccountData = transform_account_data(rows[0])
 
 	return { account }
 }
@@ -58,6 +69,37 @@ export const actions: Actions = {
 		}
 
 		return { action: 'edit', message: 'Profile updated' }
+	},
+
+	settings: async (event) => {
+		const user = event.locals.user
+		if (!user) error(401, 'Unauthorized')
+
+		const form_data = await event.request.formData()
+
+		const enable_like_notifications = form_data.get('like_notifications') === 'on' ? 1 : 0
+		const enable_follow_notifications = form_data.get('follow_notifications') === 'on' ? 1 : 0
+		const enable_reply_notifications = form_data.get('reply_notifications') === 'on' ? 1 : 0
+
+		const sql = `
+		UPDATE settings
+		SET
+			like_notifications_enabled = ?,
+			follow_notifications_enabled = ?,
+			reply_notifications_enabled = ?
+		WHERE
+			user_id = ?
+		`
+
+		const { success } = await query(sql, [
+			enable_like_notifications,
+			enable_follow_notifications,
+			enable_reply_notifications,
+			user.id
+		])
+
+		if (!success) return fail(500, { action: 'settings', error: 'Database error' })
+		return { action: 'settings', message: 'Settings updated' }
 	},
 
 	password: async (event) => {

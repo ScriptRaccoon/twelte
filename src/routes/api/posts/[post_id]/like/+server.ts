@@ -35,10 +35,15 @@ export const POST: RequestHandler = async (event) => {
 
 	const { id } = rows[0]
 
-	const { success } = await query('INSERT INTO like_notifications (id, user_id) VALUES (?, ?)', [
-		id,
-		author_id
-	])
+	const sql_notify = `
+    INSERT INTO like_notifications (id, user_id)
+    SELECT ?, ?
+    FROM settings
+    WHERE user_id = ? AND like_notifications_enabled = 1`
+
+	const args = [id, author_id, author_id]
+
+	const { success } = await query(sql_notify, args)
 	if (!success) error(500, 'Database error')
 
 	return json({ success: true })

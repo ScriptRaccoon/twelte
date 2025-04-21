@@ -36,10 +36,15 @@ export const actions: Actions = {
 
 		const { id } = rows[0]
 
-		const { success } = await query(
-			`INSERT INTO follow_notifications (id, user_id) VALUES (?, ?)`,
-			[id, followed_id_num]
-		)
+		const sql_notify = `
+		INSERT INTO follow_notifications (id, user_id)
+		SELECT ?, ?
+		FROM settings
+		WHERE user_id = ? AND follow_notifications_enabled = 1`
+
+		const args = [id, followed_id_num, followed_id_num]
+
+		const { success } = await query(sql_notify, args)
 
 		if (!success) return fail(500, { error: 'Database error' })
 		// TODO: display error in UI

@@ -67,6 +67,56 @@
 </section>
 
 <section>
+	<h3>Settings</h3>
+
+	<form action="?/settings" method="POST" use:enhance class="form">
+		<div class="check-group">
+			<label for="like_notifications">Like Notifications</label>
+			<input
+				type="checkbox"
+				id="like_notifications"
+				name="like_notifications"
+				checked={account.like_notifications_enabled}
+			/>
+		</div>
+
+		<div class="check-group">
+			<label for="reply_notifications">Reply Notifications</label>
+			<input
+				type="checkbox"
+				id="reply_notifications"
+				name="reply_notifications"
+				checked={account.reply_notifications_enabled}
+			/>
+		</div>
+
+		<div class="check-group">
+			<label for="follow_notifications">Follow Notifications</label>
+			<input
+				type="checkbox"
+				id="follow_notifications"
+				name="follow_notifications"
+				checked={account.follow_notifications_enabled}
+			/>
+		</div>
+
+		<button class="button" type="submit">Update Settings</button>
+	</form>
+
+	{#if form?.error && form.action == 'settings'}
+		<Message type="error">
+			{form.error}
+		</Message>
+	{/if}
+
+	{#if form?.message && form.action === 'settings'}
+		<Message type="success">
+			{form.message}
+		</Message>
+	{/if}
+</section>
+
+<section>
 	<h3>Security</h3>
 
 	<form action="?/password" method="POST" use:enhance class="form">
