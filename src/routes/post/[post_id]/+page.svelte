@@ -42,6 +42,7 @@
 				aria_label="reply content"
 				limit={MAX_POST_LENGTH}
 				initial_content={form?.content ?? ''}
+				show_hashtags={true}
 			/>
 
 			<button class="button" type="submit">Reply</button>
