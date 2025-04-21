@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { extract_hashtags } from '$lib/utils'
+
 	type Props = {
 		placeholder?: string
 		limit: number
@@ -7,6 +9,7 @@
 		rows?: number
 		label?: string
 		initial_content?: string
+		show_hashtags?: boolean
 	}
 
 	let {
@@ -16,7 +19,8 @@
 		aria_label,
 		rows = 4,
 		label,
-		initial_content = ''
+		initial_content = '',
+		show_hashtags = false
 	}: Props = $props()
 
 	let content = $state(initial_content)
@@ -41,10 +45,25 @@
 	<div class="small">
 		{content.length}/{limit} characters
 	</div>
+
+	{#if show_hashtags}
+		<div class="hashtags">
+			{#each extract_hashtags(content) as tag}
+				<span>#{tag}</span>
+			{/each}
+		</div>
+	{/if}
 </div>
 
 <style>
 	.small {
 		float: right;
+	}
+
+	.hashtags {
+		display: flex;
+		gap: 0.25rem;
+		flex-wrap: wrap;
+		color: var(--primary-color);
 	}
 </style>

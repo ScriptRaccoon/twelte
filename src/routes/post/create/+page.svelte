@@ -18,6 +18,7 @@
 		placeholder="Your thoughts ..."
 		name="content"
 		limit={MAX_POST_LENGTH}
+		show_hashtags={true}
 	/>
 	<button class="button" type="submit">Create Post</button>
 </form>

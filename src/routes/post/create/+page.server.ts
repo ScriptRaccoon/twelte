@@ -1,8 +1,8 @@
 import { error, fail, redirect } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from './$types'
 import { post_content_schema } from '$lib/server/schemas'
-import { get_error_msg } from '$lib/utils'
-import { query } from '$lib/server/db'
+import { extract_hashtags, get_error_msg } from '$lib/utils'
+import { db, query } from '$lib/server/db'
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user
@@ -11,6 +11,9 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	default: async (event) => {
+		// TODO: extract this action to an API endpoint
+		// since it will be reused in the reply action
+
 		const user = event.locals.user
 		if (!user) error(401, 'Unauthorized')
 
@@ -28,6 +31,29 @@ export const actions: Actions = {
 
 		if (err) return fail(500, { error: 'Database error', content })
 		const post_id = rows[0]?.id
+
+		const hashtags: string[] = extract_hashtags(content!)
+
+		if (hashtags.length) {
+			const sql_hashtags = `
+			INSERT INTO hashtags (tag)
+			VALUES ${hashtags.map(() => '(?)').join(', ')}
+			ON CONFLICT(tag) DO NOTHING`
+
+			const sql_hashtags_posts = `
+			INSERT INTO post_hashtags (post_id, hashtag)
+			VALUES ${hashtags.map(() => '(?, ?)').join(', ')}`
+
+			try {
+				await db.batch([
+					{ sql: sql_hashtags, args: hashtags },
+					{ sql: sql_hashtags_posts, args: hashtags.flatMap((tag) => [post_id, tag]) }
+				])
+			} catch (err) {
+				console.error('Error inserting hashtags:', err)
+				return fail(500, { error: 'Database error', content })
+			}
+		}
 
 		redirect(302, `/post/${post_id}`)
 	}
