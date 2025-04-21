@@ -1,8 +1,5 @@
 import { error, fail } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from './$types'
-import { post_content_schema } from '$lib/server/schemas'
-import { get_error_msg } from '$lib/utils'
-import { query } from '$lib/server/db'
 import type { Post } from '$lib/types'
 
 export const load: PageServerLoad = async (event) => {
@@ -27,39 +24,20 @@ export const actions: Actions = {
 		const user = event.locals.user
 		if (!user) error(401, 'Unauthorized')
 
-		const post_id = event.params.post_id
-
 		const form_data = await event.request.formData()
 		const content = form_data.get('content') as string | null
-		const post_author_id = form_data.get('post_author_id') as string | null
-		if (!post_author_id) return fail(400, { error: 'Missing post author id' })
 
-		const { error: content_error } = post_content_schema.safeParse(content)
+		const post_id = event.params.post_id
 
-		if (content_error) return fail(400, { error: get_error_msg(content_error), content })
+		const res = await event.fetch('/api/posts', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ content, parent_id: Number(post_id) })
+		})
 
-		const sql = `
-		INSERT INTO posts (author_id, content, parent_id)
-		VALUES (?, ?, ?)
-		RETURNING id as reply_id`
+		const res_json = (await res.json()) as { post_id?: number; message: string }
 
-		const { rows } = await query<{ reply_id: number }>(sql, [user.id, content, post_id])
-
-		if (!rows?.length) return fail(500, { error: 'Database error' })
-
-		const { reply_id } = rows[0]
-
-		const sql_notify = `
-		INSERT INTO reply_notifications (id, user_id)
-		SELECT ?, ?
-		FROM settings
-		WHERE user_id = ? AND reply_notifications_enabled = 1`
-
-		const args = [reply_id, Number(post_author_id), Number(post_author_id)]
-
-		const { success } = await query(sql_notify, args, true)
-
-		if (!success) return fail(500, { error: 'Database error' })
+		if (!res.ok) return fail(res.status, { error: res_json.message, content })
 
 		return { success: true }
 	}

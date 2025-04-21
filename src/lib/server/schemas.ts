@@ -63,7 +63,7 @@ export const name_schema = z
 		message: 'Name must be at most 50 characters long'
 	})
 
-export const post_content_schema = z
+const post_content_schema = z
 	.string({
 		required_error: 'Post content is required',
 		invalid_type_error: 'Post content must be a string'
@@ -71,3 +71,8 @@ export const post_content_schema = z
 	.max(MAX_POST_LENGTH, {
 		message: `Post must be at most ${MAX_POST_LENGTH} characters long`
 	})
+
+export const post_request_schema = z.object({
+	content: post_content_schema,
+	parent_id: z.number({ invalid_type_error: 'Parent ID must be a number' }).optional()
+})

@@ -41,9 +41,8 @@
 				placeholder="Write your reply here..."
 				aria_label="reply content"
 				limit={MAX_POST_LENGTH}
+				initial_content={form?.content ?? ''}
 			/>
-
-			<input type="hidden" name="post_author_id" value={post.author_id} />
 
 			<button class="button" type="submit">Reply</button>
 		</form>
