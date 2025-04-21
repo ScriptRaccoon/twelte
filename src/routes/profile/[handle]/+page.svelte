@@ -17,12 +17,25 @@
 	<span class="handle">@{profile.handle}</span>
 </header>
 
-{#if profile.bio}
-	<span class="small">Bio</span>
-	<div class="bio">
-		{profile.bio}
+<section class="bio-avatar">
+	<div>
+		{#if profile.avatar_url}
+			<img src={profile.avatar_url} alt="Avatar" class="avatar" />
+		{:else}
+			<div class="placeholder">
+				{profile.name[0].toUpperCase()}
+			</div>
+		{/if}
 	</div>
-{/if}
+	{#if profile.bio}
+		<div>
+			<span class="small">Bio</span>
+			<div class="bio">
+				{profile.bio}
+			</div>
+		</div>
+	{/if}
+</section>
 
 <p>
 	{profile.posts_count} posts &bullet;
@@ -77,6 +90,30 @@
 
 	.handle {
 		color: var(--primary-color);
+	}
+
+	.bio-avatar {
+		display: grid;
+		gap: 1.5rem;
+		grid-template-columns: auto 1fr;
+		margin-bottom: 1rem;
+	}
+
+	.placeholder,
+	.avatar {
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+	}
+
+	.placeholder {
+		background-color: var(--secondary-bg-color);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: var(--secondary-font-color);
+		font-size: 45px;
+		font-weight: bold;
 	}
 
 	.bio {

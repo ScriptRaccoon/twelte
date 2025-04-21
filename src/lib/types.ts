@@ -8,6 +8,7 @@ export type Post_DB = {
 	author_id: number
 	author_name: string
 	author_handle: string
+	author_avatar_url: string | null
 	content: string
 	created_at: string
 	likes_count: number
@@ -32,6 +33,7 @@ export type Profile_DB = {
 	name: string
 	handle: string
 	bio: string
+	avatar_url: string | null
 	followers_count: number
 	following_count: number
 	following: 0 | 1
@@ -57,6 +59,7 @@ export type AccountData_DB = {
 	handle: string
 	name: string
 	bio: string
+	avatar_url: string | null
 	like_notifications_enabled: number
 	follow_notifications_enabled: number
 	reply_notifications_enabled: number

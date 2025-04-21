@@ -6,6 +6,7 @@ import { fail } from '@sveltejs/kit'
 import { get_error_msg } from '$lib/utils'
 import bcrypt from 'bcryptjs'
 import { transform_account_data, type AccountData, type AccountData_DB } from '$lib/types'
+import { upload_avatar } from '$lib/server/cloudinary'
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user
@@ -13,7 +14,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const sql = `
 	SELECT
-		email, handle, name, bio,
+		email, handle, name, bio, avatar_url,
 		like_notifications_enabled,
 		follow_notifications_enabled,
 		reply_notifications_enabled
@@ -37,6 +38,42 @@ export const actions: Actions = {
 	logout: async (event) => {
 		event.cookies.delete('jwt', { path: '/' })
 		redirect(302, '/account/login')
+	},
+
+	avatar: async (event) => {
+		const user = event.locals.user
+		if (!user) error(401, 'Unauthorized')
+
+		const form_data = await event.request.formData()
+		const file = form_data.get('avatar') as File | null
+
+		if (!file) return fail(400, { action: 'avatar', error: 'No file provided' })
+
+		const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+		if (file.size > MAX_FILE_SIZE) {
+			return fail(400, { action: 'avatar', error: 'File size exceeds 5MB' })
+		}
+
+		if (!file.size) {
+			return fail(400, { action: 'avatar', error: 'File is empty' })
+		}
+
+		let avatar_url: string | null = null
+
+		try {
+			avatar_url = await upload_avatar(user.id, file)
+		} catch (err) {
+			console.error('Error uploading file', err)
+			return fail(500, { action: 'avatar', error: 'Error uploading file' })
+		}
+
+		const { success } = await query('UPDATE users SET avatar_url = ? WHERE id = ?', [
+			avatar_url,
+			user.id
+		])
+		if (!success) return fail(500, { action: 'avatar', error: 'Database error' })
+
+		return { action: 'avatar', message: 'Avatar updated' }
 	},
 
 	edit: async (event) => {

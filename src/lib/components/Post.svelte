@@ -63,13 +63,21 @@
 
 <article>
 	<div class="header">
-		<div>
+		{#if post.author_avatar_url}
+			<img src={post.author_avatar_url} alt="Avatar" class="avatar" />
+		{:else}
+			<span class="placeholder">
+				{post.author_name[0].toUpperCase()}
+			</span>
+		{/if}
+
+		<span>
 			<a class="profile-link" href="/profile/{post.author_handle}">{post.author_name}</a>
 			&ndash;
 			<span title={post.created_at} class="time">
 				{format_date(post.created_at)}
 			</span>
-		</div>
+		</span>
 
 		{#if is_author}
 			<IconButton icon={faXmark} onclick={delete_post} aria_label="Delete" small={true} />
@@ -112,8 +120,31 @@
 <style>
 	.header {
 		display: flex;
-		justify-content: space-between;
+		align-items: center;
 		padding-right: 0.25rem;
+		gap: 0.5rem;
+	}
+
+	.header :global(button) {
+		margin-left: auto;
+	}
+
+	.avatar,
+	.placeholder {
+		--size: 28px;
+		width: var(--size);
+		height: var(--size);
+		border-radius: 50%;
+	}
+
+	.placeholder {
+		background-color: var(--secondary-bg-color);
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 0.825rem;
+		color: var(--secondary-font-color);
+		font-weight: bold;
 	}
 
 	.profile-link {

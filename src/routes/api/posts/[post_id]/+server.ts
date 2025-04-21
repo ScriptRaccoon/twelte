@@ -12,6 +12,7 @@ SELECT
 	users.id as author_id,
 	users.name as author_name,
 	users.handle as author_handle,
+	users.avatar_url as author_avatar_url,
 	posts.content,
 	posts.created_at,
 	(

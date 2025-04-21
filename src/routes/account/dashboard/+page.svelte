@@ -10,6 +10,13 @@
 
 	// svelte-ignore state_referenced_locally
 	let bio_content = $state(account.bio)
+
+	let files: FileList | null = $state(null)
+	let avatar_form: HTMLFormElement | null = $state(null)
+
+	$effect(() => {
+		if (files?.length) avatar_form?.submit()
+	})
 </script>
 
 <svelte:head>
@@ -17,15 +24,66 @@
 </svelte:head>
 
 <header>
-	<h2>Account</h2>
+	<h2>
+		Account &nbsp;
+		<span class="handle">@{account.handle}</span>
+	</h2>
+
 	<form action="?/logout" method="POST" use:enhance class="form">
 		<button class="button">Logout</button>
 	</form>
 </header>
 
-<section aria-label="basic information">
-	<p class="handle" aria-label="handle">@{account.handle}</p>
+<section aria-label="avatar">
+	<form
+		bind:this={avatar_form}
+		action="?/avatar"
+		method="POST"
+		use:enhance
+		enctype="multipart/form-data"
+		class="avatar-form"
+	>
+		<div>
+			{#if account.avatar_url}
+				<img src={account.avatar_url} alt="Avatar" class="avatar" />
+			{:else}
+				<div class="placeholder"></div>
+			{/if}
+		</div>
 
+		<div>
+			<label for="avatar" class="button">
+				{#if account.avatar_url}
+					Update avatar
+				{:else}
+					Choose avatar
+				{/if}
+			</label>
+			<input
+				type="file"
+				name="avatar"
+				id="avatar"
+				accept="image/*"
+				class="sr-only"
+				bind:files
+			/>
+		</div>
+	</form>
+
+	{#if form?.error && form.action == 'avatar'}
+		<Message type="error">
+			{form.error}
+		</Message>
+	{/if}
+
+	{#if form?.message && form.action === 'avatar'}
+		<Message type="success">
+			{form.message}
+		</Message>
+	{/if}
+</section>
+
+<section aria-label="basic information">
 	<!-- We do not use use:enhance HERE since it is buggy for some reason -->
 	<form action="?/edit" method="POST" class="form">
 		<div class="input-group">
@@ -178,13 +236,15 @@
 </section>
 
 <style>
-	.handle {
-		color: var(--primary-color);
-	}
-
 	header {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	.handle {
+		color: var(--primary-color);
+		font-size: 1rem;
+		font-weight: 400;
 	}
 
 	section {
@@ -193,5 +253,22 @@
 
 	.small {
 		float: right;
+	}
+
+	.placeholder,
+	.avatar {
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+	}
+
+	.placeholder {
+		background-color: var(--secondary-bg-color);
+	}
+
+	.avatar-form {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
 	}
 </style>
