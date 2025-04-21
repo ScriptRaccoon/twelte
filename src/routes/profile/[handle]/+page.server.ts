@@ -104,6 +104,7 @@ SELECT
 		SELECT COUNT(*)
 		FROM posts p
 		WHERE p.author_id = users.id AND p.deleted = 0
+		AND p.parent_id IS NULL
 	) as posts_count
 FROM
 	users
