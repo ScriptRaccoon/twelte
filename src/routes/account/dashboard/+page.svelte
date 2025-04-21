@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
 	import Message from '$lib/components/Message.svelte'
+	import Textarea from '$lib/components/TextareaWithLimit.svelte'
+	import { MAX_BIO_LENGTH } from '$lib/config'
 	import type { AccountData } from '$lib/types'
 
 	let { data, form } = $props()
 	let account: AccountData = $derived(data.account)
 
 	let confirm_deletion = $state(false)
-
-	// svelte-ignore state_referenced_locally
-	let bio_content = $state(account.bio)
 
 	let files: FileList | null = $state(null)
 	let avatar_form: HTMLFormElement | null = $state(null)
@@ -96,17 +95,14 @@
 			<input type="text" id="name" name="name" value={account.name} />
 		</div>
 
-		<div class="input-group">
-			<label for="bio">Bio</label>
-			<textarea
-				id="bio"
-				name="bio"
-				rows="3"
-				bind:value={bio_content}
-				aria-invalid={bio_content.length > 160}>{account.bio}</textarea
-			>
-			<div class="small">{bio_content.length}/160 characters</div>
-		</div>
+		<Textarea
+			label="Bio"
+			name="bio"
+			limit={MAX_BIO_LENGTH}
+			aria_label="bio"
+			rows={3}
+			initial_content={account.bio}
+		/>
 
 		<button class="button" type="submit">Update Profile</button>
 	</form>

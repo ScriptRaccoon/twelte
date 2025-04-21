@@ -1,0 +1,50 @@
+<script lang="ts">
+	type Props = {
+		placeholder?: string
+		limit: number
+		name: string
+		aria_label: string
+		rows?: number
+		label?: string
+		initial_content?: string
+	}
+
+	let {
+		placeholder = '',
+		name,
+		limit,
+		aria_label,
+		rows = 4,
+		label,
+		initial_content = ''
+	}: Props = $props()
+
+	let content = $state(initial_content)
+
+	const id = name + Math.random().toString(36).substring(2, 9)
+</script>
+
+<div class="input-group">
+	{#if label}
+		<label for={id}>{label}</label>
+	{/if}
+	<textarea
+		{id}
+		{name}
+		{rows}
+		{placeholder}
+		aria-invalid={content.length > limit}
+		aria-label={aria_label}
+		bind:value={content}
+		required
+	></textarea>
+	<div class="small">
+		{content.length}/{limit} characters
+	</div>
+</div>
+
+<style>
+	.small {
+		float: right;
+	}
+</style>

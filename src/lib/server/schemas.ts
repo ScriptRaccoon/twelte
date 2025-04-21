@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { MAX_BIO_LENGTH, MAX_POST_LENGTH } from '$lib/config'
+
 export const email_schema = z
 	.string({
 		required_error: 'Email is required',
@@ -45,8 +47,8 @@ export const bio_schema = z
 		invalid_type_error: 'Bio must be a string',
 		required_error: 'Bio is required'
 	})
-	.max(160, {
-		message: 'Bio must be at most 160 characters long'
+	.max(MAX_BIO_LENGTH, {
+		message: `Bio must be at most ${MAX_BIO_LENGTH} characters long`
 	})
 
 export const name_schema = z
@@ -66,6 +68,6 @@ export const post_content_schema = z
 		required_error: 'Post content is required',
 		invalid_type_error: 'Post content must be a string'
 	})
-	.max(280, {
-		message: 'Post must be at most 280 characters long'
+	.max(MAX_POST_LENGTH, {
+		message: `Post must be at most ${MAX_POST_LENGTH} characters long`
 	})

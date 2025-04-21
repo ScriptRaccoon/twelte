@@ -2,12 +2,12 @@
 	import Message from '$lib/components/Message.svelte'
 	import Post from '$lib/components/Post.svelte'
 	import PostList from '$lib/components/PostList.svelte'
+	import TextareaWithLimit from '$lib/components/TextareaWithLimit.svelte'
+	import { MAX_POST_LENGTH } from '$lib/config.js'
 
 	let { data, form } = $props()
 	let post = $derived(data.post)
 	let replies = $derived(data.replies)
-
-	let reply_content = $state('')
 </script>
 
 <svelte:head>
@@ -33,23 +33,15 @@
 
 {#if data.user}
 	<section>
-		<h3 id="reply-title">Your Reply</h3>
+		<h3>Your Reply</h3>
 
 		<form action="?/reply" method="POST">
-			<div class="input-group">
-				<textarea
-					name="content"
-					rows="4"
-					placeholder="Write your reply here..."
-					aria-labelledby="reply-title"
-					aria-invalid={reply_content.length > 280}
-					bind:value={reply_content}
-					required
-				></textarea>
-				<div class="small">
-					{reply_content.length}/280 characters
-				</div>
-			</div>
+			<TextareaWithLimit
+				name="content"
+				placeholder="Write your reply here..."
+				aria_label="reply content"
+				limit={MAX_POST_LENGTH}
+			/>
 
 			<input type="hidden" name="post_author_id" value={post.author_id} />
 
