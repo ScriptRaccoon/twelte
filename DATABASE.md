@@ -66,6 +66,13 @@ erDiagram
     INTEGER reply_notifications_enabled
     TIMESTAMP created_at
   }
+  hashtags {
+    TEXT tag PK
+  }
+  post_hashtags {
+    INTEGER post_id PK
+    TEXT hashtag PK
+  }
   tokens }o--|| users : "user_id → id"
   follows }o--|| users : "followed_id → id"
   follows }o--|| users : "follower_id → id"
@@ -80,4 +87,6 @@ erDiagram
   reply_notifications }o--|| users : "user_id → id"
   reply_notifications }o--|| posts : "id → id"
   settings }o--|| users : "user_id → id"
+  post_hashtags }o--|| hashtags : "hashtag → tag"
+  post_hashtags }o--|| posts : "post_id → id"
 ```
