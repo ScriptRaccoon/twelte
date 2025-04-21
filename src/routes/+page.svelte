@@ -11,10 +11,12 @@
 
 <header>
 	<h2>{title}</h2>
-	{#if data.filter === 'all'}
-		<a href="?filter=following">Following</a>
-	{:else}
-		<a href="?filter=all">All Posts</a>
+	{#if data.user}
+		{#if data.filter === 'all'}
+			<a href="?filter=following">Following</a>
+		{:else}
+			<a href="?filter=all">All Posts</a>
+		{/if}
 	{/if}
 </header>
 
