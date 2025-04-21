@@ -247,10 +247,6 @@
 		margin-bottom: 2rem;
 	}
 
-	.small {
-		float: right;
-	}
-
 	.placeholder,
 	.avatar {
 		width: 100px;

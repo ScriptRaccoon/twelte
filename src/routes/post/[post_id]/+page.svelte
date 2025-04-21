@@ -72,8 +72,4 @@
 	section {
 		margin-bottom: 2rem;
 	}
-
-	.small {
-		float: right;
-	}
 </style>
