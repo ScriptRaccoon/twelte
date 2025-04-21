@@ -7,6 +7,7 @@ import { get_error_msg } from '$lib/utils'
 import bcrypt from 'bcryptjs'
 import { transform_account_data, type AccountData, type AccountData_DB } from '$lib/types'
 import { upload_avatar } from '$lib/server/cloudinary'
+import { MAX_AVATAR_SIZE } from '$lib/config'
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user
@@ -49,8 +50,7 @@ export const actions: Actions = {
 
 		if (!file) return fail(400, { action: 'avatar', error: 'No file provided' })
 
-		const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
-		if (file.size > MAX_FILE_SIZE) {
+		if (file.size > MAX_AVATAR_SIZE) {
 			return fail(400, { action: 'avatar', error: 'File size exceeds 5MB' })
 		}
 
