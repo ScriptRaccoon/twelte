@@ -2,6 +2,9 @@ import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import { query } from '$lib/server/db'
 
+/**
+ * Deletes a reply notification by ID.
+ */
 export const DELETE: RequestHandler = async (event) => {
 	const id = event.params.id
 	if (!event.locals.user) error(401, 'Unauthorized')

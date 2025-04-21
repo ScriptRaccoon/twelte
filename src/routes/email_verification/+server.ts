@@ -2,6 +2,12 @@ import { error, redirect } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import { query } from '$lib/server/db'
 
+/**
+ * Handles the email verification process.
+ * It reads the token from the URL, checks if it's valid,
+ * deletes the token from the database, and updates the
+ * user's email verification status.
+ */
 export const GET: RequestHandler = async (event) => {
 	const token = event.url.searchParams.get('token')
 	if (!token) error(400, 'Invalid Token')
