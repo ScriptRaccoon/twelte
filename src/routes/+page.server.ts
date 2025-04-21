@@ -5,10 +5,12 @@ import type { Post } from '$lib/types'
 export const load: PageServerLoad = async (event) => {
 	const limit = 20
 
-	const res = await event.fetch(`/api/posts?limit=${limit}`)
+	const filter = event.url.searchParams.get('filter') ?? 'all'
+
+	const res = await event.fetch(`/api/posts?limit=${limit}&filter=${filter}`)
 	if (!res.ok) error(res.status, 'Failed to fetch posts')
 
 	const posts: Post[] = await res.json()
 
-	return { posts, limit }
+	return { posts, limit, filter }
 }

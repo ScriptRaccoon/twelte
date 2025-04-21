@@ -6,10 +6,11 @@
 		initial_posts: PostType[]
 		limit?: number
 		author_id?: number // defined when on profile page
-		user_id?: number // defined when authenticated
+		user_id?: number // defined when authenticated,
+		filter?: string
 	}
 
-	let { initial_posts, limit, author_id, user_id }: Props = $props()
+	let { initial_posts, limit, author_id, user_id, filter = 'all' }: Props = $props()
 
 	let posts = $state(initial_posts)
 
@@ -28,7 +29,7 @@
 
 		const url = author_id
 			? `/api/posts/profile/${author_id}?limit=${limit}&offset=${offset}`
-			: `/api/posts?limit=${limit}&offset=${offset}`
+			: `/api/posts?limit=${limit}&offset=${offset}&filter=${filter}`
 
 		const res = await fetch(url)
 
