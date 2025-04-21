@@ -105,7 +105,13 @@ SELECT
 		FROM posts p
 		WHERE p.author_id = users.id AND p.deleted = 0
 		AND p.parent_id IS NULL
-	) as posts_count
+	) as posts_count,
+	(
+		SELECT COUNT(*)
+		FROM posts p
+		WHERE p.author_id = users.id AND p.deleted = 0
+		AND p.parent_id IS NOT NULL
+	) as replies_count
 FROM
 	users
 WHERE

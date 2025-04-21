@@ -39,6 +39,7 @@ export type Profile_DB = {
 	following: 0 | 1
 	followed: 0 | 1
 	posts_count: number
+	replies_count: number
 }
 
 export type Profile = Omit<Profile_DB, 'following' | 'followed'> & {

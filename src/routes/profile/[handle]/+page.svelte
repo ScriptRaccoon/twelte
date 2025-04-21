@@ -39,6 +39,7 @@
 
 <p>
 	{profile.posts_count} posts &bullet;
+	{profile.replies_count} replies &bullet;
 	{profile.followers_count} followers &bullet;
 	{profile.following_count} following
 </p>
