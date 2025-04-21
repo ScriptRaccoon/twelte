@@ -15,7 +15,8 @@
 		"db:shell": "cd database && sqlite3 twelte.db",
 		"db:remote": "turso db shell twelte",
 		"db:kill": "cd database && rm twelte.db",
-		"db:migrate": "cd database && ./run_migrations.sh"
+		"db:migrate": "cd database && ./run_migrations.sh",
+		"db:erd": "tsx database/erd.ts"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-netlify": "^5.0.0",
