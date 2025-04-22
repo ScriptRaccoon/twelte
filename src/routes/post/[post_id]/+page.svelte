@@ -69,6 +69,10 @@
 {/if}
 
 <style>
+	header {
+		display: grid;
+		gap: 0.5rem;
+	}
 	section {
 		margin-bottom: 2rem;
 	}
