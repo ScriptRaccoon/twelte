@@ -6,6 +6,7 @@
 		faInbox,
 		faPencil,
 		faRightToBracket,
+		faSearch,
 		faSliders,
 		faUserAlt
 	} from '@fortawesome/free-solid-svg-icons'
@@ -25,6 +26,9 @@
 			</li>
 			<li>
 				<IconLink href="/hashtags" icon={faHashtag} label="Tags" />
+			</li>
+			<li>
+				<IconLink href="/search" icon={faSearch} label="Search" />
 			</li>
 			{#if user}
 				<li>
