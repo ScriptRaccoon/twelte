@@ -103,8 +103,8 @@
 {/each}
 
 {#each reply_notifications as { id, name, handle, read, content, parent_id } (id)}
-	<div class="notification" class:read>
-		<div>
+	<div class="notification">
+		<div class:secondary={read}>
 			<Fa icon={faComment} /> &nbsp;
 			<a href="/profile/{handle}">{name}</a> has replied to your
 			<a href="/post/{parent_id}">post</a>.
@@ -128,10 +128,6 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: start;
-
-		&.read div {
-			opacity: 0.3;
-		}
 	}
 
 	menu {
