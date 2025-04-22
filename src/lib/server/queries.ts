@@ -90,3 +90,13 @@ ORDER BY
 LIMIT :limit
 OFFSET :offset
 `
+
+export const POSTS_BY_SEARCH_QUERY = `
+${GENERAL_POST_QUERY}
+WHERE
+    posts.content LIKE :search
+ORDER BY
+    posts.created_at DESC
+LIMIT :limit
+OFFSET :offset
+`

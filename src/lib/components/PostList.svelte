@@ -93,10 +93,10 @@
 	{/if}
 
 	{#if has_loaded_all_posts && limit}
-		<p class="secondary">These are all posts.</p>
+		<p class="secondary">These are all posts</p>
 	{/if}
 {:else}
-	<p class="secondary">No posts yet.</p>
+	<p class="secondary">No posts found</p>
 {/if}
 
 <style>
