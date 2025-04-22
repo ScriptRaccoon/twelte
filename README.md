@@ -23,3 +23,7 @@ This is a rough summary of the features of _Twelte_.
 - Page with popular hashtags
 - Notifications
 - Notification settings
+
+## Datebase structure
+
+See [`DATABASE.md`](./DATABASE.md).
