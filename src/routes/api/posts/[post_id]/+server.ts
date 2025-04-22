@@ -2,43 +2,7 @@ import { query } from '$lib/server/db'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import { transform_post, type Post, type Post_DB } from '$lib/types'
-
-/**
- * Queries a specific post.
- */
-const sql = `
-SELECT
-	posts.id as id,
-	users.id as author_id,
-	users.name as author_name,
-	users.handle as author_handle,
-	users.avatar_url as author_avatar_url,
-	posts.content,
-	posts.created_at,
-	(
-		SELECT COUNT(*)
-		FROM likes
-		WHERE likes.post_id = posts.id
-	) as likes_count,
-	EXISTS (
-		SELECT 1
-		FROM likes
-		WHERE likes.post_id = posts.id AND likes.user_id = :user_id
-	) as liked_by_user,
-	(
-		SELECT COUNT(*)
-		FROM posts replies
-		WHERE replies.parent_id = posts.id AND replies.deleted = 0
-	) as replies_count,
-	posts.parent_id as parent_id
-FROM
-	posts
-INNER JOIN
-	users ON posts.author_id = users.id
-WHERE
-	posts.id = :post_id
-	AND posts.deleted = 0
-`
+import { SINGLE_POST_QUERY } from '../queries'
 
 /**
  * Retrieves a specific post.
@@ -48,7 +12,7 @@ export const GET: RequestHandler = async (event) => {
 	const user_id = user ? user.id : 0
 	const post_id = event.params.post_id
 
-	const { rows: posts, success: success_post } = await query<Post_DB>(sql, {
+	const { rows: posts, success: success_post } = await query<Post_DB>(SINGLE_POST_QUERY, {
 		user_id,
 		post_id
 	})
