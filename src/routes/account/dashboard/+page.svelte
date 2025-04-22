@@ -37,14 +37,11 @@
 </svelte:head>
 
 <header class="page-header">
-	<h2>
-		Account &nbsp;
-		<span class="handle">@{account.handle}</span>
-	</h2>
+	<h2>Account</h2>
 
-	<form action="?/logout" method="POST" use:enhance>
-		<button class="button">Logout</button>
-	</form>
+	<span class="handle">@{account.handle}</span>
+
+	<a class="profile-link" href="/profile/{account.handle}">View your Profile</a>
 </header>
 
 <section aria-label="avatar">
@@ -54,9 +51,8 @@
 		method="POST"
 		use:enhance
 		enctype="multipart/form-data"
-		class="avatar-form"
 	>
-		<div>
+		<div class="image-container">
 			{#if account.avatar_url}
 				<img src={account.avatar_url} alt="Avatar" class="avatar" />
 			{:else}
@@ -64,23 +60,14 @@
 			{/if}
 		</div>
 
-		<div>
-			<label for="avatar" class="button">
-				{#if account.avatar_url}
-					Update avatar
-				{:else}
-					Choose avatar
-				{/if}
-			</label>
-			<input
-				type="file"
-				name="avatar"
-				id="avatar"
-				accept="image/*"
-				class="sr-only"
-				bind:files
-			/>
-		</div>
+		<input type="file" name="avatar" id="avatar" accept="image/*" class="sr-only" bind:files />
+		<label for="avatar" class="button">
+			{#if account.avatar_url}
+				Update avatar
+			{:else}
+				Choose avatar
+			{/if}
+		</label>
 	</form>
 
 	{#if form?.error && form.action == 'avatar'}
@@ -220,21 +207,31 @@
 </section>
 
 <section>
-	<h3>Danger Zone</h3>
+	<h3>Manage Account</h3>
 
-	<button class="button" onclick={delete_account}>Delete account</button>
+	<div class="account-options">
+		<button class="button" onclick={delete_account}>Delete account</button>
+
+		<form action="?/logout" method="POST" use:enhance>
+			<button class="button">Logout</button>
+		</form>
+	</div>
 </section>
 
 <style>
 	header {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.profile-link {
+		margin-left: auto;
 	}
 
 	.handle {
 		color: var(--primary-color);
-		font-size: 1rem;
-		font-weight: 400;
 	}
 
 	section {
@@ -242,6 +239,10 @@
 	}
 
 	section h3 {
+		margin-bottom: 1rem;
+	}
+
+	.image-container {
 		margin-bottom: 1rem;
 	}
 
@@ -256,9 +257,9 @@
 		background-color: var(--secondary-bg-color);
 	}
 
-	.avatar-form {
+	.account-options {
 		display: flex;
-		align-items: center;
+		justify-content: space-between;
 		gap: 1rem;
 	}
 </style>

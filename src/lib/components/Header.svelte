@@ -32,9 +32,6 @@
 			</li>
 			{#if user}
 				<li>
-					<IconLink href={`/profile/${user.handle}`} icon={faUserAlt} label="Profile" />
-				</li>
-				<li>
 					<IconLink href="/account/dashboard" icon={faSliders} label="Account" />
 				</li>
 				<li>
