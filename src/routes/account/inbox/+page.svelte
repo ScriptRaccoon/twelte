@@ -62,9 +62,9 @@
 <menu>
 	<p>You have {data.number_unread} unread notifications.</p>
 
-	<!-- {#if data.total_number > 0} -->
-	<IconButton icon={faXmark} onclick={delete_all_notifications}></IconButton>
-	<!-- {/if} -->
+	{#if data.total_number > 0}
+		<IconButton icon={faXmark} onclick={delete_all_notifications}></IconButton>
+	{/if}
 </menu>
 
 {#each follow_notifications as { id, name, handle, read } (id)}
