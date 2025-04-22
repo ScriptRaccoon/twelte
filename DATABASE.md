@@ -13,6 +13,7 @@ erDiagram
     TIMESTAMP last_login
     TIMESTAMP email_verified_at
     TEXT avatar_url
+    TEXT website
   }
   tokens {
     TEXT id PK
