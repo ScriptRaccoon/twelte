@@ -73,7 +73,7 @@
 			<Fa icon={faUserGroup} /> &nbsp;
 			<a href="/profile/{handle}">{name}</a> has started following you.
 		</div>
-		<IconButton small={true} icon={faXmark} onclick={() => delete_follow_notification(id)} />
+		<IconButton variant="small" icon={faXmark} onclick={() => delete_follow_notification(id)} />
 	</div>
 {/each}
 
@@ -86,7 +86,7 @@
 				<a href="/post/{post_id}">{cut_text(content, 50)}</a>
 			</div>
 		</div>
-		<IconButton small={true} icon={faXmark} onclick={() => delete_like_notification(id)} />
+		<IconButton variant="small" icon={faXmark} onclick={() => delete_like_notification(id)} />
 	</div>
 {/each}
 
@@ -100,7 +100,7 @@
 				<a href="/post/{id}">{cut_text(content, 50)}</a>
 			</div>
 		</div>
-		<IconButton small={true} icon={faXmark} onclick={() => delete_reply_notification(id)} />
+		<IconButton variant="small" icon={faXmark} onclick={() => delete_reply_notification(id)} />
 	</div>
 {/each}
 

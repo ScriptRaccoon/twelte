@@ -11,7 +11,7 @@
 		aria_label?: string
 		disabled?: boolean
 		color?: string
-		small?: boolean
+		variant?: 'normal' | 'small'
 	}
 
 	let {
@@ -21,11 +21,11 @@
 		aria_label = '',
 		disabled = false,
 		color = 'currentColor',
-		small = false
+		variant = 'normal'
 	}: Props = $props()
 </script>
 
-<button {onclick} aria-label={aria_label} {disabled} class:small>
+<button {onclick} aria-label={aria_label} {disabled} class={variant}>
 	<Fa {icon} {color} />
 	{@render children?.()}
 </button>
