@@ -8,14 +8,17 @@ export const email_schema = z
 		invalid_type_error: 'Email must be a string'
 	})
 	.email({ message: 'Invalid email address' })
+	.max(320, {
+		message: 'Email must be at most 320 characters long'
+	})
 
 export const password_schema = z
 	.string({
 		required_error: 'Password is required',
 		invalid_type_error: 'Password must be a string'
 	})
-	.min(6, {
-		message: 'Password must be at least 6 characters long'
+	.min(8, {
+		message: 'Password must be at least 8 characters long'
 	})
 	.max(100, {
 		message: 'Password must be at most 100 characters long'
@@ -33,10 +36,10 @@ export const handle_schema = z
 		invalid_type_error: 'Handle must be a string'
 	})
 	.min(1, {
-		message: 'Handle must be at least 1 character long'
+		message: 'Handle cannot be empty'
 	})
-	.max(50, {
-		message: 'Handle must be at most 50 characters long'
+	.max(30, {
+		message: 'Handle must be at most 30 characters long'
 	})
 	.regex(/^[a-z0-9-_]+$/, {
 		message: 'Handle must only contain lowercase letters, numbers, dashes and underscores'
