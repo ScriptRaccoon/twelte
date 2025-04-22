@@ -84,7 +84,6 @@ INNER JOIN
     post_hashtags ON post_hashtags.post_id = posts.id
 WHERE
     post_hashtags.hashtag = :tag
-    AND posts.parent_id IS NULL
 ORDER BY
     posts.created_at DESC
 LIMIT :limit
