@@ -49,16 +49,19 @@ h1,
 h2,
 h3 {
 	font-weight: 500;
+	line-height: 1.2;
 }
 
 h2 {
 	font-size: 1.825rem;
-	padding-block: 0.5rem 1rem;
 }
 
 h3 {
 	font-size: 1.25rem;
-	padding-block: 0.5rem 0.75rem;
+}
+
+.page-header {
+	margin-block: 0.5rem 1rem;
 }
 
 input,
@@ -112,10 +115,6 @@ textarea:focus-visible {
 	input[type='checkbox'] {
 		accent-color: var(--primary-color);
 	}
-}
-
-.form {
-	margin-bottom: 1rem;
 }
 
 .button {

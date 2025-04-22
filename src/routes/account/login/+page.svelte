@@ -23,13 +23,15 @@
 	<title>Twelte - Login</title>
 </svelte:head>
 
-<h2>Login</h2>
+<header class="page-header">
+	<h2>Login</h2>
+</header>
 
 {#if code === 'email_verified'}
 	<Message type="success">Your email has been verified. You can now login.</Message>
 {/if}
 
-<form method="POST" use:enhance class="form" onsubmit={handle_submit}>
+<form method="POST" use:enhance onsubmit={handle_submit}>
 	<div class="input-group">
 		<label for="handle">Handle</label>
 		<input type="text" id="handle" name="handle" required value={form?.handle} />

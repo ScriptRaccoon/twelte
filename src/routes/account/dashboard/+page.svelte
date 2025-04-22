@@ -22,13 +22,13 @@
 	<title>Twelte - Account @{account.handle}</title>
 </svelte:head>
 
-<header>
+<header class="page-header">
 	<h2>
 		Account &nbsp;
 		<span class="handle">@{account.handle}</span>
 	</h2>
 
-	<form action="?/logout" method="POST" use:enhance class="form">
+	<form action="?/logout" method="POST" use:enhance>
 		<button class="button">Logout</button>
 	</form>
 </header>
@@ -84,7 +84,7 @@
 
 <section aria-label="basic information">
 	<!-- We do not use use:enhance HERE since it is buggy for some reason -->
-	<form action="?/edit" method="POST" class="form">
+	<form action="?/edit" method="POST">
 		<div class="input-group">
 			<label for="email">Email</label>
 			<input type="email" id="email" name="email" value={data.account.email} />
@@ -123,7 +123,7 @@
 <section>
 	<h3>Settings</h3>
 
-	<form action="?/settings" method="POST" use:enhance class="form">
+	<form action="?/settings" method="POST" use:enhance>
 		<div class="check-group">
 			<label for="like_notifications">Like Notifications</label>
 			<input
@@ -173,7 +173,7 @@
 <section>
 	<h3>Security</h3>
 
-	<form action="?/password" method="POST" use:enhance class="form">
+	<form action="?/password" method="POST" use:enhance>
 		<div class="input-group">
 			<label for="old_password">Old Password</label>
 			<input type="password" id="old_password" name="old_password" required />
@@ -203,7 +203,7 @@
 <section>
 	<h3>Danger Zone</h3>
 
-	<form action="?/delete" method="POST" use:enhance class="form">
+	<form action="?/delete" method="POST" use:enhance>
 		{#if confirm_deletion}
 			<button class="button" type="submit">Yes! Delete account</button>
 			<button
@@ -245,6 +245,10 @@
 
 	section {
 		margin-bottom: 2rem;
+	}
+
+	section h3 {
+		margin-bottom: 1rem;
 	}
 
 	.placeholder,

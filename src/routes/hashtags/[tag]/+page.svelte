@@ -9,7 +9,9 @@
 </svelte:head>
 
 {#key data.tag}
-	<h2>Posts with #{data.tag}</h2>
+	<header class="page-header">
+		<h2>Posts with #{data.tag}</h2>
+	</header>
 
 	<PostList initial_posts={data.posts} user_id={data.user?.id} />
 {/key}

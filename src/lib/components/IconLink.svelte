@@ -12,8 +12,8 @@
 	let { href, icon, label }: Props = $props()
 </script>
 
-<a {href}>
-	<Fa {icon} /> <span>{label}</span>
+<a {href} aria-label={label}>
+	<Fa {icon} /> <span class="link-label">{label}</span>
 </a>
 
 <style>
@@ -25,7 +25,7 @@
 		text-decoration: none;
 	}
 
-	span {
+	.link-label {
 		margin-left: 0.25rem;
 	}
 </style>

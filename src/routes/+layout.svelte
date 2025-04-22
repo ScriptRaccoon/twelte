@@ -9,9 +9,9 @@
 <div class="wrapper">
 	<Header user={data.user} />
 
-	<div>
+	<main>
 		{@render children?.()}
-	</div>
+	</main>
 
 	<Footer />
 </div>

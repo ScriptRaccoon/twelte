@@ -12,15 +12,16 @@
 </script>
 
 <svelte:head>
-	<title>Twelte - Post by @{post.author_handle}</title>
+	<title>Twelte - Post by {post.author_name}</title>
 </svelte:head>
 
 <section>
-	{#if post.parent_id}
-		<a href="/post/{post.parent_id}"> Back to Parent Post </a>
-	{/if}
-
-	<h2>Post by @{post.author_handle}</h2>
+	<header class="page-header">
+		{#if post.parent_id}
+			<a href="/post/{post.parent_id}"> Back to Parent Post </a>
+		{/if}
+		<h2>Post by {post.author_name}</h2>
+	</header>
 
 	<Post
 		{post}
@@ -70,5 +71,9 @@
 <style>
 	section {
 		margin-bottom: 2rem;
+	}
+
+	section h3 {
+		margin-bottom: 0.5rem;
 	}
 </style>

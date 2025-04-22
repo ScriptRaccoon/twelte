@@ -9,7 +9,7 @@
 	<title>Twelte - Feed</title>
 </svelte:head>
 
-<header>
+<header class="page-header">
 	<h2>{title}</h2>
 	{#if data.user}
 		{#if data.filter === 'all'}

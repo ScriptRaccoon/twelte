@@ -23,6 +23,9 @@
 			<li>
 				<IconLink href="/" icon={faHome} label="Feed" />
 			</li>
+			<li>
+				<IconLink href="/hashtags" icon={faHashtag} label="Tags" />
+			</li>
 			{#if user}
 				<li>
 					<IconLink href={`/profile/${user.handle}`} icon={faUserAlt} label="Profile" />
@@ -31,13 +34,10 @@
 					<IconLink href="/account/dashboard" icon={faSliders} label="Account" />
 				</li>
 				<li>
+					<IconLink href="/account/inbox" icon={faInbox} label="Inbox" />
+				</li>
+				<li>
 					<IconLink href="/post/create" icon={faPencil} label="Post" />
-				</li>
-				<li>
-					<IconLink href="/account/notifications" icon={faInbox} label="Notifications" />
-				</li>
-				<li>
-					<IconLink href="/hashtags" icon={faHashtag} label="Hashtags" />
 				</li>
 			{:else}
 				<li>
@@ -49,17 +49,22 @@
 			{/if}
 		</ul>
 	</nav>
-
 	<h1>Twelte</h1>
 </header>
 
 <style>
 	header {
-		display: flex;
-		justify-content: space-between;
-		align-items: start;
 		padding-block: 1rem;
-		gap: 0.25rem;
+		position: relative;
+	}
+
+	h1 {
+		font-size: 1.5rem;
+		text-transform: uppercase;
+		color: var(--primary-color);
+		position: absolute;
+		top: 1rem;
+		left: calc(100% + 1rem);
 	}
 
 	ul {
@@ -69,17 +74,26 @@
 		gap: 0.5rem 0.75rem;
 	}
 
-	h1 {
-		font-weight: 600;
-		font-size: inherit;
-		text-transform: uppercase;
-		color: var(--primary-color);
-	}
-
-	@media (max-width: 420px) {
-		ul {
-			font-size: 0.825rem;
+	@media (max-width: 900px) {
+		header {
+			display: grid;
+			grid-template-columns: 1fr auto;
 			gap: 0.5rem;
+		}
+
+		header :global(.link-label) {
+			display: none;
+		}
+
+		ul {
+			gap: 0.5rem;
+		}
+
+		h1 {
+			font-size: 1.125rem;
+			position: initial;
+			top: unset;
+			left: unset;
 		}
 	}
 </style>

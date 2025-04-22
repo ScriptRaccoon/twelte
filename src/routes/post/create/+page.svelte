@@ -10,9 +10,11 @@
 	<title>Twelte - New Post</title>
 </svelte:head>
 
-<h2>New Post</h2>
+<header class="page-header">
+	<h2>New Post</h2>
+</header>
 
-<form method="POST" use:enhance class="form">
+<form method="POST" use:enhance>
 	<TextareaWithLimit
 		aria_label="post content"
 		placeholder="Your thoughts ..."

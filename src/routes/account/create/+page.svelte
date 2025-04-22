@@ -20,9 +20,11 @@
 	<title>Twelte - Create Account</title>
 </svelte:head>
 
-<h2>Create an account</h2>
+<header class="page-header">
+	<h2>Create an account</h2>
+</header>
 
-<form method="POST" action="?/register" use:enhance class="form" onsubmit={handle_submit}>
+<form method="POST" action="?/register" use:enhance onsubmit={handle_submit}>
 	<div class="input-group">
 		<label for="email">Email</label>
 		<input
@@ -78,3 +80,9 @@
 		the email to verify your account. After that, you can <a href="/account/login">login</a>.
 	</Message>
 {/if}
+
+<style>
+	form {
+		margin-bottom: 1rem;
+	}
+</style>

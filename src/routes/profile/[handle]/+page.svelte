@@ -12,7 +12,7 @@
 	<title>Twelte - Profile by {profile.name}</title>
 </svelte:head>
 
-<header>
+<header class="page-header">
 	<h2>{profile.name}</h2>
 	<span class="handle">@{profile.handle}</span>
 </header>
@@ -37,7 +37,7 @@
 	{/if}
 </section>
 
-<p>
+<p class="stats">
 	{profile.posts_count} posts &bullet;
 	{profile.replies_count} replies &bullet;
 	{profile.followers_count} followers &bullet;
@@ -61,32 +61,39 @@
 
 {#if data.user && profile.id !== data.user.id}
 	{#if !profile.following}
-		<form action="?/follow" method="POST" use:enhance class="form">
+		<form action="?/follow" method="POST" use:enhance>
 			<input type="hidden" name="followed_id" value={profile.id} />
 			<button class="button">Follow</button>
 		</form>
 	{:else}
-		<form action="?/unfollow" method="POST" use:enhance class="form">
+		<form action="?/unfollow" method="POST" use:enhance>
 			<input type="hidden" name="followed_id" value={profile.id} />
 			<button class="button">Unfollow</button>
 		</form>
 	{/if}
 {/if}
 
-<h3>Posts</h3>
-
-<PostList
-	initial_posts={data.posts}
-	limit={data.limit}
-	user_id={data.user?.id}
-	author_id={profile.id}
-/>
+<section>
+	<h3>Posts</h3>
+	<PostList
+		initial_posts={data.posts}
+		limit={data.limit}
+		user_id={data.user?.id}
+		author_id={profile.id}
+	/>
+</section>
 
 <style>
 	header {
 		display: flex;
-		gap: 1rem;
+		flex-wrap: wrap;
 		align-items: center;
+		gap: 0.2rem 1rem;
+	}
+
+	h3 {
+		margin-top: 1.5rem;
+		margin-bottom: 0.5rem;
 	}
 
 	.handle {
@@ -97,7 +104,7 @@
 		display: grid;
 		gap: 1.5rem;
 		grid-template-columns: auto 1fr;
-		margin-bottom: 1rem;
+		margin-block: 1.5rem;
 	}
 
 	.placeholder,
@@ -122,5 +129,9 @@
 		margin-block: 0.1rem 1rem;
 		padding: 0.4rem 0.8rem;
 		border-radius: 0.25rem;
+	}
+
+	.stats {
+		font-size: 1.125rem;
 	}
 </style>

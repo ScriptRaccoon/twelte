@@ -8,7 +8,7 @@
 	<title>Twelte - Popular Hashtags</title>
 </svelte:head>
 
-<header>
+<header class="page-header">
 	{#if period === 'day'}
 		<h2>Popular Hashtags (Today)</h2>
 		<a href="/hashtags?period=all">All Time</a>
@@ -31,6 +31,18 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+	}
+
+	@media (max-width: 720px) {
+		header {
+			flex-direction: column;
+			align-items: start;
+		}
+
+		header a {
+			margin-left: auto;
+			margin-top: -0.5rem;
+		}
 	}
 
 	.hashtag {

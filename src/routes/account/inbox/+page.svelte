@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation'
 	import IconButton from '$lib/components/IconButton.svelte'
+	import { cut_text } from '$lib/utils.js'
 	import { faComment, faHeart, faUserGroup, faXmark } from '@fortawesome/free-solid-svg-icons'
 	import Fa from 'svelte-fa'
 
@@ -52,7 +53,9 @@
 	<title>Twelte - Notifications ({data.number_unread})</title>
 </svelte:head>
 
-<h2>Notifications</h2>
+<header class="page-header">
+	<h2>Notifications</h2>
+</header>
 
 <menu>
 	<p>You have {data.number_unread} unread notifications.</p>
@@ -78,7 +81,7 @@
 			<Fa icon={faHeart} color="var(--primary-color)" /> &nbsp;
 			<a href="/profile/{handle}">{name}</a> has liked your post.
 			<div class="excerpt">
-				<a href="/post/{post_id}">{content.slice(0, 50)}...</a>
+				<a href="/post/{post_id}">{cut_text(content, 50)}</a>
 			</div>
 		</div>
 		<IconButton small={true} icon={faXmark} onclick={() => delete_like_notification(id)} />
@@ -92,7 +95,7 @@
 			<a href="/profile/{handle}">{name}</a> has replied to your
 			<a href="/post/{parent_id}">post</a>.
 			<div class="excerpt">
-				<a href="/post/{id}">{content.slice(0, 50)}...</a>
+				<a href="/post/{id}">{cut_text(content, 50)}</a>
 			</div>
 		</div>
 		<IconButton small={true} icon={faXmark} onclick={() => delete_reply_notification(id)} />
