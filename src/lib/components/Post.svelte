@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import type { Post as PostType } from '$lib/types'
-	import { format_date, tokenize_hashtags } from '$lib/utils'
+	import { cut_text, format_date, tokenize_hashtags } from '$lib/utils'
 	import { faComment, faHeart } from '@fortawesome/free-regular-svg-icons'
 	import {
 		faHeart as faHeartFilled,
@@ -72,7 +72,9 @@
 		{/if}
 
 		<span>
-			<a class="profile-link" href="/profile/{post.author_handle}">{post.author_name}</a>
+			<a class="profile-link" href="/profile/{post.author_handle}">
+				{cut_text(post.author_name, 20)}
+			</a>
 			&ndash;
 			<span title={post.created_at} class="time">
 				{format_date(post.created_at)}

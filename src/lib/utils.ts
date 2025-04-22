@@ -37,3 +37,8 @@ export function tokenize_hashtags(content: string): { text: string; is_hashtag: 
 
 	return tokens.filter((token) => token.text.trim().length)
 }
+
+export function cut_text(text: string, length: number): string {
+	if (text.length <= length) return text
+	return `${text.slice(0, length)}...`
+}
