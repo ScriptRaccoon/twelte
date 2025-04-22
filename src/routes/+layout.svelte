@@ -3,6 +3,7 @@
 	import Header from '$lib/components/Header.svelte'
 	import Footer from '$lib/components/Footer.svelte'
 	import Dialog from '$lib/components/Dialog.svelte'
+	import ScrollUp from '$lib/components/ScrollUp.svelte'
 
 	let { data, children } = $props()
 </script>
@@ -18,6 +19,7 @@
 </div>
 
 <Dialog />
+<ScrollUp />
 
 <style>
 	.wrapper {
