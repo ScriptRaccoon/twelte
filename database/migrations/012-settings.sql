@@ -5,10 +5,4 @@ CREATE TABLE IF NOT EXISTS settings (
     reply_notifications_enabled INTEGER DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-)
-INSERT INTO
-    SETTINGS (user_id)
-VALUES
-    (1),
-    (2),
-    (3);
+);
