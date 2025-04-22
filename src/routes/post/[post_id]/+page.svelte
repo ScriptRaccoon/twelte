@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation'
 	import Message from '$lib/components/Message.svelte'
 	import Post from '$lib/components/Post.svelte'
 	import PostList from '$lib/components/PostList.svelte'
@@ -25,9 +26,7 @@
 		{post}
 		is_author={data.user?.id === post.author_id}
 		authenticated={!!data.user}
-		handle_deletion={() => {
-			window.history.back()
-		}}
+		handle_deletion={() => goto('/')}
 	/>
 </section>
 

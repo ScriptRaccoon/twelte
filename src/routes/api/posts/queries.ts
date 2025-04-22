@@ -22,7 +22,7 @@ SELECT
     (
         SELECT COUNT(*)
         FROM posts replies
-        WHERE replies.parent_id = posts.id AND replies.deleted = 0
+        WHERE replies.parent_id = posts.id
     ) as replies_count
 FROM
     posts
@@ -33,8 +33,7 @@ INNER JOIN
 export const ALL_POSTS_QUERY = `
 ${GENERAL_POST_QUERY}
 WHERE
-    posts.deleted = 0
-    AND posts.parent_id IS NULL
+    posts.parent_id IS NULL
 ORDER BY
     posts.created_at DESC
 LIMIT :limit
@@ -46,8 +45,7 @@ ${GENERAL_POST_QUERY}
 INNER JOIN
     follows ON follows.followed_id = posts.author_id
 WHERE
-    posts.deleted = 0
-    AND follows.follower_id = :user_id
+    follows.follower_id = :user_id
     AND posts.parent_id IS NULL
 ORDER BY
     posts.created_at DESC
@@ -59,14 +57,12 @@ export const SINGLE_POST_QUERY = `
 ${GENERAL_POST_QUERY}
 WHERE
     posts.id = :post_id
-    AND posts.deleted = 0
 `
 
 export const REPLIES_QUERY = `
 ${GENERAL_POST_QUERY}
 WHERE
     posts.parent_id = :parent_id
-    AND posts.deleted = 0
 ORDER BY
     posts.created_at DESC
 `
@@ -74,8 +70,7 @@ ORDER BY
 export const POSTS_BY_AUTHOR_QUERY = `
 ${GENERAL_POST_QUERY}
 WHERE
-    posts.deleted = 0
-    AND posts.author_id = :author_id
+    posts.author_id = :author_id
     AND posts.parent_id IS NULL
 ORDER BY
     posts.created_at DESC

@@ -35,7 +35,7 @@ export const DELETE: RequestHandler = async (event) => {
 
 	const post_id = event.params.post_id
 
-	const sql = 'UPDATE POSTS SET deleted = 1 WHERE id = ? AND author_id = ?'
+	const sql = 'DELETE FROM POSTS WHERE id = ? AND author_id = ?'
 
 	const { err } = await query(sql, [post_id, user.id])
 

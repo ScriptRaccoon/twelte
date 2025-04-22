@@ -32,7 +32,6 @@ erDiagram
     INTEGER author_id
     TEXT content
     TIMESTAMP created_at
-    INTEGER deleted
     INTEGER parent_id
   }
   likes {
