@@ -47,6 +47,10 @@ a {
 	text-underline-offset: 2px;
 }
 
+.link {
+	color: var(--link-color);
+}
+
 h1,
 h2,
 h3 {

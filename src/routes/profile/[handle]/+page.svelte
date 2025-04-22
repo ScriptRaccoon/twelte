@@ -33,6 +33,11 @@
 			<div class="bio">
 				{profile.bio}
 			</div>
+			{#if profile.website}
+				<a class="link" href={profile.website} target="_blank" rel="noopener noreferrer">
+					{profile.website}
+				</a>
+			{/if}
 		</div>
 	{/if}
 </section>

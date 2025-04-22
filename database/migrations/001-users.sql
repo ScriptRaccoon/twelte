@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP,
     email_verified_at TIMESTAMP,
-    avatar_url TEXT
+    avatar_url TEXT,
+    website TEXT
 );
 
 CREATE INDEX idx_users_handle ON users (handle);

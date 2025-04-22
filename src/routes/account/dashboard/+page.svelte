@@ -118,6 +118,11 @@
 			initial_content={account.bio}
 		/>
 
+		<div class="input-group">
+			<label for="website">Website</label>
+			<input type="url" id="website" name="website" value={account.website} />
+		</div>
+
 		<button class="button" type="submit">Update Profile</button>
 	</form>
 

@@ -34,6 +34,7 @@ export type Profile_DB = {
 	handle: string
 	bio: string
 	avatar_url: string | null
+	website: string | null
 	followers_count: number
 	following_count: number
 	following: 0 | 1
@@ -61,6 +62,7 @@ export type AccountData_DB = {
 	name: string
 	bio: string
 	avatar_url: string | null
+	website: string | null
 	like_notifications_enabled: number
 	follow_notifications_enabled: number
 	reply_notifications_enabled: number

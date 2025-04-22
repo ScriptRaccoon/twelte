@@ -77,6 +77,12 @@ export const name_schema = z
 		message: 'Name cannot contain consecutive spaces'
 	})
 
+export const website_schema = z
+	.string({ invalid_type_error: 'Website must be a string' })
+	.url({ message: 'Invalid URL' })
+	.max(200, { message: 'Website must be at most 200 characters long' })
+	.nullable()
+
 const post_content_schema = z
 	.string({
 		required_error: 'Post content is required',

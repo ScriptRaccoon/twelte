@@ -186,8 +186,4 @@
 		align-items: center;
 		gap: 0.5rem;
 	}
-
-	.link {
-		color: var(--link-color);
-	}
 </style>

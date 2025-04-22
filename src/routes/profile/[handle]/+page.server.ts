@@ -80,6 +80,7 @@ SELECT
 	handle,
 	bio,
 	avatar_url,
+	website,
 	(
 		SELECT COUNT(*)
 		FROM follows f

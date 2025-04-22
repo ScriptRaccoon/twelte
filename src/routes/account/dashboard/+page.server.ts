@@ -1,7 +1,13 @@
 import { error, redirect } from '@sveltejs/kit'
 import type { Actions, PageServerLoad } from './$types'
 import { query } from '$lib/server/db'
-import { bio_schema, name_schema, email_schema, password_schema } from '$lib/server/schemas'
+import {
+	bio_schema,
+	name_schema,
+	email_schema,
+	password_schema,
+	website_schema
+} from '$lib/server/schemas'
 import { fail } from '@sveltejs/kit'
 import { get_error_msg } from '$lib/utils'
 import bcrypt from 'bcryptjs'
@@ -15,7 +21,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const sql = `
 	SELECT
-		email, handle, name, bio, avatar_url,
+		email, handle, name, bio, avatar_url, website,
 		like_notifications_enabled,
 		follow_notifications_enabled,
 		reply_notifications_enabled
@@ -85,6 +91,7 @@ export const actions: Actions = {
 		const email = form_data.get('email') as string | null
 		const name = form_data.get('name') as string | null
 		const bio = (form_data.get('bio') ?? '') as string
+		const website = (form_data.get('website') || null) as string | null
 
 		const { error: email_error } = email_schema.safeParse(email)
 		if (email_error) return fail(400, { action: 'edit', error: get_error_msg(email_error) })
@@ -95,8 +102,21 @@ export const actions: Actions = {
 		const { error: bio_error, data: parsed_bio } = bio_schema.safeParse(bio)
 		if (bio_error) return fail(400, { action: 'edit', error: get_error_msg(bio_error) })
 
-		const sql = 'UPDATE users SET email = ?, name = ?, bio = ? WHERE id = ?'
-		const { err } = await query(sql, [email, name, parsed_bio, user.id])
+		const { error: website_error } = website_schema.safeParse(website)
+		if (website_error) return fail(400, { action: 'edit', error: get_error_msg(website_error) })
+
+		const sql = `
+		UPDATE
+			users
+		SET
+			email = ?,
+			name = ?,
+			bio = ?,
+			website = ?
+		WHERE id = ?
+		`
+
+		const { err } = await query(sql, [email, name, parsed_bio, website, user.id])
 
 		if (err) {
 			if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
