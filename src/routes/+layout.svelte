@@ -2,6 +2,7 @@
 	import './app.css'
 	import Header from '$lib/components/Header.svelte'
 	import Footer from '$lib/components/Footer.svelte'
+	import Dialog from '$lib/components/Dialog.svelte'
 
 	let { data, children } = $props()
 </script>
@@ -15,6 +16,8 @@
 
 	<Footer />
 </div>
+
+<Dialog />
 
 <style>
 	.wrapper {

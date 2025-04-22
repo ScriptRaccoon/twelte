@@ -182,17 +182,5 @@ export const actions: Actions = {
 		if (!success) return fail(500, { action: 'password', error: 'Database error' })
 
 		return { action: 'password', message: 'Password updated' }
-	},
-
-	delete: async (event) => {
-		const user = event.locals.user
-		if (!user) error(401, 'Unauthorized')
-
-		const { err } = await query('DELETE FROM users WHERE id = ?', [user.id])
-		if (err) return fail(500, { action: 'delete', error: 'Database error' })
-
-		event.cookies.delete('jwt', { path: '/' })
-
-		redirect(302, '/')
 	}
 }

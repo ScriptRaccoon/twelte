@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
+	import { goto } from '$app/navigation'
+	import { open_dialog } from '$lib/components/Dialog.svelte'
 	import Message from '$lib/components/Message.svelte'
 	import Textarea from '$lib/components/TextareaWithLimit.svelte'
 	import { MAX_BIO_LENGTH } from '$lib/config'
@@ -8,14 +10,26 @@
 	let { data, form } = $props()
 	let account: AccountData = $derived(data.account)
 
-	let confirm_deletion = $state(false)
-
 	let files: FileList | null = $state(null)
 	let avatar_form: HTMLFormElement | null = $state(null)
 
 	$effect(() => {
 		if (files?.length) avatar_form?.submit()
 	})
+
+	function delete_account() {
+		open_dialog({
+			text: 'Are you sure that you want to delete your account? This will erase all posts and data associated to your account. It cannot be undone.',
+			modal: true,
+			confirm: {
+				text: 'Delete',
+				action: async () => {
+					const res = await fetch('/api/account', { method: 'DELETE' })
+					if (res.ok) goto('/', { invalidateAll: true })
+				}
+			}
+		})
+	}
 </script>
 
 <svelte:head>
@@ -203,32 +217,7 @@
 <section>
 	<h3>Danger Zone</h3>
 
-	<form action="?/delete" method="POST" use:enhance>
-		{#if confirm_deletion}
-			<button class="button" type="submit">Yes! Delete account</button>
-			<button
-				class="button"
-				type="button"
-				onclick={() => {
-					confirm_deletion = false
-				}}>Cancel</button
-			>
-		{:else}
-			<button
-				class="button"
-				type="button"
-				onclick={() => {
-					confirm_deletion = true
-				}}
-			>
-				Delete account
-			</button>
-		{/if}
-	</form>
-
-	{#if confirm_deletion}
-		<Message type="warning">Are you sure? This cannot be undone!</Message>
-	{/if}
+	<button class="button" onclick={delete_account}>Delete account</button>
 </section>
 
 <style>

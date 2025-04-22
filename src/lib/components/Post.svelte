@@ -11,6 +11,7 @@
 	} from '@fortawesome/free-solid-svg-icons'
 	import IconButton from './IconButton.svelte'
 	import { page } from '$app/state'
+	import { open_dialog } from './Dialog.svelte'
 
 	type Props = {
 		post: PostType
@@ -41,14 +42,18 @@
 		post.liked_by_user = false
 	}
 
-	async function delete_post() {
-		const confirmed = confirm('Are you sure you want to delete this post?')
-		if (!confirmed) return
-
-		const res = await fetch(`/api/posts/${post.id}`, { method: 'DELETE' })
-		if (!res.ok) return
-
-		handle_deletion()
+	function delete_post() {
+		open_dialog({
+			modal: true,
+			text: 'Are you sure you want to delete this post?',
+			confirm: {
+				text: 'Delete',
+				action: async () => {
+					const res = await fetch(`/api/posts/${post.id}`, { method: 'DELETE' })
+					if (res.ok) handle_deletion()
+				}
+			}
+		})
 	}
 
 	async function copy_url() {

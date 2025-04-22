@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation'
+	import { open_dialog } from '$lib/components/Dialog.svelte'
 	import IconButton from '$lib/components/IconButton.svelte'
 	import { cut_text } from '$lib/utils.js'
 	import { faComment, faHeart, faUserGroup, faXmark } from '@fortawesome/free-solid-svg-icons'
@@ -35,17 +36,18 @@
 	}
 
 	async function delete_all_notifications() {
-		const confirmed = confirm(
-			`Are you sure you want to delete all ${data.total_number} notifications?`
-		)
-		if (!confirmed) return
-
-		const res = await fetch('/api/notifications', { method: 'DELETE' })
-
-		if (res.ok) {
-			invalidateAll()
-		}
-		// TODO: error handling
+		open_dialog({
+			text: `Are you sure you want to delete all ${data.total_number} notifications?`,
+			modal: true,
+			confirm: {
+				text: 'Delete',
+				action: async () => {
+					const res = await fetch('/api/notifications', { method: 'DELETE' })
+					if (res.ok) invalidateAll()
+					// TODO: error handling
+				}
+			}
+		})
 	}
 </script>
 
@@ -60,9 +62,9 @@
 <menu>
 	<p>You have {data.number_unread} unread notifications.</p>
 
-	{#if data.total_number > 0}
-		<IconButton icon={faXmark} onclick={delete_all_notifications}></IconButton>
-	{/if}
+	<!-- {#if data.total_number > 0} -->
+	<IconButton icon={faXmark} onclick={delete_all_notifications}></IconButton>
+	<!-- {/if} -->
 </menu>
 
 {#each follow_notifications as { id, name, handle, read } (id)}
