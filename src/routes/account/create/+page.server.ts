@@ -49,7 +49,7 @@ export const actions: Actions = {
 
 		if (err_settings) {
 			console.error('Settings could not be created')
-			// TODO: in this case, remove user again from users table
+			await query('DELETE FROM users WHERE id = ?', [user_id])
 			return fail(500, { error: 'Database error', email, handle })
 		}
 
@@ -79,7 +79,6 @@ export const actions: Actions = {
 		)
 
 		if (!email_sent) {
-			// TODO: give user option to resend email
 			return fail(500, {
 				error: 'Verification Email could not be sent',
 				email,

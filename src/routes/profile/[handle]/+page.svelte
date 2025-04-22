@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms'
+	import Message from '$lib/components/Message.svelte'
 	import PostList from '$lib/components/PostList.svelte'
 	import type { Profile } from '$lib/types'
 
-	let { data } = $props()
+	let { data, form } = $props()
 
 	let profile: Profile = $derived(data.profile)
 </script>
@@ -75,6 +76,12 @@
 			<input type="hidden" name="followed_id" value={profile.id} />
 			<button class="button">Unfollow</button>
 		</form>
+	{/if}
+
+	{#if form?.error}
+		<Message type="error">
+			{form.error}
+		</Message>
 	{/if}
 {/if}
 

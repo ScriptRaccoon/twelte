@@ -2,6 +2,7 @@
 	import { invalidateAll } from '$app/navigation'
 	import { open_dialog } from '$lib/components/Dialog.svelte'
 	import IconButton from '$lib/components/IconButton.svelte'
+	import Message from '$lib/components/Message.svelte'
 	import { cut_text } from '$lib/utils.js'
 	import { faComment, faHeart, faUserGroup, faXmark } from '@fortawesome/free-solid-svg-icons'
 	import Fa from 'svelte-fa'
@@ -10,32 +11,40 @@
 	let follow_notifications = $derived(data.follow_notifications)
 	let like_notifications = $derived(data.like_notifications)
 	let reply_notifications = $derived(data.reply_notifications)
+	let error_message = $state<null | string>(null)
 
 	async function delete_follow_notification(id: number) {
+		error_message = null
 		const res = await fetch(`/api/notifications/follow/${id}`, { method: 'DELETE' })
 		if (res.ok) {
 			invalidateAll()
+		} else {
+			error_message = 'Failed to delete notification'
 		}
-		// TODO: error handling
 	}
 
 	async function delete_like_notification(id: number) {
+		error_message = null
 		const res = await fetch(`/api/notifications/like/${id}`, { method: 'DELETE' })
 		if (res.ok) {
 			invalidateAll()
+		} else {
+			error_message = 'Failed to delete notification'
 		}
-		// TODO: error handling
 	}
 
 	async function delete_reply_notification(id: number) {
+		error_message = null
 		const res = await fetch(`/api/notifications/reply/${id}`, { method: 'DELETE' })
 		if (res.ok) {
 			invalidateAll()
+		} else {
+			error_message = 'Failed to delete notification'
 		}
-		// TODO: error handling
 	}
 
 	async function delete_all_notifications() {
+		error_message = null
 		open_dialog({
 			text: `Are you sure you want to delete all ${data.total_number} notifications?`,
 			modal: true,
@@ -43,8 +52,11 @@
 				text: 'Delete',
 				action: async () => {
 					const res = await fetch('/api/notifications', { method: 'DELETE' })
-					if (res.ok) invalidateAll()
-					// TODO: error handling
+					if (res.ok) {
+						invalidateAll()
+					} else {
+						error_message = 'Failed to delete notifications'
+					}
 				}
 			}
 		})
@@ -103,6 +115,12 @@
 		<IconButton variant="small" icon={faXmark} onclick={() => delete_reply_notification(id)} />
 	</div>
 {/each}
+
+{#if error_message}
+	<Message type="error">
+		{error_message}
+	</Message>
+{/if}
 
 <style>
 	.notification {

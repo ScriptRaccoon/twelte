@@ -32,7 +32,6 @@ export const actions: Actions = {
 		const { rows } = await query<{ id: number }>(sql, [user.id, followed_id_num])
 
 		if (!rows?.length) return fail(500, { error: 'Database error' })
-		// TODO: display error in UI
 
 		const { id } = rows[0]
 
@@ -47,7 +46,6 @@ export const actions: Actions = {
 		const { success } = await query(sql_notify, args)
 
 		if (!success) return fail(500, { error: 'Database error' })
-		// TODO: display error in UI
 
 		return { success }
 	},
@@ -64,7 +62,6 @@ export const actions: Actions = {
 
 		const sql = 'DELETE FROM follows WHERE follower_id = ? AND followed_id = ?'
 		const { success } = await query(sql, [user.id, followed_id_num])
-		// TODO: display error in UI
 
 		return { success }
 	}

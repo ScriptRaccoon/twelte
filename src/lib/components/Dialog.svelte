@@ -1,30 +1,28 @@
 <!-- https://github.com/ScriptRaccoon/dialog-svelte -->
 
-<!-- TODO: rewrite to Svelte 5 -->
-
 <script lang="ts" context="module">
 	import { get, writable } from 'svelte/store'
 
 	let dialog: HTMLDialogElement
 
-	const dialog_state = writable<Dialog_State | null>(null)
+	const dialog_state = writable<DialogState | null>(null)
 	const visible = writable<boolean>(false)
 
-	type Dialog_State = {
+	type DialogState = {
 		confirm?: { text: string; action: () => void } | null
 		cancel?: { text: string; action: () => void } | null
 		modal: boolean
 		text: string
 	}
 
-	const DEFAULT_STATE: Dialog_State = {
+	const DEFAULT_STATE: DialogState = {
 		confirm: { text: 'Ok', action: () => {} },
 		cancel: { text: 'Cancel', action: () => {} },
 		modal: false,
 		text: ''
 	}
 
-	export function open_dialog(options: Partial<Dialog_State>): void {
+	export function open_dialog(options: Partial<DialogState>): void {
 		const all_options = { ...DEFAULT_STATE, ...options }
 		dialog_state.set(all_options)
 
