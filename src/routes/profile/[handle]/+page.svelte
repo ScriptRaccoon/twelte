@@ -82,9 +82,9 @@
 	<h3>Posts</h3>
 	<PostList
 		initial_posts={data.posts}
-		limit={data.limit}
 		user_id={data.user?.id}
-		author_id={profile.id}
+		limit={data.limit}
+		fetch_more_url="/api/posts/profile/{profile.id}"
 	/>
 </section>
 

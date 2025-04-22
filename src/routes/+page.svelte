@@ -25,7 +25,7 @@
 		initial_posts={data.posts}
 		limit={data.limit}
 		user_id={data.user?.id}
-		filter={data.filter}
+		fetch_more_url={`/api/posts?filter=${data.filter}`}
 	/>
 {/key}
 

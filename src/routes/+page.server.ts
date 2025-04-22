@@ -7,7 +7,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const filter = event.url.searchParams.get('filter') ?? 'all'
 
-	const res = await event.fetch(`/api/posts?limit=${limit}&filter=${filter}`)
+	const res = await event.fetch(`/api/posts?filter=${filter}&limit=${limit}`)
 	if (!res.ok) error(res.status, 'Failed to fetch posts')
 
 	const posts: Post[] = await res.json()

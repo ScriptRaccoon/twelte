@@ -87,4 +87,6 @@ WHERE
     AND posts.parent_id IS NULL
 ORDER BY
     posts.created_at DESC
+LIMIT :limit
+OFFSET :offset
 `

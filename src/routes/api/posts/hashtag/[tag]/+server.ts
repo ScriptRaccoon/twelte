@@ -13,10 +13,11 @@ export const GET: RequestHandler = async (event) => {
 
 	const tag = event.params.tag
 
-	const { rows: posts, success } = await query<Post_DB>(POSTS_BY_HASHTAG_QUERY, {
-		user_id,
-		tag
-	})
+	const limit = event.url.searchParams.get('limit') ?? '10'
+	const offset = event.url.searchParams.get('offset') ?? '0'
+
+	const args = { user_id, tag, limit, offset }
+	const { rows: posts, success } = await query<Post_DB>(POSTS_BY_HASHTAG_QUERY, args)
 
 	if (!success) error(500, 'Database error')
 

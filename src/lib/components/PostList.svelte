@@ -4,13 +4,12 @@
 
 	type Props = {
 		initial_posts: PostType[]
-		limit?: number
-		author_id?: number // defined when on profile page
 		user_id?: number // defined when authenticated,
-		filter?: string
+		fetch_more_url?: string
+		limit?: number
 	}
 
-	let { initial_posts, limit, author_id, user_id, filter = 'all' }: Props = $props()
+	let { initial_posts, user_id, fetch_more_url, limit }: Props = $props()
 
 	let posts = $state(initial_posts)
 
@@ -21,15 +20,17 @@
 	let is_loading = $state(false)
 
 	async function load_more() {
-		if (!limit) return
+		if (!fetch_more_url || !limit) return
 		if (is_loading || has_loaded_all_posts) return
-		is_loading = true
 
+		is_loading = true
 		offset += limit
 
-		const url = author_id
-			? `/api/posts/profile/${author_id}?limit=${limit}&offset=${offset}`
-			: `/api/posts?limit=${limit}&offset=${offset}&filter=${filter}`
+		const search_params = new URLSearchParams(fetch_more_url.split('?')[1] || '')
+		search_params.set('offset', offset.toString())
+		search_params.set('limit', limit.toString())
+
+		const url = `${fetch_more_url.split('?')[0]}?${search_params.toString()}`
 
 		const res = await fetch(url)
 
@@ -38,8 +39,8 @@
 			is_loading = false
 			return
 		}
-		const new_posts: PostType[] = await res.json()
 
+		const new_posts: PostType[] = await res.json()
 		posts = [...posts, ...new_posts]
 
 		if (!new_posts.length) {
