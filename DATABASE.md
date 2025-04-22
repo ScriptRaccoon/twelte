@@ -72,6 +72,7 @@ erDiagram
   post_hashtags {
     INTEGER post_id PK
     TEXT hashtag PK
+    TIMESTAMP created_at
   }
   tokens }o--|| users : "user_id → id"
   follows }o--|| users : "followed_id → id"
