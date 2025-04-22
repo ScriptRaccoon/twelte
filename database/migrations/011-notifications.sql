@@ -1,7 +1,6 @@
 CREATE TABLE IF NOT EXISTS follow_notifications (
     id INTEGER PRIMARY KEY,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    -- TODO: rename user_id to recipient_id
     user_id INTEGER NOT NULL,
     read INTEGER DEFAULT 0,
     FOREIGN KEY (id) REFERENCES follows (id) ON DELETE CASCADE,
@@ -11,7 +10,6 @@ CREATE TABLE IF NOT EXISTS follow_notifications (
 CREATE TABLE IF NOT EXISTS like_notifications (
     id INTEGER PRIMARY KEY,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    -- TODO: rename user_id to recipient_id
     user_id INTEGER NOT NULL,
     read INTEGER DEFAULT 0,
     FOREIGN KEY (id) REFERENCES likes (id) ON DELETE CASCADE,
@@ -21,7 +19,6 @@ CREATE TABLE IF NOT EXISTS like_notifications (
 CREATE TABLE IF NOT EXISTS reply_notifications (
     id INTEGER PRIMARY KEY,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    -- TODO: rename user_id to recipient_id
     user_id INTEGER NOT NULL,
     read INTEGER DEFAULT 0,
     FOREIGN KEY (id) REFERENCES posts (id) ON DELETE CASCADE,

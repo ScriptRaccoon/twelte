@@ -10,3 +10,7 @@ CREATE TABLE IF NOT EXISTS posts (
 );
 
 CREATE INDEX idx_posts_created_at ON posts (created_at);
+
+CREATE INDEX idx_posts_author_id ON posts (author_id);
+
+CREATE INDEX idx_posts_parent_id ON posts (parent_id);

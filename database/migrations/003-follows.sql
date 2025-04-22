@@ -7,3 +7,7 @@ CREATE TABLE IF NOT EXISTS follows (
     FOREIGN KEY (follower_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (followed_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
+CREATE INDEX idx_follows_follower_id ON follows (follower_id);
+
+CREATE INDEX idx_follows_followed_id ON follows (followed_id);
