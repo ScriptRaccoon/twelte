@@ -25,7 +25,7 @@
 	}: Props = $props()
 </script>
 
-<button {onclick} aria-label={aria_label} {disabled} class={variant}>
+<button {onclick} aria-label={aria_label} {disabled} class="v-{variant}">
 	<Fa {icon} {color} />
 	{@render children?.()}
 </button>
@@ -42,7 +42,7 @@
 		cursor: initial;
 	}
 
-	button.small {
+	button.v-small {
 		padding: 0rem 0.4rem;
 		font-size: 0.825rem;
 	}

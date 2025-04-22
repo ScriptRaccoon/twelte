@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
 	import type { Post as PostType } from '$lib/types'
 	import { cut_text, format_date, tokenize_content } from '$lib/utils'
 	import { faComment, faHeart } from '@fortawesome/free-regular-svg-icons'
@@ -12,6 +11,7 @@
 	import IconButton from './IconButton.svelte'
 	import { page } from '$app/state'
 	import { open_dialog } from './Dialog.svelte'
+	import IconLink from './IconLink.svelte'
 
 	type Props = {
 		post: PostType
@@ -114,15 +114,12 @@
 			</span>
 		</IconButton>
 
-		<IconButton
+		<IconLink
+			href="/post/{post.id}"
 			icon={post.replies_count ? faCommentFilled : faComment}
-			onclick={() => goto(`/post/${post.id}`)}
-			aria_label="Reply"
-		>
-			<span aria-label="number of replies">
-				{post.replies_count}
-			</span>
-		</IconButton>
+			label={post.replies_count.toString()}
+			variant="small"
+		></IconLink>
 
 		<IconButton icon={faShare} onclick={copy_url} aria_label="Copy post URL" />
 
