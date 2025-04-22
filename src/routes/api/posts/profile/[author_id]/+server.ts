@@ -2,7 +2,7 @@ import { query } from '$lib/server/db'
 import { transform_post, type Post_DB, type Post } from '$lib/types'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
-import { POSTS_BY_AUTHOR_QUERY } from '../../queries'
+import { POSTS_BY_AUTHOR_QUERY } from '$lib/server/queries'
 
 export const GET: RequestHandler = async (event) => {
 	const user = event.locals.user

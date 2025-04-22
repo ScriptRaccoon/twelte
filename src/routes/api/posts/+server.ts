@@ -4,7 +4,7 @@ import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import { post_request_schema } from '$lib/server/schemas'
 import { extract_hashtags, get_error_msg } from '$lib/utils'
-import { ALL_POSTS_QUERY, FOLLOWED_POSTS_QUERY } from './queries'
+import { ALL_POSTS_QUERY, FOLLOWED_POSTS_QUERY } from '$lib/server/queries'
 
 /**
  * Retrieves all posts

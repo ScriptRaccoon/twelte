@@ -1,7 +1,7 @@
 import { query } from '$lib/server/db'
 import { transform_post, type Post_DB, type Post } from '$lib/types'
 import { error, json } from '@sveltejs/kit'
-import { POSTS_BY_HASHTAG_QUERY } from '../../queries'
+import { POSTS_BY_HASHTAG_QUERY } from '$lib/server/queries'
 import type { RequestHandler } from './$types'
 
 /**

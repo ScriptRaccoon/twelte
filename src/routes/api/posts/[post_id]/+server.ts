@@ -2,7 +2,7 @@ import { query } from '$lib/server/db'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 import { transform_post, type Post, type Post_DB } from '$lib/types'
-import { SINGLE_POST_QUERY } from '../queries'
+import { SINGLE_POST_QUERY } from '$lib/server/queries'
 
 /**
  * Retrieves a specific post.

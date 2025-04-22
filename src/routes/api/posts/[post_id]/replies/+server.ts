@@ -2,7 +2,7 @@ import { query } from '$lib/server/db'
 import { transform_post, type Post_DB, type Post } from '$lib/types'
 import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
-import { REPLIES_QUERY } from '../../queries'
+import { REPLIES_QUERY } from '$lib/server/queries'
 
 /**
  * Retrieves all replies to a specific post.

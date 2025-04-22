@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import type { Actions } from './$types'
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '$env/static/private'
-import type { PageServerLoad } from '../$types'
+import type { PageServerLoad } from './$types'
 
 export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user
