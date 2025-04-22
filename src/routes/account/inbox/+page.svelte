@@ -126,6 +126,7 @@
 		color: var(--secondary-font-color);
 		margin-block: 0.25rem;
 		padding-left: 1.75rem;
+
 		a {
 			text-decoration: none;
 		}

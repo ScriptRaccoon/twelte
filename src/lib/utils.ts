@@ -20,25 +20,47 @@ export function format_date(date: string): string {
 	return format(then, 'dd.MM.yyyy')
 }
 
+export function cut_text(text: string, length: number): string {
+	if (text.length <= length) return text
+	return `${text.slice(0, length)}...`
+}
+
 export function extract_hashtags(content: string): string[] {
 	const matches = content.matchAll(/#(\w+)/g)
 	return Array.from(matches).map((match) => match[1])
 }
+const url_regex = /(https?:\/\/[^\s]+)/
+const hashtag_regex = /#(\w+)/
 
-export function tokenize_hashtags(content: string): { text: string; is_hashtag: boolean }[] {
-	const hashtags = extract_hashtags(content)
+type Token = { text: string; type: 'url' | 'hashtag' | 'text' }
 
-	const tokens = content.split(/(#\w+)/g).map((token) => {
-		return {
-			text: token,
-			is_hashtag: hashtags.includes(token.slice(1))
+export function tokenize_content(content: string): Token[] {
+	const tokens: Token[] = []
+	let idx = 0
+
+	const combined_regex = new RegExp(`${url_regex.source}|${hashtag_regex.source}`, 'g')
+	let match
+
+	while ((match = combined_regex.exec(content)) !== null) {
+		if (match.index > idx) {
+			tokens.push({
+				text: content.slice(idx, match.index),
+				type: 'text'
+			})
 		}
-	})
 
-	return tokens.filter((token) => token.text.trim().length)
-}
+		if (match[0].match(url_regex)) {
+			tokens.push({ text: match[0], type: 'url' })
+		} else if (match[0].match(hashtag_regex)) {
+			tokens.push({ text: match[0], type: 'hashtag' })
+		}
 
-export function cut_text(text: string, length: number): string {
-	if (text.length <= length) return text
-	return `${text.slice(0, length)}...`
+		idx = combined_regex.lastIndex
+	}
+
+	if (idx < content.length) {
+		tokens.push({ text: content.slice(idx), type: 'text' })
+	}
+
+	return tokens
 }

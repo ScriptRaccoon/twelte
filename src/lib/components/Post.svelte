@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import type { Post as PostType } from '$lib/types'
-	import { cut_text, format_date, tokenize_hashtags } from '$lib/utils'
+	import { cut_text, format_date, tokenize_content } from '$lib/utils'
 	import { faComment, faHeart } from '@fortawesome/free-regular-svg-icons'
 	import {
 		faHeart as faHeartFilled,
@@ -92,11 +92,15 @@
 	</div>
 
 	<div class="content">
-		{#each tokenize_hashtags(post.content) as { text, is_hashtag }}
-			{#if is_hashtag}
-				<a class="hashtag" href="/hashtags/{text.slice(1)}">{text}</a>
-			{:else}
+		{#each tokenize_content(post.content) as { text, type }}
+			{#if type === 'text'}
 				<span>{text}</span>
+			{:else if type === 'hashtag'}
+				<a class="hashtag" href="/hashtags/{text.slice(1)}">{text}</a>
+			{:else if type === 'url'}
+				<a class="link" target="_blank" rel="noopener noreferrer" href={text}>
+					{cut_text(text, 38)}
+				</a>
 			{/if}
 		{/each}
 	</div>
@@ -185,5 +189,9 @@
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
+	}
+
+	.link {
+		color: var(--link-color);
 	}
 </style>

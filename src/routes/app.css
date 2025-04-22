@@ -12,6 +12,7 @@
 	--tertiary-bg-color: #444;
 	--error-color: orangered;
 	--primary-color: rgb(255, 217, 0);
+	--link-color: skyblue;
 }
 
 body {
@@ -43,6 +44,7 @@ p {
 
 a {
 	color: inherit;
+	text-underline-offset: 2px;
 }
 
 h1,
