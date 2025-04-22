@@ -67,7 +67,7 @@
 </script>
 
 <article>
-	<div class="header">
+	<div class="post-header">
 		{#if post.author_avatar_url}
 			<img src={post.author_avatar_url} alt="Avatar" class="avatar" />
 		{:else}
@@ -85,10 +85,6 @@
 				{format_date(post.created_at)}
 			</span>
 		</span>
-
-		{#if is_author}
-			<IconButton icon={faXmark} onclick={delete_post} aria_label="Delete" small={true} />
-		{/if}
 	</div>
 
 	<div class="content">
@@ -133,19 +129,18 @@
 		{#if copied}
 			<span class="small">Copied URL</span>
 		{/if}
+
+		{#if is_author}
+			<IconButton icon={faXmark} onclick={delete_post} aria_label="Delete" />
+		{/if}
 	</menu>
 </article>
 
 <style>
-	.header {
+	.post-header {
 		display: flex;
 		align-items: center;
-		padding-right: 0.25rem;
 		gap: 0.5rem;
-	}
-
-	.header :global(button) {
-		margin-left: auto;
 	}
 
 	.avatar,
@@ -186,6 +181,7 @@
 	}
 
 	menu {
+		margin-top: 0.75rem;
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
