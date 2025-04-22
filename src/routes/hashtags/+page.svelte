@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Popular Hashtags</title>
+	<title>Twelte - Popular Hashtags</title>
 </svelte:head>
 
 <header>

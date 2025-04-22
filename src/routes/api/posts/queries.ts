@@ -78,4 +78,13 @@ LIMIT :limit
 OFFSET :offset
 `
 
-// TODO: add query for posts with a given hashtag
+export const POSTS_BY_HASHTAG_QUERY = `
+${GENERAL_POST_QUERY}
+INNER JOIN
+    post_hashtags ON post_hashtags.post_id = posts.id
+WHERE
+    post_hashtags.hashtag = :tag
+    AND posts.parent_id IS NULL
+ORDER BY
+    posts.created_at DESC
+`

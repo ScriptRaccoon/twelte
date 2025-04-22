@@ -1,7 +1,15 @@
+<script lang="ts">
+	import PostList from '$lib/components/PostList.svelte'
+
+	let { data } = $props()
+</script>
+
 <svelte:head>
-	<title>Hashtag Page</title>
+	<title>Twelte - #{data.tag}</title>
 </svelte:head>
 
-<h2>Hashtag Page</h2>
+{#key data.tag}
+	<h2>Posts with #{data.tag}</h2>
 
-<strong>TODO</strong>
+	<PostList initial_posts={data.posts} user_id={data.user?.id} />
+{/key}
