@@ -61,10 +61,12 @@ export const POST: RequestHandler = async (event) => {
         WHERE id = ? AND EXISTS (
             SELECT 1
             FROM settings
-            WHERE user_id = posts.author_id AND reply_notifications_enabled = 1
+            WHERE user_id = posts.author_id
+			AND reply_notifications_enabled = 1
+			AND posts.author_id != ?
         )`
 
-		const args = [post_id, data.parent_id]
+		const args = [post_id, data.parent_id, user.id]
 
 		const { success } = await query(sql_notify, args)
 

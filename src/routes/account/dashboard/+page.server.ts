@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit'
-import type { Actions, PageServerLoad } from '../$types'
+import type { Actions, PageServerLoad } from './$types'
 import { query } from '$lib/server/db'
 import { bio_schema, name_schema, email_schema, password_schema } from '$lib/server/schemas'
 import { fail } from '@sveltejs/kit'
