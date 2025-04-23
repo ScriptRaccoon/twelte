@@ -29,6 +29,8 @@
 
 {#if code === 'email_verified'}
 	<Message type="success">Your email has been verified. You can now login.</Message>
+{:else if code === 'password_reset'}
+	<Message type="success">Your password has been reset. You can now login.</Message>
 {/if}
 
 <form method="POST" use:enhance onsubmit={handle_submit}>
@@ -56,3 +58,13 @@
 		{form.error}
 	</Message>
 {/if}
+
+<div class="message secondary">
+	In case you've forgotten your password, you can <a href="/account/reset">reset it here</a>.
+</div>
+
+<style>
+	.message {
+		margin-top: 1rem;
+	}
+</style>

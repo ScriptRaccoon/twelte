@@ -54,3 +54,27 @@ export async function send_verification_email(
 
 	return send_mail(options)
 }
+
+export async function send_password_reset_email(
+	origin: string,
+	email: string,
+	token: string
+): Promise<{ success: boolean }> {
+	const reset_url = `${origin}/account/newpassword?token=${token}`
+
+	const text =
+		'Visit the following link to reset your password:\n\n' +
+		reset_url +
+		`\n\n` +
+		'This link will expire in 1 hour.\n\n' +
+		'If you did not request this email, please ignore it.\n\n' +
+		'Thank you for using Twelte!'
+
+	const options = {
+		to: email,
+		subject: 'Twelte - Password Reset',
+		text
+	}
+
+	return send_mail(options)
+}
