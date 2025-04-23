@@ -8,7 +8,7 @@ export const load: PageServerLoad = async (event) => {
 
 	const limit = 20
 
-	const res = await event.fetch(`/api/posts/hashtag/${tag}?limit=${limit}`)
+	const res = await event.fetch(`/api/hashtag/${tag}?limit=${limit}`)
 	if (!res.ok) error(res.status, 'Failed to fetch posts')
 
 	const posts: Post[] = await res.json()

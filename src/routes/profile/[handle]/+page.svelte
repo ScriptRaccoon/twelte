@@ -91,7 +91,7 @@
 		initial_posts={data.posts}
 		user_id={data.user?.id}
 		limit={data.limit}
-		fetch_more_url="/api/posts/profile/{profile.id}"
+		fetch_more_url="/api/profile/{profile.handle}/posts"
 	/>
 </section>
 

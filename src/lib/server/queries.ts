@@ -70,7 +70,7 @@ ORDER BY
 export const POSTS_BY_AUTHOR_QUERY = `
 ${GENERAL_POST_QUERY}
 WHERE
-    posts.author_id = :author_id
+    users.handle = :handle
     AND posts.parent_id IS NULL
 ORDER BY
     posts.created_at DESC

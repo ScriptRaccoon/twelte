@@ -17,6 +17,6 @@
 		initial_posts={data.posts}
 		user_id={data.user?.id}
 		limit={data.limit}
-		fetch_more_url="/api/posts/hashtag/{data.tag}"
+		fetch_more_url="/api/hashtag/{data.tag}"
 	/>
 {/key}
