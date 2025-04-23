@@ -63,14 +63,14 @@ async function enable_foreign_keys() {
 }
 
 /**
- * Clean users that have registered in the last 7 days and have never logged in.
+ * Clean users that have registered in the last 30 days and have never logged in.
  */
 async function clean_inactive_users() {
 	const sql_inactive_users = `
 	DELETE FROM users
 	WHERE last_login IS NULL
-	AND created_at <= DATETIME('now', '-7 days');
-	`
+	AND created_at <= datetime('now', '-30 days');`
+
 	const { rowsAffected } = await db.execute(sql_inactive_users)
 	console.info(`${rowsAffected} inactive users cleaned up successfully`)
 }
@@ -81,8 +81,8 @@ async function clean_inactive_users() {
 async function clean_expired_tokens() {
 	const sql_tokens = `
 	DELETE FROM tokens
-	WHERE expires_at <= datetime('now');
-	`
+	WHERE expires_at <= datetime('now');`
+
 	const { rowsAffected } = await db.execute(sql_tokens)
 	console.info(`${rowsAffected} expired tokens cleaned up successfully`)
 }
