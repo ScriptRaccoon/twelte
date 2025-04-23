@@ -8,7 +8,7 @@
 
 This is a rough summary of the features of _Twelte_.
 
-- Intuitive and Responsive UI (s)
+- Intuitive and Responsive UI
 - User authentication
 - Email verification
 - Account Page
