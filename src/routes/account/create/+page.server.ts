@@ -12,6 +12,7 @@ export const actions: Actions = {
 
 		const email = form_data.get('email') as string | null
 		const password = form_data.get('password') as string | null
+		const confirm_password = form_data.get('confirm_password') as string | null
 		const handle = form_data.get('handle') as string | null
 
 		const { error: email_error } = email_schema.safeParse(email)
@@ -20,6 +21,10 @@ export const actions: Actions = {
 		const { error: password_error } = password_schema.safeParse(password)
 		if (password_error)
 			return fail(400, { error: get_error_msg(password_error), email, handle })
+
+		if (password !== confirm_password) {
+			return fail(400, { error: 'Passwords do not match', email, handle })
+		}
 
 		const { error: handle_error } = handle_schema.safeParse(handle)
 		if (handle_error) return fail(400, { error: get_error_msg(handle_error), email, handle })

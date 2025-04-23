@@ -36,6 +36,7 @@
 			readonly={form?.success}
 		/>
 	</div>
+
 	<div class="input-group">
 		<label for="handle">Handle*</label>
 		<input
@@ -47,9 +48,21 @@
 			readonly={form?.success}
 		/>
 	</div>
+
 	<div class="input-group">
 		<label for="password">Password</label>
 		<input type="password" id="password" name="password" required readonly={form?.success} />
+	</div>
+
+	<div class="input-group">
+		<label for="confirm_password">Confirm Password</label>
+		<input
+			type="password"
+			id="confirm_password"
+			name="confirm_password"
+			required
+			readonly={form?.success}
+		/>
 	</div>
 
 	<button
