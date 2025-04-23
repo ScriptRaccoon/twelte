@@ -11,6 +11,7 @@ This is a rough summary of the features of _Twelte_.
 - Intuitive and Responsive UI
 - User authentication
 - Email verification
+- Password reset
 - Account Page
 - Profile Page
 - Avatar upload
@@ -21,6 +22,7 @@ This is a rough summary of the features of _Twelte_.
 - Follow other users
 - Feed with all posts
 - Feed with followed posts
+- Infinite Loading
 - Page with popular hashtags
 - Notifications
 - Notification settings
