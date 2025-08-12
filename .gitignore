@@ -26,6 +26,3 @@ vite.config.ts.timestamp-*
 *.db
 *.db-wal
 *.db-shm
-
-# Personal Todos
-todos.txt

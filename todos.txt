@@ -1,0 +1,19 @@
+# IMPORTANT
+ 
+# NICE TO HAVE
+- improve loading time
+- give user option to resend verification email
+- algorithm for feed(s)
+- realtime update of notification number (how?)
+- meta tags for all pages / layout
+- floating "create post" button in postlist component ?
+- disable forms during submission
+    already done for account login and Create
+    https://discord.com/channels/457912077277855764/1023340103071965194/threads/1363320116556599500
+- show list of replies in profile page ?
+- append images to posts
+- follow standard for sql formatting
+- pagination for replies only when it becomes necessary #YAGNI
+- rewrite Dialog.svelte to Svelte 5 (currently uses stores)
+- if this app becomes a real thing, host it on a VPS with a database on disk
+
